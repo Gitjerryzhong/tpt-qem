@@ -1,0 +1,46 @@
+a:focus { outline:none }
+
+.title {
+	font-size: 20px;
+	 white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.form-list tr {
+	cursor: pointer;
+}
+
+.form-list td, th {
+	white-space: nowrap;	
+}
+
+.form-list .reason {
+	width: 400px;
+	max-width: 400px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.form-horizontal .btn-toolbar {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+@media (max-width : 1200px) {
+	.form-list .reason {
+		max-width: 200px;
+	}
+}
+
+@media (max-width : 992px) {
+	.form-list .reason {
+		max-width: 60px;
+	}
+}
+
+@media only screen and (max-width : 768px) {
+	.form-list .reason {
+		max-width: 100px;
+	}
+}

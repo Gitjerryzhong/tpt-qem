@@ -1,0 +1,17 @@
+.btn-toolbar {
+    margin-bottom: 10px;
+}
+
+table.detail td {
+	white-space: nowrap;
+}
+
+table.detail td.cell {
+	text-align: center;
+	vertical-align: middle;
+	padding: 0px 4px;
+}
+
+table.detail th {
+	text-align: center;
+}

@@ -1,0 +1,29 @@
+.btn-toolbar,.orderHeader {
+	margin-bottom: 20px;
+}
+
+p.static-form-control {
+	display: inline-block;
+	border-bottom: solid 1px #ddd;
+	text-align: center;
+}
+
+#order-id {
+	width: 80px;
+}
+
+#creator-name {
+	width: 80px;
+}
+
+#date-created {
+	width: 160px;
+}
+
+#modifier-name {
+	width: 80px;
+}
+
+#date-modified {
+	width: 160px;
+}

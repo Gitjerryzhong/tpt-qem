@@ -1,0 +1,43 @@
+#card {
+	border: solid 1px #ccc;
+	background-color: #f8f8f8;
+	border-radius: 4px;
+	width: 496px;
+	margin: auto;
+	margin-bottom: 20px;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+#card .form-control-static {
+	border-bottom: solid 1px #ccc;
+}
+
+#card form {
+	padding-top: 15px;
+	width: 100%;
+}
+
+#notice {
+	margin: 15px 15px 15px 15px;
+}
+
+#notice table {
+	border-collapse: collapse;
+	margin: auto;
+}
+
+#notice table td,th {
+	border: solid 1px #333;
+	padding: 2px 10px;
+}
+
+#toolbar {
+	height: 50px;
+}
+
+.alert {
+	width: 496px;
+	margin: auto;
+	margin-bottom: 20px;
+}

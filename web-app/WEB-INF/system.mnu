@@ -1,0 +1,37 @@
+menus {
+	home "/"
+	
+    activity {
+		tptCheck					"approval",		"/tptAdmin/check",			[TPT_ADMIN]
+		tptMentorCheck				"approval",		"/tptMentorCheck",			[TPT_MENTOR]
+		qemProjectAdmin				"qem",			"/qemProjectAdmin",			[QEM_ADMIN]
+		qemTaskAdmin				"qem",			"/qemTaskAdmin",			[QEM_ADMIN]
+		qemUpdateCheck				"qem",			"/qemUpdateAdmin",			[QEM_ADMIN]		
+		tptRequest					"affair",		"/tpt",						[TPT_STUDENT]
+		coPrjView					"affair",		"/tptCoPrjView",			[TPT_COPROJECTVIEW]
+		qemRequest					"qem",			"/qem",						[TEACHER]
+		qemCollegeCheck				"qem",			"/qemCollegeCheck",			[QEM_CHECKER]
+		qemCollegeMidCheck			"qem",			"/qemCollegeCheck/mid",		[QEM_CHECKER]
+		qemCollegeEndCheck			"qem",			"/qemCollegeCheck/end",		[QEM_CHECKER]
+		qemCollegeUpdate			"qem",			"/qemCollegeUpdate",		[QEM_CHECKER]
+		qemExpertCheck				"qem",			"/qemExpertCheck",			[QEM_EXPERT]			
+    }
+    
+    query { 
+    }
+	
+	admin {
+		adminTeacherRoles			"admin",		"/admin/teacherRoles",		[DEPARTMENT_ADMIN]
+		adminDepartments			"admin",		"/admin/departments",  		[SYSTEM_ADMIN]
+		adminTptUser				"admin",		"/tptAdmin/",				[TPT_ADMIN]
+		tptExport					"admin",		"/tptExport",				[TPT_ADMIN]
+		coProject					"admin",		"/tptCoPrjAdmin",			[TPT_COPROJECT]
+		adminQemUser				"admin",		"/qemAdmin/",				[QEM_ADMIN]		
+	}
+	
+	feedback {
+		createIssue					"feedback",		"/issues/new",				[STUDENT, TEACHER]
+		queryIssues					"feedback",		"/issues",					[STUDENT, TEACHER]
+		queryMyIssues				"feedback",		"/issues?personal",			[STUDENT, TEACHER]
+	}
+}

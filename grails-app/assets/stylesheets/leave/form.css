@@ -1,0 +1,142 @@
+#leaveRequest .nav-tabs {
+	margin-bottom: 2px;
+}
+
+#leaveRequest .nav-tabs > li > a {
+	padding: 2px 0px;
+	text-align: center;
+}
+
+#leaveRequest .nav-tabs > li.has-item > a {
+    font-weight: bold;
+}
+#leaveRequest .nav-tabs > li.has-item > a:after {
+    content: "*";
+}
+
+#leaveRequest textarea {
+	margin-bottom: 10px;
+}
+
+.glyphicon {
+	color: green;
+}
+
+#leaveRequest table {
+	margin-bottom: 10px;
+}
+
+#leaveRequest table td,th {
+	border-bottom: 1px solid #ddd;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#leaveRequest table td.c1,td.c2 {
+	border-right: solid 1px #ddd;
+}
+
+#leaveRequest table td.c1 {
+	width: 40px;
+}
+
+#leaveRequest table td.c2 {
+	width: 20px;
+}
+
+#leaveRequest table td.cn {
+	width: 80px;
+	border-right: solid 1px #fff;
+}
+
+#leaveRequest i {
+	display: inline-block;
+} 	
+
+#leaveRequest table td.enabled {
+	background-color: #eee;
+	border-right: solid 1px #ddd;
+}
+
+#leaveRequest table .enabled {
+	cursor: pointer;
+}
+
+#leaveRequest table td.disabled {
+	background-color: #eee;
+	border-right: solid 1px #ddd;
+}
+
+#leaveRequest table .disabled {
+	cursor: pointer;
+}
+
+#leaveRequest table a {
+	text-decoration: none;
+	color: #333;
+}
+
+#leaveRequest table .enabled.ui-state-hover {
+	background-color: #0081C2;
+}
+
+#leaveRequest table .enabled.ui-state-hover a {
+	color: #eee;
+}
+
+#leaveRequest table td hr {
+	display: block; 
+	height: 1px;
+    border: 0; 
+    border-top: 1px solid #333;
+    margin: 0 10px; 
+    padding: 0; 
+}
+
+#leaveRequest table td.enabled.ui-state-hover hr {
+    border-top: 1px solid #ddd;
+}
+
+#leaveRequest table td.multiple {
+    border-right: solid 1px #ddd;
+    background-color: #f2dede;
+    cursor: default;
+}
+
+#leaveReason {
+    margin-top: 10px;
+}
+
+#errors {
+    padding-left: 0px;
+}
+#errors ul {
+    margin-bottom: 0px;
+}
+
+/* Responsive
+-------------------------------------------------- */
+@media ( min-width : 1200px) {
+	#leaveRequest table td.cn {
+		width: 100px;
+	}
+}
+@media (min-width: 768px) and (max-width: 979px) {
+	#leaveRequest table td.c1 {
+		width: 44px;
+	}
+	#leaveRequest table td.cn {
+		width: 98px;
+	}
+}
+@media ( max-width : 767px) {
+	#leaveRequest table td.c1 {
+		width: 8%;
+	}
+	#leaveRequest table td.c2 {
+		width: 4.5%;
+	}
+	#leaveRequest table td.cn {
+		width: 12.5%;
+	}
+}

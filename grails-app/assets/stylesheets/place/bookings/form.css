@@ -1,0 +1,57 @@
+.notice {
+	margin-top: 20px;
+}
+
+.notice h3 {
+	text-align: center;
+}
+
+.notice ol ol {
+	list-style-type:lower-alpha;
+}
+
+#bookingForm h3 {
+	text-align: center;
+	margin: 0px 0px 20px 0px;
+}
+
+#bookingForm h3 span {
+	border-bottom:double 3px #333
+}
+
+.btn-toolbar {
+	margin-bottom: 15px;
+}
+
+.form-inline {
+	margin-bottom: 15px;
+}
+
+.form-inline .form-group {
+	margin-right: 15px;
+}
+
+.form-inline .form-group .form-control-static {
+	display: inline-block;
+	vertical-align: middle;	
+}
+
+.form-detail .removeItem {
+	cursor: pointer;
+}
+
+#dialog .form-group {
+	margin-bottom: 5px;
+}
+
+#dialog .rooms-selectable {
+	height: 162px;
+}
+
+#dialog .rooms-selected {
+	height: 162px;
+}
+
+#dialog .date {
+	margin-left: 5px;
+}

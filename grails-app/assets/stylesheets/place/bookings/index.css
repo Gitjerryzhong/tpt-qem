@@ -1,0 +1,40 @@
+#booking-list th,td {
+	white-space: nowrap;
+}
+
+#booking-list .reason {
+	width: 600px;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+@media (max-width : 1200px) {
+	.reason {
+		max-width: 400px;
+	}
+}
+
+@media (max-width : 992px) {
+	.reason {
+		max-width: 300px;
+	}
+}
+
+@media only screen and (max-width : 768px) {
+	.reason {
+		max-width: 200px;
+	}
+}
+
+@media only screen and (max-width : 480px) {
+	.reason {
+		max-width: 100px;
+	}
+}
+
+	
+
+
+
+

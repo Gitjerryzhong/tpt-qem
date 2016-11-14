@@ -1,0 +1,17 @@
+/*
+*= require markdown
+*= require_self
+*/
+
+#issueForm .btn-toolbar {
+	margin-bottom: 15px;
+}
+
+#issueForm textarea {
+	margin-botton: 15px;
+}
+
+#issueForm .prev-pane .title {
+	font-size: 24px;
+	margin-bottom: 15px;
+}

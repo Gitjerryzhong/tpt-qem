@@ -1,0 +1,45 @@
+/*
+*= require bootstrap
+*/
+body {
+	padding-top: 40px;
+	padding-bottom: 40px;
+	background-color: #eee;
+}
+
+.form-signin {
+	max-width: 330px;
+	padding: 15px;
+	margin: 0 auto;
+}
+
+.form-signin >.form-signin-heading,
+.form-signin > .btn-group,
+.form-signin > button {
+	margin-bottom: 10px;
+}
+
+.form-signin .checkbox {
+	font-weight: normal;
+}
+
+.form-signin .form-control:focus {
+	z-index: 2;
+}
+
+.form-signin .input-group {
+	margin-bottom: 10px;
+}
+
+.form-signin input.form-control,
+.form-signin glyphicon {
+	font-size: 16px;
+	padding: 5px 12px;
+	height: 38px;
+}
+
+.not-support {
+	max-width: 330px;
+	padding: 15px;
+	margin: 0 auto;
+}

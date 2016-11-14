@@ -1,0 +1,35 @@
+#issue-list .issues li {
+	padding: 0px 0px 15px 0px;
+}
+
+#issue-list .issues a {
+	color: #333;
+}
+
+#issue-list .issues a:hover {
+	color: #2a6496;
+	text-decoration: none;
+}
+
+#issue-list .issues .title {
+	font-size: 20px;
+}
+
+#issue-list .issues .title .glyphicon {
+	font-size: 18px;
+}
+
+#issue-list .issues .title .closed {
+	color: #999;
+}
+
+#issue-list .issues .info {
+	color: #888;
+}
+
+#issue-list .issues .info .seperate {
+	margin-right: 4px;
+}
+
+
+

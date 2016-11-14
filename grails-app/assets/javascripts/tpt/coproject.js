@@ -1,0 +1,9 @@
+//= require common/mine-filter
+//= require coproject/app
+//= require coproject/coType
+//= require coproject/coproject
+//= require coproject/coProDetailCtrl
+//= require coproject/coCountry
+//= require coproject/pSummary
+//= require coproject/coXsmd
+//= require coproject/coXsmdAdd

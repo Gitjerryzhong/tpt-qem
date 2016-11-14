@@ -1,0 +1,45 @@
+#weekTabs {
+	margin-bottom: 0px;
+}
+
+#rollcallAdmin td.lock,
+#rollcallAdmin td.unlock
+#rollcallAdmin th.c0 {
+}
+
+#rollcallAdmin .outer {
+	position: relative;
+	display: block;
+	width: 30px;
+	height: 16px;
+	border: solid 1px #ccc;
+	background-color: #eee;
+	line-height: 0px;
+	vertical-align: middle;
+}
+
+#rollcallAdmin .inner {
+	display: inline-block;
+	border: solid 1px #eee;
+	height: 14px;
+	width: 14px;
+}
+
+#rollcallAdmin .lock .inner {
+	float: left;
+	background-color: #b94a48;
+}
+
+#rollcallAdmin .unlock .inner {
+	float: right;
+	background-color: #468847;
+}
+
+#lockAll.inner {
+	background-color: #b94a48;
+	border-right: 0px;
+}
+
+#unlockAll.inner {
+	background-color: #468847;
+}

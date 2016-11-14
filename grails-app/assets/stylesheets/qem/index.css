@@ -1,0 +1,123 @@
+a:focus { outline:none }
+
+.title {
+	font-size: 20px;
+	 white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.form-list tr {
+	cursor: pointer;
+}
+
+.form-list td, th {
+	white-space: nowrap;	
+}
+
+.form-list .reason {
+	width: 400px;
+	max-width: 400px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.form-horizontal .btn-toolbar {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+@media (max-width : 1200px) {
+	.form-list .reason {
+		max-width: 200px;
+	}
+}
+
+@media (max-width : 992px) {
+	.form-list .reason {
+		max-width: 60px;
+	}
+}
+
+@media only screen and (max-width : 768px) {
+	.form-list .reason {
+		max-width: 100px;
+	}
+}
+.table .checkboxStyle{
+	margin-left:10px;
+}
+.btn-toolbar {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-align: right;
+}
+.error-ul{
+	margin-top: 20px;
+	padding-top: 10px;
+	border-top:solid 1px #CCC;
+}
+.img-btn{
+	margin-top: 10px;
+	text-align: center;
+}
+.img-max{
+	max-width:150px£»
+	text-align: center;
+}
+.title {
+	font-size: 20px;
+	 white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.pull-right {
+  float: right !important;
+}
+.Emphasis{
+	color: #ff0000;
+}
+.hand{
+	cursor:pointer
+}
+.form-group h4{
+	
+	border-bottom:double #c0c0c0;
+}
+.myselect{
+	overflow:auto;
+background-attachment:fixed;
+background-repeat:no-repeat;
+border-style:solid; 
+border-color:#FFFFFF
+}
+.expert-admin{
+	display: inline-block;
+	background:#fff;
+/* 	padding-bottom:2px; */
+/* 	padding-left:10px; */
+/* 	padding-right:10px; */
+	border:none;
+	border-bottom: dashed 1px #0088cc;
+	color: #0088cc;
+	cursor: pointer;	
+}
+pre {
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+.agree{
+	color:#fff;
+	background-color:#449d44;
+}
+.reject{
+	color:#fff;
+	background-color:#c9302c;
+}
+.giveup{
+	color:#fff;
+	background-color:#ec971f;
+}
+.noreview{
+	background-color:#31b0d5;
+}

@@ -1,0 +1,8 @@
+#bookingShow h3 {
+	text-align: center;
+	margin: 0px 0px 20px 0px;
+}
+
+#bookingShow h3 span {
+	border-bottom:double 3px #333
+}

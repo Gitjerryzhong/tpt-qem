@@ -1,0 +1,9 @@
+.teachers .teacher {
+	display: inline-block;
+	margin: 5px 10px 5px 0px;
+}
+
+.teachers .teacher i {
+	visibility: hidden;
+	cursor: pointer;
+}

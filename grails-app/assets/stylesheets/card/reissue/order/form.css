@@ -1,0 +1,46 @@
+#dialog .modal-body {
+	height: 300px;
+	overflow: auto;
+}
+
+.btn-toolbar {
+	margin-bottom: 20px;
+}
+
+.orderHeader {
+	margin-botton: 10px;
+}
+
+p.static-form-control {
+	display: inline-block;
+	border-bottom: solid 1px #ddd;
+	text-align: center;
+}
+
+td.operation, th.operation {
+	text-align: center;
+}
+
+.removeItem {
+	cursor: pointer;
+}
+
+#order-id {
+	width: 80px;
+}
+
+#creator-name {
+	width: 80px;
+}
+
+#date-created {
+	width: 160px;
+}
+
+#modifier-name {
+	width: 80px;
+}
+
+#date-modified {
+	width: 160px;
+}

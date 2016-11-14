@@ -1,0 +1,25 @@
+.table {
+	width:auto;
+}
+
+.table span {
+	display: inline-block;
+	border-bottom: dashed 1px #0088cc;
+	color: #0088cc;
+	cursor: pointer;
+}
+
+.table select {
+	padding: 0px;
+	margin: 0px;
+	width: 100px;
+	height: 24px;
+	line-height: 20px;
+	display: none;
+}
+
+.table .c1 {
+	padding: 0px;
+	vertical-align: middle;
+	width: 100px;
+}

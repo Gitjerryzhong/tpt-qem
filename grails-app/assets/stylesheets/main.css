@@ -1,0 +1,42 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 30px;
+}
+
+#header.navbar .navbar-brand {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 30px;
+  background-color: #f5f5f5;
+}
+
+#footer >.container {
+	padding: 5px 0px;
+}
+
+#footer a {
+	color: #000;
+}
+
+/* override nav-tabs */
+.nav.nav-tabs > li > a {
+	padding: 7px 12px;
+}
+
+.navbar-collapse {
+	max-height: 100%;
+}

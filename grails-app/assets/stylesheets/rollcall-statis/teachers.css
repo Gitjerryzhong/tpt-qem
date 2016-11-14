@@ -1,0 +1,68 @@
+.table th {
+	text-align: center;
+	white-space: nowrap;
+}
+
+.table th.name {
+	width: 60px;
+}
+
+.table td.name {
+	text-align: left;
+	text-overflow: ellipsis;
+	color: #000;
+}
+
+.table td {
+	text-align: center;
+	white-space:nowrap;
+	overflow: hidden; 
+	padding-left:2px !important;
+	padding-right:2px !important;
+}
+/*
+.table td.selected span.outer {
+	border-top: solid 1px #0081C2;
+	borer-bottom: solid 1px #0081C2;
+}
+*/
+.table td div {
+	position: relative;
+	width: 100%;
+	cursor: pointer;
+}
+
+.table span.outer {
+	height: 20px;
+	display: block;
+	position: absolute;
+	left:0;
+	right:0;
+	text-align:left;
+	background-color: #b94a48;
+}
+
+.table span.inner {
+	display: block;
+	height: 20px;
+	background-color: #468847;
+}
+
+.table span.text {
+	position: absolute;
+	left:0;
+	right:0;
+	display: block;
+	text-align: center;
+	z-index: 10;
+	color: #ffffff; 
+}
+
+.table .detail ul {
+	list-style: none;
+	margin:0px;
+}
+
+.table td.week,td.detail {
+	text-align: left;
+}

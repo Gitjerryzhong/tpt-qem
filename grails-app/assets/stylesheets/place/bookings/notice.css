@@ -1,0 +1,11 @@
+.notice {
+	margin-top: 20px;
+}
+
+.notice h3 {
+	text-align: center;
+}
+
+.notice ol ol {
+	list-style-type:lower-alpha;
+}

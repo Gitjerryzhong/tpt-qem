@@ -1,0 +1,86 @@
+.btn-toolbar {
+	margin-bottom: 20px;
+}
+
+.report-header {
+	margin-bottom: 10px;
+}
+
+.report-header p.static-form-control {
+	display: inline-block;
+	border-bottom: solid 1px #ddd;
+	text-align: center;
+}
+
+.report-items th,td {
+	white-space: nowrap;
+}
+
+.report-items .reason {
+	width: 450px;
+	max-width: 450px;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.report-items .removeItem {
+	cursor: pointer;
+}
+
+.report-items .department {
+	width: 250px;
+	max-width: 250px;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+@media (max-width : 1200px) {
+	.report-items .reason {
+		max-width: 300px;
+	}
+	.report-items .department {
+		max-width: 160px;
+	}
+}
+
+@media (max-width : 992px) {
+	.report-items .reason {
+		max-width: 140px;
+	}
+	.report-items .department {
+		max-width: 100px;
+	}
+}
+
+@media only screen and (max-width : 768px) {
+	.report-items .reason {
+		max-width: 80px;
+	}
+	.report-items .department {
+		max-width: 80px;
+	}
+}
+
+@media only screen and (max-width : 480px) {
+	.report-items .reason {
+		max-width: 80px;
+	}
+	.report-items .department {
+		max-width: 80px;
+	}
+}
+
+#dialog .modal-body {
+	height: 300px;
+	overflow: auto;
+}
+
+#report-id, #creator-name, #modifier-name{
+	width: 80px;
+}
+
+#date-created, #date-modified {
+	width: 160px;
+}

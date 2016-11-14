@@ -1,0 +1,106 @@
+#tile-view {
+	display: none;
+}
+
+#tile-view .tile .wrapper {
+	background-color: #f8f8f8;
+	margin-bottom: 20px;
+	border-radius: 4px;
+}
+
+#tile-view .ui-state-hover .wrapper {
+	background-color: #0081C2;
+}
+
+#tile-view .tile .title {
+	height:25px;
+}
+
+#tile-view a {
+    outline: none;
+    color: white;
+}
+
+#tile-view .ui-state-hover .status {
+	display: none;
+}
+
+#tile-view .tile .btn-group {
+	display: none;
+}
+
+#tile-view .ui-state-hover .btn-group {
+	width: 100%;
+	display: block;
+	padding: 0px;
+}
+
+#tile-view .btn-group .btn{
+	width: 25%;
+	margin:0px;
+	font-size: 12px;
+}
+
+#tile-view .tile .content {
+	font-size: 40px;
+	line-height: 45px;
+	text-align: center;
+	cursor: default;
+}
+
+#tile-view .ui-state-hover .content {
+	color: white;
+}
+
+#tile-view .tile .statis {
+	color: #333;
+	font-size: 12px;
+	height:25px;
+	text-align: center;
+	padding: 4px 0px 0px 0px;
+}
+
+#tile-view .wait .statis {
+	background: url(../../images/loading.gif) 100% 50% no-repeat transparent;
+}
+
+
+#tile-view .ui-state-hover .statis {
+	color: #eee;
+}
+/* Responsive
+-------------------------------------------------- */
+
+/* Large desktop */
+@media (min-width: 1200px) {
+	#tile-view .tile {
+		margin-bottom: 30px;
+	}
+	
+	#tile-view .tile .content {
+		font-size: 50px;
+		line-height: 60px;
+	}
+}
+ 
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+	#tile-view .tile {
+		margin-bottom: 20px;
+	}
+	
+	#tile-view .tile .content {
+		font-size: 30px;
+		line-height: 30px;
+	}
+	
+	#tile-view .btn-group .btn{
+		font-size: 10px;
+		padding:0px;
+	}
+}
+ 
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) { 
+
+}

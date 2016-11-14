@@ -1,0 +1,103 @@
+#studentSchedule .nav {
+    margin-bottom: 0px;
+}
+
+#studentSchedule table td,th {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    vertical-align: middle;
+	height: 30px;
+}
+
+#studentSchedule table td.c1,td.c2 {
+    border-right: solid 1px #ddd;
+}
+
+#studentSchedule table td.c1 {
+    width: 65px;
+}
+
+#studentSchedule table td.c2 {
+    width: 30px;
+}
+
+#studentSchedule table td.arr {
+	border-right: 1px solid #fff;
+    width: 125px;
+}
+
+#studentSchedule table td.enabled {
+    border-right: solid 1px #ddd;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+#studentSchedule table td.conflict {
+    border-right: solid 1px #ddd;
+    background-color: #f2dede;
+    cursor: default;
+}
+
+#studentSchedule table a {
+    text-decoration: none;
+    color: #777;
+}
+
+#studentSchedule table td.enabled.ui-state-hover {
+    background-color: #0081C2;
+    color:#fff;
+}
+
+#studentSchedule table  a {
+    cursor: default;
+    color: #000;
+}
+
+#studentSchedule table td hr {
+	display: block; 
+	height: 1px;
+    border: 0; 
+    border-top: 1px solid #333;
+    margin: 0 10px; 
+    padding: 0; 
+}
+
+#studentSchedule table td.enabled.ui-state-hover hr {
+    border-top: 1px solid #ddd;
+}
+
+/* Responsive
+-------------------------------------------------- */
+@media ( min-width : 1200px) {
+    #studentSchedule table td.c1 {
+        width: 80px;
+    }
+    #studentSchedule table td.c2 {
+        width: 40px;
+    }
+    #studentSchedule table td.arr {
+        width: 150px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    #teacherSchedule table td.arr {
+        width: 93.5714px;
+    }
+}
+
+@media ( max-width : 767px) {
+	#teacherSchedule table {
+		width: 100%;
+	}
+	
+    #studentSchedule table td.c1 {
+        width: 8%;
+    }
+    #studentSchedule table td.c2 {
+        width: 4.5%;
+    }
+    #studentSchedule table td.arr {
+        width: 12.5%;
+    }
+}

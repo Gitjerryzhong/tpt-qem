@@ -1,0 +1,83 @@
+#schedule table td,th {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    vertical-align: middle;
+    height: 30px;
+}
+
+#schedule table td.c1 {
+}
+
+#schedule table td.c1 {
+    width: 65px;
+}
+
+#schedule table td.c2 {
+    width: 30px;
+}
+
+#schedule table td.arr {
+    border-left: solid 1px #ddd;
+    width: 125px;
+}
+
+#schedule table a {
+    text-decoration: none;
+    color: #777;
+}
+
+#schedule table td.arr span {
+	cursor: pointer;
+	margin: 0px 1px;
+}
+
+/*
+#schedule table td.arr {
+	position: relative;
+}
+
+.usage {
+	position:absolute;
+	background-color:red;
+	height:20px;
+	top: 5px;
+	border-right: solid 1px #fff;
+	box-sizing: border-box;
+}
+*/
+
+/* Responsive
+-------------------------------------------------- */
+@media ( min-width : 1200px) {
+    #schedule table td.c1 {
+        width: 80px;
+    }
+    #schedule table td.c2 {
+        width: 40px;
+    }
+    #schedule table td.arr {
+        width: 150px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    #schedule table td.arr {
+        width: 93.5714px;
+    }
+}
+
+@media ( max-width : 767px) {
+	#schedule table {
+		width: 100%;
+	}
+	
+    #schedule table td.c1 {
+        width: 8%;
+    }
+    #schedule table td.c2 {
+        width: 4.5%;
+    }
+    #schedule table td.arr {
+        width: 12.5%;
+    }
+}

@@ -1,0 +1,17 @@
+#toolbar {
+	height: 20px;
+}
+
+th {
+	text-align: center;
+}
+
+th.arrangement {
+	width: 200px;
+}
+
+span.student {
+	display: inline-block;
+	width: 150px;
+}
+

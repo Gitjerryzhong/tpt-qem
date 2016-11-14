@@ -1,0 +1,127 @@
+#editPane li {
+	text-align: center;
+}
+#editPane {
+	margin-top: 18px;
+}
+
+#editPane ul.teacher li.student{
+	color: #3a87ad;
+}
+
+#editPane table th {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+#editPane table td {
+    border-bottom: 1px solid #ddd;
+}
+
+#editPane table td {
+	height: 30px;
+}
+
+#editPane table td.c1,td.c2 {
+    border-right: solid 1px #ddd;
+    text-align: center;
+}
+
+#editPane table td.c1 {
+    width: 70px;
+}
+
+#editPane table td.c2 {
+    width: 30px;
+}
+
+#editPane table td.arr {
+	border-right: 1px solid #fff;
+    vertical-align: middle;
+    width: 120px;
+}
+
+
+#editPane table td.teacher {
+    border-right: solid 1px #ddd;
+    background-color: #f0f0f0;
+}
+
+#editPane table td.teacher ul.student {
+	color:#b94a48;
+}
+
+#editPane table td.student {
+	border-right: solid 1px #ddd;
+    background-color: #3a87ad;
+    color:#fff;
+}
+
+#editPane table a {
+    text-decoration: none;
+    color: #777;
+}
+
+#legend {
+	margin-top: 10px;
+	vertical-align: middle;
+}
+
+#legend span {
+	display:inline-block;
+	height: 25px;
+	padding: 0px 4px;
+	vertical-align: bottom;
+}
+
+#legend span.teacher {
+	border: solid 1px #ddd;
+	background-color: #f0f0f0;
+}
+
+#legend span.teacher label.selected {
+	margin-top: -2px;
+	color: #3a87ad;
+}
+
+#legend span.student-conflict {
+	border: solid 1px #ddd;
+	background-color: #f0f0f0;
+	color: #b94a48;
+}
+
+#legend span.student {
+	border: solid 1px #ddd;
+	background-color: #3a87ad;
+	color: #fff;
+}
+
+/* Responsive
+-------------------------------------------------- */
+@media ( min-width : 1200px) {
+    #editPane table td.c1 {
+        width: 80px;
+    }
+    #editPane table td.c2 {
+        width: 40px;
+    }
+    #editPane table td.arr {
+        width: 150px;
+    }
+}
+@media (min-width: 768px) and (max-width: 979px) {
+    #editPane table td.arr {
+        width: 89px;
+    }
+}
+@media ( max-width : 767px) {
+    #editPane table td.c1 {
+        width: 8%;
+    }
+    #editPane table td.c2 {
+        width: 4.5%;
+    }
+    #editPane table td.arr {
+        width: 12.5%;
+    }
+}

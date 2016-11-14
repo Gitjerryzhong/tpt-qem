@@ -1,0 +1,65 @@
+.table {
+	table-layout: fixed;
+}
+
+.table .id {
+	width: 100px;
+}
+
+.table .name {
+	width: 80px;
+}
+
+.table .absent,
+.table .late,
+.table .early,
+.table .leave {
+	width: 50px;
+	text-align: center;
+}
+
+.table .total {
+	width: 80px;
+}
+
+.table .detail {
+	padding-left: 0px;
+	padding-right: 0px;	
+}
+
+.table .detail li {
+	margin-bottom: 2px\9; /*ie8*/
+}
+
+.table .detail .label-absent {
+	background-color: #b94a48;
+}
+
+.table .detail .label-late {
+	background-color: #f89406;
+}
+
+.table .detail .label-early {
+	background-color: #BB1684;
+}
+
+.table tr.ui-state-hover {
+    background-color: #eee;
+    cursor: pointer;
+}
+
+.table tr.selected,
+.table-hover tbody tr.selected:hover > td,
+.table-hover tbody tr.selected:hover > th
+{
+    background-color: rgb(0,129,194);
+}
+
+.table-hover tbody tr:hover > td.detail
+{
+    background-color: #fff;
+}
+
+.table tr.selected td {
+    color: #fff;
+}

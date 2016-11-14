@@ -1,0 +1,23 @@
+.table {
+	table-layout: fixed;
+}
+
+.table .id {
+	width: 100px;
+}
+
+.table .name {
+	width: 80px;
+}
+
+.table .absent,
+.table .late,
+.table .early,
+.table .leave {
+	width: 50px;
+	text-align: center;
+}
+
+.table .total {
+	width: 80px;
+}

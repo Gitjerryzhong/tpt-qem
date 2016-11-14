@@ -1,0 +1,43 @@
+label {
+    font-weight: bold;
+}
+
+.btn-toolbar {
+    text-align: right;
+}
+
+td .btn-group {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+td.detail {
+    padding-left:0px;
+    padding-right:0px;    
+}
+
+tr.ui-state-hover {
+    background-color: #eee;
+    cursor: pointer;
+}
+
+tr.selected {
+    background-color: #0081C2;
+}
+
+tr.selected td {
+    color: #fff;
+}
+
+#reason {
+    word-wrap:break-word;
+}
+
+/* Responsive
+-------------------------------------------------- */
+@media ( max-width : 767px) {
+    label {
+        text-align: left;
+    }
+}

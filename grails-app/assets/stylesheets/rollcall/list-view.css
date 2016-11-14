@@ -1,0 +1,78 @@
+#list-view {
+    display: none;
+}
+
+#list-view .list-pane {
+	outline: none;
+	outline-style:none;
+	box-shadow:none;
+	border-color:transparent;
+}
+
+#list-view .list-pane ul {
+	cursor: default;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	list-style: none;
+	padding:0px;
+	margin:0px;
+	border:solid 1px grey;
+	font-size: 60px;
+	height: 400px;
+	position:relative;
+}
+
+#list-view .list-pane li {
+	background-color: #fff;
+	margin: 0px;
+	zoom: 1;
+	width: 100%;
+	line-height:80px;
+	overflow: hidden;
+}
+
+#list-view .list-pane li span.name {
+	padding-left: 10px;
+	padding-right: 10px;
+	color: #666666;
+	text-decoration: none;
+	zoom: 1;
+	vertical-align:top;
+}
+
+#list-view .list-pane li span.statis {
+	position: absolute;
+	right: 0px;
+	line-height: 22px;
+	padding-right: 10px;
+	margin: 10px;
+	font-size:20px;
+	color: #666666;
+	text-decoration: none;
+	zoom: 1;
+	vertical-align:top;
+	height:60px;
+}
+
+#list-view .list-pane li label {
+	line-height: 22px;
+	font-size: 20px;
+	font-weight: normal;
+	margin-top:10px;
+}
+	
+#list-view .list-pane li.active {
+	background-color: rgb(0,129,194);
+}
+
+#list-view .list-pane li.wait .statis {
+	background: url(../../images/loading.gif) 100% 100% no-repeat;
+}
+
+#list-view .list-pane li.active .name {
+	color: white;
+}
+
+#list-view .list-pane li.active .statis {
+	color: white;
+}

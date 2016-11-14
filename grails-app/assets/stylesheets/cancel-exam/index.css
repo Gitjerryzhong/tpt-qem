@@ -1,0 +1,62 @@
+label {
+    font-weight: bold;
+}
+
+.btn-toolbar {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+td .btn-group {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+td.detail {
+    padding-left:0px;
+    padding-right:0px;    
+}
+
+.table .detail ul {
+	list-style: none;
+	margin:0px;
+}
+
+.table .detail li span {
+	margin-left: 5px;
+}
+
+.table .detail .label-absent {
+  background-color: #b94a48;
+}
+
+.table .detail .label-late {
+  background-color: #f89406;
+}
+
+.table .detail .label-early {
+  background-color: #BB1684;
+}
+
+tr.ui-state-hover {
+    background-color: #eee;
+    cursor: pointer;
+}
+
+tr.selected {
+    background-color: #0081C2;
+}
+
+tr.selected td {
+    color: #fff;
+}
+
+/* Responsive
+-------------------------------------------------- */
+@media ( max-width : 767px) {
+    label {
+        text-align: left;
+    }
+}

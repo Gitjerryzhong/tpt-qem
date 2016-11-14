@@ -1,0 +1,23 @@
+label {
+    font-weight: bold;
+    text-align: right;
+}
+
+.btn-toolbar {
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+/* Responsive
+-------------------------------------------------- */
+@media ( max-width : 767px) {
+    label {
+        text-align: left;
+        color: #888;
+    }
+    
+    .value {
+        padding-left: 25px;
+    }
+    
+}

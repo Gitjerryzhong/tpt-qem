@@ -1,0 +1,55 @@
+<html >
+<head>
+<meta name="layout" content="main" />
+<title>教学质量工程系统</title>
+
+<asset:javascript src="grails-angularjs.js"/>
+<asset:javascript src="angularjs/angular-ui-router.js"/>
+<%--<asset:javascript src="bootstrap/bootstrap.min.js"/>--%>
+<%--文件上传--%>
+<asset:javascript src="qem/angular-file-upload.min.js"/>
+<asset:javascript src="angularjs/ui-bootstrap-tpls-0.11.0.js"/>
+<asset:javascript src="angularjs/angular-locale_zh-cn.js"/>
+<asset:stylesheet src="qem/taskMenagement.css"/>
+<asset:javascript src="qem/taskMenagement.js"/>
+
+</head>
+<body >
+	<div  ng-app="taskApp" id="qem" class="container" ng-controller="defaultCtrl" ng-init="showTask(${id })">
+		<div class="btn-group pull-right">	
+				<button class="btn btn-default" ng-click="save()" ng-disabled="task.status>0" ng-show="editAble">保存</button>
+				<button class="btn btn-default" ng-click="apply()" ng-disabled="task.status>0">提交</button>			
+				<button class="btn btn-default" ng-click="cancel()" ng-disabled="task.status!=1">撤销</button>				
+				<button class="btn btn-default" ng-click="edit()" ng-disabled="task.status>0">编辑</button>
+		</div>	
+	<div ui-view=""> </div>
+
+	<script type="text/ng-template" id="qem-default.html">
+	<div  >
+		<div id="default" >	
+			<div class="modal-header">
+				<h3 class="title Emphasis"></h3>
+        	</div>		
+        	<div class="modal-body well">
+				<div class="form-horizontal" >				
+            		<g:render template="task/details"></g:render>
+        		</div>
+        	</div>	
+		</div>
+	</div>
+	</script>
+     <script type="text/ng-template" id="qem-editTask.html">    
+        <div class="modal-header">
+			<h3 class="title Emphasis"></h3>
+        </div>		
+        <div class="modal-body">
+			<div class="form-horizontal" >				
+            	<g:render template="task/form"></g:render>
+<%--				<g:render template="task/formUpload"></g:render>--%>
+        	</div>
+        </div>		
+	</div>       
+        </script>   
+	</div>
+</body>
+</html>

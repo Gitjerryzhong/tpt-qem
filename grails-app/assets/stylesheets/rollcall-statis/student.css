@@ -1,0 +1,11 @@
+#rollcallStatis li {
+	margin-bottom: 2px;
+}
+
+#rollcallStatis li span {
+	margin-left: 5px;
+}
+
+#rollcallStatis .label-early {
+  background-color: #BB1684;
+}

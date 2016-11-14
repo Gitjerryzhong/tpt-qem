@@ -1,0 +1,28 @@
+#lock-view {
+    display: none;
+}
+
+#lock-view table {
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+#lock-view th {
+	border-bottom: solid 1px #ccc;
+}
+
+#lock-view td, th {
+	padding: 2px 10px 0px 2px;
+}
+
+#lock-view td.no {
+	text-align: center;
+}
+
+#lock-view a {
+    outline: none;
+}
+
+#lock-view .label {
+	margin-bottom: 0px;
+}

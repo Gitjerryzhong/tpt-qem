@@ -1,0 +1,15 @@
+.groovy
+.settings
+.classpath
+.project
+/design
+/doc
+/lib
+/scripts
+/sql
+/target
+/target-eclipse
+/test
+*.txt
+/web-app/template
+/web-app/upload
