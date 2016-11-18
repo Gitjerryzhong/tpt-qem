@@ -2,3 +2,4 @@
 //= require task/app
 //= require task/default
 //= require task/baseInfo
+//= require task/update

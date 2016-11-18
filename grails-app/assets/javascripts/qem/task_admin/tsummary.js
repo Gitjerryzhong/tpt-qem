@@ -15,7 +15,7 @@
              {headerName: "编号", field: "sn", width: 80, pinned: true,filter:'text'},
             {headerName: "类别", field: "type", width: 150, pinned: true,filter:TypeFilter},
             {headerName: "姓名", field: "userName",width: 80, pinned: true},
-            {headerName: "学院", field: "departmentName",width: 80,filter:TypeFilter, pinned: true},
+            {headerName: "学院", field: "shortName",width: 80,filter:TypeFilter, pinned: true},
             {headerName: "建设情况", field: "status", filter:TypeFilter,
             	cellRenderer: statusCellRenderer, width: 80},
             {headerName: "立项", field: "beginYear",width: 60, filter:TypeFilter},

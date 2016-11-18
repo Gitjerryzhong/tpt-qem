@@ -41,4 +41,31 @@ where nt.workType='CHE' order by id desc
 ''',[max:1]
 		return results[0]
 	}
+	def taskList(){
+		def results = QemTask.executeQuery '''
+select new map(
+	qp.id as id,
+    t.name	as userName,
+	qp.projectName as projectName,
+	qp.projectLevel as projectLevel,
+	m.shortName	as departmentName,
+	qt.name as type,
+	qp.sn	as sn,
+	SUBSTRING(qp.beginYear,1,7)	as beginYear,
+	qp.expectedMid	as expectedMid,
+	qp.expectedEnd	as expectedEnd,
+	qp.projectContent	as projectContent,
+	qp.members		as memberstr,
+	qp.status		as status,
+	qp.endDate		as endDate,
+	qp.runStatus		as runStatus,
+	qp.hasMid		as hasMid,
+	''				as memo,
+	qp.expectedGain	as expectedGain	
+)
+from QemTask qp join qp.teacher t join qp.qemType qt join qp.department m
+where  t.id=:userid 
+''',[userid:securityService.userId]			
+				return results
+	}
 }

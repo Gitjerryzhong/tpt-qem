@@ -191,3 +191,9 @@ word-wrap: break-word;
 .btn-toolbar h3{
 	margin-top:5px;
 }
+#updateInfo td{
+    vertical-align: middle;
+}
+.oldInfo{
+	background-color:#f9f9f9;
+}

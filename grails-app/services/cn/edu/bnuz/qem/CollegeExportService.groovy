@@ -117,7 +117,7 @@ class CollegeExportService {
 		def style =createStyle(workbook)
 		def entries 
 		if(!type)entries=report.groupBy{it.departmentName}.entrySet().sort{it.key}
-		else entries=report.groupBy{it.type}.entrySet().sort{it.key}
+		else entries=report.groupBy{it.parentType}.entrySet().sort{it.key}
 		def sheet0
 		// 设置第1页的名称
 		sheet0 = workbook.getSheetAt(0)
@@ -142,6 +142,7 @@ class CollegeExportService {
 				index + 1,
 				item.departmentName,
 				item.sn,
+				item.parentType,
 				item.type,
 				item.projectName,
 				item.userName,
@@ -177,6 +178,7 @@ class CollegeExportService {
 						index + 1,
 						item.departmentName,
 						item.sn,
+						item.parentType,
 						item.type,
 						item.projectName,
 						item.userName,

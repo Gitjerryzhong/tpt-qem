@@ -255,46 +255,49 @@ class QemCollegeCheckController {
 	def auditTaskSave(){
 		def audit=new AuditForm(request.JSON)
 		def qemTask=QemTask.get(audit.form_id)
-//		println audit.currentStage
-		def stage 
-		def currentStage=getCurrentStage(qemTask)
-		qemTask.stage.each {item->
-			if(item?.currentStage==currentStage)
-			  stage=item
-		}
-		qemTask.setCollegeAudit(audit.content)
-		int check= Integer.parseInt(audit.check)
-		switch(check){
-		case 20: qemTask.setRunStatus(qemTask.passAction())
-				 stage.setStatus(QemStage.S_C_PASS)
-				 break;
-		case 21: qemTask.setRunStatus(qemTask.ngAction())
-				stage.setStatus(QemStage.S_C_NG)
-				 break;
-		case 26: qemTask.setRunStatus(qemTask.bkAction())
-				 stage.setStatus(QemStage.S_NEW)
-				 break;
-		}
-		
-		QemTaskAudit qemAudit=new QemTaskAudit([
-			userId:securityService.userId,
-			userName:securityService.userName,
-			action:audit.check,
-			content:audit.content,
-			date:new Date(),
-			objectId:qemTask.id,
-			src:qemTask.class.name])
-		qemAudit.save(flush:true)
-		
-		if(audit.nextId!=null && !audit.nextId.equals("null")){
-			taskDetail(Long.parseLong(audit.nextId))
-		}else if(audit.prevId!=null && !audit.prevId.equals("null")){
-			taskDetail(Long.parseLong(audit.prevId))
-		}else{
-			def taskList=collegeService.taskList()
-			def taskCounts=collegeService.taskCounts()
-			render([none:true,taskList:taskList,taskCounts:taskCounts] as JSON)
-		}
+		if(qemTask.runStatus==QemTask.S_ANNUAL_SUBMIT || qemTask.runStatus==QemTask.S_MID_SUBMIT || qemTask.runStatus==QemTask.S_END_SUBMIT ){
+			def stage 
+			def currentStage=getCurrentStage(qemTask)
+			qemTask.stage.each {item->
+				if(item?.currentStage==currentStage)
+				  stage=item
+			}
+			qemTask.setCollegeAudit(audit.content)
+			int check= Integer.parseInt(audit.check)
+			switch(check){
+			case 20: qemTask.setRunStatus(qemTask.passAction())
+					 stage.setStatus(QemStage.S_C_PASS)
+					 break;
+			case 21: qemTask.setRunStatus(qemTask.ngAction())
+					stage.setStatus(QemStage.S_C_NG)
+					 break;
+			case 26: qemTask.setRunStatus(qemTask.bkAction())
+					 stage.setStatus(QemStage.S_NEW)
+					 break;
+			}
+			
+			QemTaskAudit qemAudit=new QemTaskAudit([
+				userId:securityService.userId,
+				userName:securityService.userName,
+				action:audit.check,
+				content:audit.content,
+				date:new Date(),
+				objectId:qemTask.id,
+				src:qemTask.class.name])
+			qemAudit.save(flush:true)
+			
+			if(audit.nextId!=null && !audit.nextId.equals("null")){
+				taskDetail(Long.parseLong(audit.nextId))
+			}else if(audit.prevId!=null && !audit.prevId.equals("null")){
+				taskDetail(Long.parseLong(audit.prevId))
+			}else{
+				def taskList=collegeService.taskList()
+				def taskCounts=collegeService.taskCounts()
+				render([none:true,taskList:taskList,taskCounts:taskCounts] as JSON)
+			}
+		}else render status: HttpStatus.BAD_REQUEST
+	
+	
 
 	}
 	/**

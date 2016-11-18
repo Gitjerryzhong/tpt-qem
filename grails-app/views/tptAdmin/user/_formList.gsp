@@ -11,7 +11,7 @@
 		      <select class="form-control input-sm" ng-model="trial.projectName"  ng-options="y for y in marjorStudent |uniKey:'projectName'"  ng-change="projectChange()"  ><option value="">查询项目</option></select>
 		    </div>
 		    <div class="col-sm-2">		     
-		      <input type="text" ng-pattern="/\d{10}/" class="form-control input-sm" id="studentId" placeholder="查询学号" ng-model="trial.studentId" ng-change="stdChange()" >
+		      <input type="text" ng-pattern="/^\d{10}$/" class="form-control input-sm" id="studentId" placeholder="查询学号" ng-model="trial.studentId" ng-change="stdChange()" >
 		    </div>
 		    </div>
 <%--		  </form> --%>

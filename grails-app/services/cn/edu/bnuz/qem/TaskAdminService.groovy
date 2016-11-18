@@ -17,13 +17,15 @@ class TaskAdminService {
 select new map(
 	qp.id as id,
     t.name	as userName,
-	m.shortName	as departmentName,
+	m.shortName	as shortName,
+	m.name	as departmentName,
 	qp.projectName as projectName,
 	qp.projectLevel as projectLevel,
 	qp.currentTitle as currentTitle,
 	qp.currentDegree as currentDegree,
 	qp.position as position,
 	qt.name as type,
+	pt.parentTypeName as parentType,
 	qp.sn	as sn,
 	qp.fundingProvince+qp.fundingUniversity+qp.fundingCollege as budget,
 	qp.fundingProvince as fundingProvince,
@@ -41,7 +43,7 @@ select new map(
 	qp.hasMid		as hasMid,
 	qp.expectedGain	as expectedGain	
 )
-from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt
+from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt join qt.parentType pt
 '''			
 				return results
 	}

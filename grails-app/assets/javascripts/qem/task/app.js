@@ -28,6 +28,14 @@ taskApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function(
     .state('details', {
         url: '/details',
         templateUrl: 'qem-stageDetail.html'
+    })
+    .state('update', {
+        url: '/update',
+        templateUrl: 'qem-updateForm.html'
+    })
+    .state('updateView', {
+        url: '/updateView',
+        templateUrl: 'qem-updateView.html'
     });
 }]);
 

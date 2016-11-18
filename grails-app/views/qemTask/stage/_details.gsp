@@ -14,19 +14,19 @@
 </div>
 <div class="form-group">
     <label for="projectContent" class="col-sm-2 control-label">{{isEnd()?"主要内容和特色":"进展正文"}}</label>
-    <div class="col-sm-10" ng-if="stage.progressText">
+    <div class="col-sm-10 form-control-static" ng-if="stage.progressText">
     	<p>{{stage.progressText}}</p>
     </div>
 </div>
 <div class="form-group">
     <label for="unfinishedReson" class="col-sm-2 control-label">{{isEnd()?"主要成果":"未完成原因"}}</label>
-    <div class="col-sm-10" ng-if="stage.unfinishedReson">
+    <div class="col-sm-10 form-control-static" ng-if="stage.unfinishedReson">
     	<p>{{stage.unfinishedReson}}</p>
     </div>
 </div>
-<div class="form-group">
+<div class="form-group" style="border-bottom:0px;">
     <label for="memo" class="col-sm-2 control-label">{{isEnd()?"成果应用情况":"其他说明"}}</label>
-    <div class="col-sm-10" ng-if="stage.memo">
+    <div class="col-sm-10 form-control-static" ng-if="stage.memo">
     	<p>{{stage.memo}}</p>
     </div>
 </div>

@@ -1,7 +1,10 @@
-taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','$filter','config',function($scope,$http,FileUploader,$location,$filter,config){ //项目信息	
+taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','$filter','config','$state','aboutLeaders',function($scope,$http,FileUploader,$location,$filter,config,$state,aboutLeaders){ //项目信息	
 	$scope.task=config.task
 	var uploadStage =0;
 	$scope.member={};
+	$scope.newData ={};
+	$scope.updateQueue=[];//变更申请的附件
+	$scope.updateTypes=aboutLeaders.updateTypes;
 	$scope.members=[];
 	$scope.uploadQueue=[];
 	$scope.clicked=false;
@@ -36,6 +39,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
  			 $scope.fileList = data.fileList;
  			 $scope.task = data.task;
  			groupFiles();
+ 			members2List();
  	     	$location.url('/default');
  			});
 	}
@@ -68,15 +72,19 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
         return type
     }
 //	初始化，将memberstr转换为数组，将文件名列表分类
-	if($scope.task.memberstr!=null){
-		 var items=$scope.task.memberstr.split(";");				 
-		 angular.forEach(items,function(item){
-			 if(item!=null && item!="") {
-				 var member ={'name':item};
-				 $scope.members.push(member);
-			 }
-		 });		 
-	 }
+	members2List = function(){
+		$scope.members=[];
+		if($scope.task.memberstr!=null){
+			 var items=$scope.task.memberstr.split(";");				 
+			 angular.forEach(items,function(item){
+				 if(item!=null && item!="") {
+					 var member ={'name':item};
+					 $scope.members.push(member);
+				 }
+			 });		 
+		 }
+	}
+	members2List();
 	$location.url('/default');
 	groupFiles();
 	$scope.changeBegin=function(){
@@ -138,17 +146,27 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
     		 fileItem.upload();
     	 }
      };
-     $scope.save=function(){
-//    	 console.info("task",$scope.task)
-    	 $scope.task.memberstr="";
+     $scope.washMembers = function(){
     	 var options=[];
     	 angular.forEach($scope.members,function(item){
     		 if(item.name && item.name!='')	 {
-    			 $scope.task.memberstr+=item.name+";";
     			 options.push(item);
     		 }
 			  });
     	 $scope.members=options;
+     }
+     //申请单中上传的附件在浏览视图中显示
+     $scope.getUpdateQueue = function(queue){
+    	 $scope.updateQueue=queue;
+     }
+     $scope.save=function(){
+    	 $scope.washMembers();
+    	 $scope.task.memberstr="";
+    	 angular.forEach($scope.members,function(item){
+    		 if(item.name && item.name!='')	 {
+    			 $scope.task.memberstr+=item.name+";";
+    		 }
+			  });
     	 $http({
 				method:'POST',
 				url:"/tms/qemTask/saveTask",
@@ -475,5 +493,9 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
     	 		return new Date(jsondate);
     	 	else return null;
 	    }
+     $scope.goUpdate = function(){
+    	 $scope.menuSelected=4;
+    	 $state.go('update');
+     }
      
 }]);

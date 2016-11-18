@@ -66,7 +66,7 @@
 	    </div>
 	    <label for="projectContent" class="col-sm-2 control-label">评审状态</label>
 	    <div class="col-sm-2  form-control-static">
-	    	<span>{{item.status | stageStatus}}</span>
+	    	<span>{{task.runStatus | stageStatus}}</span>
 	    </div>
     </div>
 <%--    <div class="form-group">	    --%>

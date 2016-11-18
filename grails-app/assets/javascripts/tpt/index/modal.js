@@ -57,17 +57,21 @@ adminApp.controller('modal',['$rootScope','$scope','$http','$modal','$log','$fil
 		 $scope.trial.adminClassName =null;
 		 $scope.trial.projectName=null;
 		 $scope.trial.studentId = null;
-		 $scope.studentList=$filter('filter2_0')($scope.userList,'majorName',$scope.trial.majorName);
+		 if($scope.trial.majorName)
+			 $scope.studentList=$filter('filter2_0')($scope.userList,'majorName',$scope.trial.majorName);
 		 $scope.marjorStudent=$scope.studentList;
 	 }
 	 $scope.classChange = function(){
-		 $scope.studentList=$filter('filter2_0')($scope.marjorStudent,'adminClassName',$scope.trial.adminClassName);
+		 if($scope.trial.adminClassName)
+			 $scope.studentList=$filter('filter2_0')($scope.marjorStudent,'adminClassName',$scope.trial.adminClassName);
 	 }
 	 $scope.projectChange = function(){
-		 $scope.studentList=$filter('filter2_0')($scope.marjorStudent,'projectName',$scope.trial.projectName); 
+		 if($scope.trial.projectName && $scope.trial.projectName!='null')
+			 $scope.studentList=$filter('filter2_0')($scope.marjorStudent,'projectName',$scope.trial.projectName); 
 	 }
 	 $scope.stdChange = function(){
-		 $scope.studentList=$filter('filter2_0')($scope.marjorStudent,'id',$scope.trial.studentId);
+		 if($scope.trial.studentId)
+			 $scope.studentList=$filter('filter2_0')($scope.userList,'id',$scope.trial.studentId);
 	 }
 	 $scope.list();
 }]) ;

@@ -50,7 +50,9 @@ cCheckApp.filter('stageStatus',function(){
     			"1": "已提交",
     			"2": "已确认",
     			"30": "评审中",
-    			"31": "评审结束"
+    			"31": "评审结束",
+    			"41": "学院审核通过",
+    			"42": "学院审核不通过"
     		};
     	return TITLE[value];
 	}

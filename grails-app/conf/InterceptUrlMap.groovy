@@ -8,6 +8,9 @@ class InterceptUrlMap {
 	 '/qemTask/**': [
 		  TEACHER
 	  ],
+	  '/qemTaskUpdate/**': [
+		   TEACHER
+	   ],
 	 '/qemadmin/**': [
 		  QEM_ADMIN
 	  ],

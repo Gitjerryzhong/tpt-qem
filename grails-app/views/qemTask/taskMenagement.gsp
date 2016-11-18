@@ -29,6 +29,7 @@
 				<a class="list-group-item statis"  ng-class="{'active':menuSelected==1}" href="#" ng-click="goStage(1)" ng-if="havingStage(1) || beforeMid()")><span class="badge agree" ng-show="beforeMid()">★</span>年度</a>
 				<a class="list-group-item statis"  ng-class="{'active':menuSelected==2}" href="#" ng-click="goStage(2)" ng-if="havingStage(2) || isMid()"><span class="badge agree" ng-show="isMid()">★</span>中检</a>
 				<a class="list-group-item statis"  ng-class="{'active':menuSelected==3}" href="#" ng-click="goStage(3)" ng-if="havingStage(3) || isEnd()"><span class="badge agree" ng-show="isEnd()">★</span>结题</a>
+				<a class="list-group-item statis"  ng-class="{'active':menuSelected==4}" href="#" ng-click="goUpdate()" ng-if="task.status!=0 && task.status!=20 && task.status!=32">项目变更</a>
 			
 			</div>			
 		</div>
@@ -132,6 +133,23 @@
         	</div>
 	      
         </script>   
+        <script type="text/ng-template" id="qem-updateForm.html">
+		<div  ng-controller="updateCtrl" >
+		<form name="myForm" role="form" novalidate>
+			<div class="form-horizontal" >				
+            	<g:render template="update/updateForm"></g:render>
+        	</div>
+ 			<button class="btn btn-primary pull-right" ng-click="commit(myForm.$valid)" > 提交</button>
+		</form>
+		</div>
+        </script>
+        <script type="text/ng-template" id="qem-updateView.html">
+		<form name="myForm" role="form">
+			<div class="form-horizontal" >				
+            	<g:render template="update/view"></g:render>
+        	</div>
+		</form>
+        </script>
 	</div>
 	  
 </body>
