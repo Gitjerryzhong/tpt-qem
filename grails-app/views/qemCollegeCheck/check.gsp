@@ -28,7 +28,7 @@ cCheckApp.value("config", {
 				<a class="list-group-item statis" href="#"  ng-click="goTrial(2)"><span class="badge">{{pager.total.t2}}</span>退回</a>						
 				<a class="list-group-item statis" href="#"  ng-click="goTrial(6)"><span class="badge">{{pager.total.t3}}</span>已关闭</a>
 				<a class="list-group-item statis" href="#"  ng-click="contractList()">合同审核</a>
-				<a class="list-group-item statis" href="#"  ng-click="historyTaskList()">已立项项目汇总</a>
+<%--				<a class="list-group-item statis" href="#"  ng-click="historyTaskList()">已立项项目汇总</a>--%>
 			<a class="list-group-item statis active" href="#" data-status="0">学校审核结果</a>
 				<a class="list-group-item statis" href="#"  ng-click="goTrial(7)"><span class="badge">{{pager.total.t4}}</span>拟立项</a>
 				<a class="list-group-item statis" href="#"  ng-click="goTrial(8)"><span class="badge">{{pager.total.t5}}</span>不立项</a>

@@ -267,7 +267,7 @@ select new map(
 	qp.expectedGain	as expectedGain	
 )
 from QemTask qp join qp.teacher t join qp.qemType qt join qp.department m
-where  qp.department.id=:id 
+where  qp.status=10 and qp.department.id=:id 
 ''',[id:securityService.departmentId]			
 				return results
 	}
@@ -478,5 +478,49 @@ select new map(
 )
 from QemTask qp where qp.department.id=:id
 ''', [id: securityService.departmentId]
+	}
+	def updateList(){
+		def results = UpdateTask.executeQuery '''
+select new map(
+	ut.id as id,
+	ut.userId as userId,
+	ut.userName as userName,
+	qp.projectName as projectName,
+	qp.projectLevel as projectLevel,
+	qt.name as type,
+	qp.sn	as sn,
+	SUBSTRING(qp.beginYear,1,7)	as beginYear,
+	ut.updateTypes as updateTypes,
+	ut.commitDate as commitDate,
+	ut.flow as flow,
+	ut.auditStatus as auditStatus
+)
+from UpdateTask ut,QemTask qp join qp.qemType qt join qp.department d
+where  ut.updateTypes<>'1;' and ut.taskId=qp.id and d.id=:departmentId 
+''',[departmentId:securityService.departmentId]			
+						return results
+	}
+	def myUpdateList(){
+		def results = UpdateTask.executeQuery '''
+select new map(
+	ut.id as id,
+	ut.userId as userId,
+	ut.userName as userName,
+	qp.projectName as projectName,
+	qp.projectLevel as projectLevel,
+	qt.name as type,
+	qp.sn	as sn,
+	t.name  as teacherName,
+	SUBSTRING(qp.beginYear,1,7)	as beginYear,
+	qp.expectedEnd	as expectedEnd,
+	ut.updateTypes as updateTypes,
+	ut.commitDate as commitDate,
+	ut.flow as flow,
+	ut.auditStatus as auditStatus
+)
+from UpdateTask ut,QemTask qp join qp.qemType qt join qp.department d join qp.teacher t 
+where  ut.updateTypes='1;' and ut.taskId=qp.id and d.id=:departmentId 
+''',[departmentId:securityService.departmentId]			
+						return results
 	}
 }

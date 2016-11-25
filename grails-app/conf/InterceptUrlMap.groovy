@@ -20,6 +20,9 @@ class InterceptUrlMap {
 	  '/qemCollegeCheck/**': [
 		   QEM_CHECKER
 	   ],
+	   '/qemUpdateCollegeCheck/**': [
+			QEM_CHECKER
+		],
 	   '/qemProjectAdmin/**': [
 			QEM_ADMIN
 		],

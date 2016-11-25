@@ -37,7 +37,7 @@ angular.module('mine.filter', [])
 })
 .filter("sort", function () {                       
     return function (items, key, value) {
-    	console.log(items);
+//    	console.log(items);
     	if(value>0){
     		items.sort(function (a, b) {
     			if(typeof(a[key])=="number" || typeof(a[key])=="boolean") 
@@ -54,20 +54,33 @@ angular.module('mine.filter', [])
         }
     return items;
     }
+})
+.filter("groupForCollege", function () {                       
+    return function (items) {
+//    	console.log(items);
+    	var groups={"10":"未审","20":"未审","30":"未审","16":"未审","26":"未审","36":"未审",
+    				"1101":"已审","1102":"已审","2101":"已审","2102":"已审","3101":"已审","3102":"已审",
+    				"11":"已审","12":"已审","13":"已审","14":"已审","15":"已审",
+    				"21":"已审","22":"已审","23":"已审","24":"已审","25":"已审",
+    				"31":"已审","32":"已审","33":"已审","34":"已审","35":"已审"}
+    	angular.forEach(items, function (item) {
+    		if(groups[item.runStatus]==undefined)item.groups="未提交或其他";
+    		else item.groups=groups[item.runStatus];
+    	})
+    return items;    
+    }
+})
+.filter("groupForUniversity", function () {                       
+    return function (items) {
+//    	console.log(items);
+    	var groups={"1101":"未安排评审","1102":"未安排评审","2101":"未安排评审","2102":"未安排评审","3101":"未安排评审","3102":"未安排评审",
+    				"11":"需评审","12":"已安排评审","13":"已安排评审","14":"已审","15":"已审","16":"已审",
+    				"21":"需评审","22":"已安排评审","23":"已安排评审","24":"已审","25":"已审","26":"已审",
+    				"31":"需评审","32":"已安排评审","33":"已安排评审","34":"已审","35":"已审","36":"已审"}
+    	angular.forEach(items, function (item) {
+    		if(groups[item.runStatus]==undefined)item.groups="未提交或其他";
+    		else item.groups=groups[item.runStatus];
+    	})
+    return items;    
+    }
 });
-//.filter("sort", function () {                       
-//            return function (items, key, value) {
-//                angular.forEach(items,function(item){
-//                    
-//                })
-//                
-//                if(typeof(items[0][key])=="number")
-//                {return items;
-//                }
-//                else{
-//            items.sort(function (a, b) {
-//                return a[key].localeCompare(b[key]);
-//            });
-//            return items;}
-//            }
-//        });

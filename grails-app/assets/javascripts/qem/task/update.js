@@ -68,6 +68,7 @@ taskApp.controller('updateCtrl',['$scope','$http','$location','FileUploader',fun
 	    	 $scope.commitAction=true;
 	    	 if(isValid){
 	    		 $scope.newData.taskId=$scope.task.id;
+	    		 $scope.newData.sn=$scope.task.sn;
 	    		 $scope.newData.projectId=$scope.task.projectId;
 	    		 $scope.newData.updateTypes="";
 	    		 //处理变更内容选择项

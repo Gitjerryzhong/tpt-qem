@@ -123,7 +123,29 @@ class QemTaskController {
 					objectId:task.id,
 					src:task.class.name])
 				qemAudit.save(flush:true)
-				render status: HttpStatus.OK
+				render ([
+							task:[
+								id:task.id,
+								projectName:task.projectName,
+								sn:task.sn,
+								fundingProvince:task.fundingProvince,
+								fundingUniversity:task.fundingUniversity,
+								fundingCollege:task.fundingCollege,
+								userName:task.teacher.name,
+								departmentName:task.department.name,
+								qemTypeName:task.qemType.name,
+								projectLevel:task.projectLevel,
+								beginYear:task.beginYear,
+								expectedMid:task.expectedMid,
+								expectedEnd:task.expectedEnd,
+								projectContent:task.projectContent,
+								expectedGain:task.expectedGain,
+								memberstr:task.members,
+								status:task.status,
+								otherLinks:task.otherLinks,
+								runStatus:task.runStatus
+								],
+							fileList:getFileNames(task.id.toString())] as JSON)
 			}else{
 				render status: HttpStatus.BAD_REQUEST
 			}

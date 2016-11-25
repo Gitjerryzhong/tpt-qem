@@ -6,14 +6,14 @@ menus {
 		tptMentorCheck				"approval",		"/tptMentorCheck",			[TPT_MENTOR]
 		qemProjectAdmin				"qem",			"/qemProjectAdmin",			[QEM_ADMIN]
 		qemTaskAdmin				"qem",			"/qemTaskAdmin",			[QEM_ADMIN]
-		qemUpdateCheck				"qem",			"/qemUpdateAdmin",			[QEM_ADMIN]		
+		qemUpdateEndCheck			"qem",			"/qemUpdateAdmin",			[QEM_ADMIN]		
 		tptRequest					"affair",		"/tpt",						[TPT_STUDENT]
 		coPrjView					"affair",		"/tptCoPrjView",			[TPT_COPROJECTVIEW]
 		qemRequest					"qem",			"/qem",						[TEACHER]
+		qemUpdateCollegeCheck		"qem",			"/qemUpdateCollegeCheck",		[QEM_CHECKER]
 		qemCollegeCheck				"qem",			"/qemCollegeCheck",			[QEM_CHECKER]
 		qemCollegeMidCheck			"qem",			"/qemCollegeCheck/mid",		[QEM_CHECKER]
-		qemCollegeEndCheck			"qem",			"/qemCollegeCheck/end",		[QEM_CHECKER]
-		qemCollegeUpdate			"qem",			"/qemCollegeUpdate",		[QEM_CHECKER]
+		qemCollegeEndCheck			"qem",			"/qemCollegeCheck/end",		[QEM_CHECKER]		
 		qemExpertCheck				"qem",			"/qemExpertCheck",			[QEM_EXPERT]			
     }
     

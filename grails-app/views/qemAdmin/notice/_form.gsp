@@ -31,7 +31,7 @@
 <div class="form-group">
     <label for="start" class="col-sm-2 control-label">开始日期</label>
     <div class="col-sm-8 input-group">
-    	<input type="text" class="form-control" current-text="今天" clear-text="清除" close-text="关闭" datepicker-popup ng-model="notice.start" is-open="startid" datepicker-options="dateOptions" date-disabled = "disabled(date,mode)" ng-required="true" close-text="Close" ng-readonly="true">
+    	<input type="text" class="form-control" current-text="今天" clear-text="清除" close-text="关闭" datepicker-popup ng-model="notice.start" is-open="startid" datepicker-options="dateOptions"  ng-required="true" close-text="Close" ng-readonly="true">
         <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="open($event,0)">
                 <i class="glyphicon glyphicon-calendar"></i>
@@ -42,7 +42,7 @@
 <div class="form-group">
     <label for="end" class="col-sm-2 control-label">截至日期</label>
     <div class="input-group col-sm-8">
-    	<input type="text" class="form-control" current-text="今天" clear-text="清除" close-text="关闭" datepicker-popup ng-model="notice.end" is-open="endid" datepicker-options="dateOptions" date-disabled = "disabled(date,mode)" ng-required="true" close-text="Close" ng-readonly="true">
+    	<input type="text" class="form-control" current-text="今天" clear-text="清除" close-text="关闭" datepicker-popup ng-model="notice.end" is-open="endid" datepicker-options="dateOptions"  ng-required="true" close-text="Close" ng-readonly="true">
         <span class="input-group-btn">
             <button type="button" class="btn btn-default" ng-click="open($event,1)">
                 <i class="glyphicon glyphicon-calendar"></i>

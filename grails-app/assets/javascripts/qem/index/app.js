@@ -29,6 +29,14 @@ qemApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function($
         url: '/qemTask',
         templateUrl: 'qem-task.html'
     })
+    .state('qemUpdate', {
+        url: '/qemUpdate',
+        templateUrl: 'qem-updateList.html'
+    })
+    .state('updateView', {
+        url: '/updateView',
+        templateUrl: 'qem-updateView.html'
+    })
     .state('qemTemplates', {
         url: '/qemTemplates',
         templateUrl: 'qem-template.html'
@@ -127,6 +135,10 @@ qemApp.controller('defaultCtrl',['$rootScope','$scope','$http','$state','$filter
 }]);
 
 qemApp.controller('parentCtrl',['$rootScope','$scope','$http',function($rootScope,$scope,$http){
+	$scope.updateView={};
+	$scope.taskView={};
+	$scope.fileList ={};
+	$scope.declarations ={};
 	$scope.remind=function(){
 		$rootScope.isRemind=true;
 	}
@@ -137,5 +149,13 @@ qemApp.controller('parentCtrl',['$rootScope','$scope','$http',function($rootScop
 	$scope.taskRemind=function(type){
 		$rootScope.isTaskRemind=type;
 	}
+	$scope.getUpdateView=function(data){
+		$scope.taskView=data.task;
+		$scope.updateView=data.updateView;
+		$scope.fileList =data.fileList;
+		$scope.declarations = data.declarations;
+		
+	}
+	
 	
 }]);

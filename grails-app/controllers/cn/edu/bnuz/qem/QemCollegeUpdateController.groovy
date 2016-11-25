@@ -25,6 +25,9 @@ class QemCollegeUpdateController {
 		def taskCounts=collegeService.taskUpdateCounts()
 		render ([taskList:taskList,taskCounts:taskCounts] as JSON)
 	}
+	def requestList(){
+		render([updateList:collegeService.myUpdateList()] as JSON)
+	}
 	/**
 	 * 准备变更表单
 	 * @return
@@ -116,23 +119,20 @@ class QemCollegeUpdateController {
 	def updateCommit(){
 		def updation= new UpdateTask(request.JSON)
 		if(updation){
-			def teacher = Teacher.get(updation.teacherId)
-			if(teacher?.department?.id==securityService.departmentId){
-				updation.setDepartmentId(securityService.departmentId)
 				updation.setCommitDate(new Date())
 				updation.setUserId(securityService.userId)
 				updation.setUserName(securityService.userName)
+				updation.setFlow(2)
+				updation.setAuditStatus(0)
 				if(!updation?.save(flush:true)){
 					updation.errors.each {
 						println it
 					}
 					render status: HttpStatus.BAD_REQUEST
 				}else{
-					def taskCounts=collegeService.taskUpdateCounts()
-					render ([taskCounts:taskCounts] as JSON)
+					render status: HttpStatus.OK
 				}
-			}else 	render (status: HttpStatus.BAD_REQUEST ,text:[userName: "no this Teacher"] as JSON)	
-		}
+			}else 	render status: HttpStatus.BAD_REQUEST
 	}
 	def updateDetail(){
 		def form_id=params.int('id')?:0
@@ -161,7 +161,7 @@ class QemCollegeUpdateController {
 		if(!fileList) fileList=new java.util.ArrayList<String>()
 		def f = request.getFile('file')
 		if(!f.empty) {
-			def filePath= grailsApplication.config.tms.qem.uploadPath+"/update/"+taskId+"/"+dateStr
+			def filePath= grailsApplication.config.tms.qem.uploadPath+"/update/${securityService.departmentId}/${taskId}/${dateStr}"
 			if(isDeclaration) filePath+="/"+isDeclaration
 			File dir = new File(filePath)
 			if(!dir.isDirectory()){
@@ -190,6 +190,23 @@ class QemCollegeUpdateController {
 
 		}
 	}
+	/***
+	 * 删除附件
+	 */
+	def delAttach(){
+		def filename = params.filename
+		def taskId=params.taskId
+		def isDeclaration =params.isDeclaration
+		if(filename){
+			def dateStr=new Date().format("yyyyMMdd")
+			def filePath= grailsApplication.config.tms.qem.uploadPath+"/update/${securityService.departmentId}/${taskId}/${dateStr}/${isDeclaration}"
+//			println filePath+"/"+filename
+			File file = new File(filePath+"/"+filename)
+			def date = new Date()
+			file?.renameTo(filePath+"/del_"+filename+".${date.time}")
+			render status:HttpStatus.OK
+		}else render status:HttpStatus.BAD_REQUEST
+	}
 	
 	/***
 	 * 用于获取指定项目变更单和指定日期的所有附件
@@ -213,5 +230,13 @@ class QemCollegeUpdateController {
 			}
 		}
 		return fileNames
+	}
+	def getLeaderName(){
+		def leaderId=params.id
+		if(leaderId) {
+			def teacher =Teacher.get(leaderId)
+			if(teacher.department.id == securityService.departmentId) 
+				render ([name:teacher.name] as JSON)
+		}else render ([name:null] as JSON)
 	}
 }

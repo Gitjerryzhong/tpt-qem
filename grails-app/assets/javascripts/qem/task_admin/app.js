@@ -1,4 +1,4 @@
-var tAdminApp = angular.module('tAdminApp', ['ui.router','ui.bootstrap','ngAnimate','mine.filter','agGrid']);
+var tAdminApp = angular.module('tAdminApp', ['ui.router','ui.bootstrap','ngAnimate','mine.filter','mine.constant','agGrid']);
 tAdminApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function($stateProvider, $urlRouterProvider,$httpProvider) {
 //	禁止IE11缓存数据
 	if (!$httpProvider.defaults.headers.get) {
@@ -7,7 +7,7 @@ tAdminApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', functio
     $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
     $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
     
-    $urlRouterProvider.otherwise('/taskList');
+//    $urlRouterProvider.otherwise('/taskSummary');
     $stateProvider    
     .state('taskSummary', {
         url: '/taskSummary',

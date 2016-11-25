@@ -86,21 +86,21 @@
 	</li>
 </ul>
 </div>
-<label for="doc" class="col-md-2 control-label" ng-if="contracts">原合同</label>
-<div class="col-md-10 ">
-<ul class="form-control-static">
-	<li ng-repeat="filename in contracts" >
-			<span>{{filename}}</span>
-	</li>
-</ul>
-</div>
+<%--<label for="doc" class="col-md-2 control-label" ng-if="contracts">原合同</label>--%>
+<%--<div class="col-md-10 ">--%>
+<%--<ul class="form-control-static">--%>
+<%--	<li ng-repeat="filename in contracts" >--%>
+<%--			<span>{{filename}}</span>--%>
+<%--	</li>--%>
+<%--</ul>--%>
+<%--</div>--%>
 </div>
 <div class="form-group" style="border-bottom:0px;" ng-if="updateQueue">
 	<label class="col-sm-2 control-label">申报书</label>
 	<div class="col-sm-10">
-		<ur>
+		<ul>
 			<li ng-repeat="item in updateQueue">{{item.file.name}}</li>
-		</ur>	
+		</ul>	
 	</div>			 
 </div>
 </div>

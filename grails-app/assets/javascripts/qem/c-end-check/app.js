@@ -1,4 +1,4 @@
-var cCheckApp = angular.module('cCheckApp', ['ui.router','ui.bootstrap','mine.filter']);
+var cCheckApp = angular.module('cCheckApp', ['ui.router','ui.bootstrap','mine.filter','mine.constant']);
 cCheckApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function($stateProvider, $urlRouterProvider,$httpProvider) {
 //	禁止IE11缓存数据
 	if (!$httpProvider.defaults.headers.get) {

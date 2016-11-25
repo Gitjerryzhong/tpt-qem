@@ -22,6 +22,7 @@
 				<a class="list-group-item statis" href="#" ui-sref="default"><span class="badge"></span>项目通知</a>			
 				<a class="list-group-item statis" href="#" ui-sref="qemSearch" ng-click="unRemind()"><span class="badge"></span>项目申报</a>
 				<a class="list-group-item statis" href="#" ui-sref="qemTask" ng-click="unRemind()"><span class="badge"></span>项目管理</a>
+				<a class="list-group-item statis" href="#" ui-sref="qemUpdate">变更查看</a>
 				<a class="list-group-item statis" href="#" ui-sref="qemTemplates"><span class="badge"></span>模版下载</a>
 				<a class="list-group-item statis" href="#" ui-sref="qemPublic"><span class="badge"></span>立项公示</a>
 			</div>		
@@ -149,6 +150,34 @@
         </div>		
 	</div>       
         </script> 
+        <script type="text/ng-template" id="qem-updateList.html">    
+			<div  ng-controller="myUpdateCtrl">	
+				<div class="btn-toolbar" role="toolbar">
+				<div class="btn-group" role="group" aria-label="title">
+					<h3>我的变更申请单</h3>
+					</div>
+        		</div>	
+			<hr>
+        		<div class="row">
+            			<g:render template="update/updateList"></g:render>
+        		</div>		
+			</div>       
+        </script>
+        <script type="text/ng-template" id="qem-updateView.html">  
+			<div  ng-controller="updateViewCtrl">	
+			<div class="btn-toolbar" role="toolbar">
+				<div class="btn-group" role="group" aria-label="title">
+					<h3>变更申请单详情</h3>
+					</div>
+        		</div>	  
+			<hr>
+		<form name="myForm" role="form">
+			<div class="form-horizontal" >				
+            	<g:render template="update/view"></g:render>
+        	</div>
+		</form>
+			</div>	
+        </script>
     <script type="text/ng-template" id="attachment.html">
         %{--//创建文件上传视图--}%
         <div class="modal-header">

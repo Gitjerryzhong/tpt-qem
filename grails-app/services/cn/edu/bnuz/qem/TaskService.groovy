@@ -4,25 +4,9 @@ import cn.edu.bnuz.qem.project.QemProject
 import cn.edu.bnuz.qem.project.QemTask
 import cn.edu.bnuz.qem.project.Notice
 import cn.edu.bnuz.tms.security.SecurityService;
+import cn.edu.bnuz.qem.update.*
 class TaskService {
 	SecurityService securityService
-//    def taskList(){
-//		def results=QemProject.executeQuery '''
-//select new map(
-//	qp.id 			as projectId,
-//	dp.name			as departmentName,
-//	qt.name			as qemTypeName,
-//	qp.projectName	as projectName,
-//	qp.projectLevel	as projectLevel,
-//	qp.commitDate	as commitDate,
-//	ts.id			as id,
-//	ts.status		as status
-//)
-//from QemProject qp join qp.qemType qt join qp.department dp join qp.qemTask ts
-//where qp.teacher.id=:userId 
-//''',[userId:securityService.userId]
-//			return results			
-//	}
 	def getStage(long taskId,Integer currentStage){
 		def results=QemTask.executeQuery '''
 select st
@@ -67,5 +51,24 @@ from QemTask qp join qp.teacher t join qp.qemType qt join qp.department m
 where  t.id=:userid 
 ''',[userid:securityService.userId]			
 				return results
+	}
+	def updateList(){
+		def results = UpdateTask.executeQuery '''
+select new map(
+	ut.id as id,
+	qp.projectName as projectName,
+	qp.projectLevel as projectLevel,
+	qt.name as type,
+	qp.sn	as sn,
+	SUBSTRING(qp.beginYear,1,7)	as beginYear,
+	ut.updateTypes as updateTypes,
+	ut.commitDate as commitDate,
+	ut.flow as flow,
+	ut.auditStatus as auditStatus
+)
+from UpdateTask ut,QemTask qp join qp.qemType qt
+where  ut.taskId=qp.id and ut.userId=:userid 
+''',[userid:securityService.userId]			
+						return results
 	}
 }

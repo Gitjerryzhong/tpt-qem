@@ -180,60 +180,69 @@ class QemProjectAdminController {
 			project?.review.setDetail(content)
 			project?.review.setStatus(Review.STATUS_PASS+Integer.parseInt(result))
 			project?.save(flush:true)
-			def today= new Date()
-			def task
-			task= QemTask.findByProjectId(id)
-			if (task){
-				task.setSn(sn)				
-				task.setFundingProvince(budget0?:0)
-				task.setFundingUniversity(budget1?:0)
-				task.setFundingCollege(budget2?:0)	
-				task.save(flush:true)			
-			}else{
-			task=new QemTask([
-				projectId:project?.id,
-				teacher:project?.teacher,
-				currentTitle:project?.currentTitle,
-				currentDegree:project?.currentDegree,
-				specailEmail:project?.specailEmail,
-				department:project?.department,
-				position:project?.position,
-				phoneNum:project?.phoneNum,
-				qemType:project?.qemType,
-				projectLevel:project?.projectLevel,
-				projectName:project?.projectName,
-				sn:sn.toString(),
-				otherLinks:project?.otherLinks,
-				beginYear:today.format("yyyy-MM-dd"),
-				expectedMid: today[YEAR]+Math.round(project?.qemType.cycle/2),
-				expectedEnd: today[YEAR]+project?.qemType.cycle,
-				fundingProvince:budget0?:0,
-				fundingUniversity:budget1?:0,
-				fundingCollege:budget2?:0,
-				status:QemTask.S_NEW,
-				runStatus:QemTask.S_NEW
-				
-				])
-				if(!task.save(flush:true)){
-					task.errors.each{
+			def audit = new QemAudit([
+				userId:securityService.userId,
+				userName:securityService.userName,
+				action:"3"+result,
+				content:content,
+				date: new Date(),
+				form:project])
+			audit.save(flush:true)
+			if(result!="1"){
+				def today= new Date()
+				def task
+				task= QemTask.findByProjectId(id)
+				if (task){
+					task.setSn(sn)				
+					task.setFundingProvince(budget0?:0)
+					task.setFundingUniversity(budget1?:0)
+					task.setFundingCollege(budget2?:0)	
+					task.save(flush:true)			
+				}else{
+				task=new QemTask([
+					projectId:project?.id,
+					teacher:project?.teacher,
+					currentTitle:project?.currentTitle,
+					currentDegree:project?.currentDegree,
+					specailEmail:project?.specailEmail,
+					department:project?.department,
+					position:project?.position,
+					phoneNum:project?.phoneNum,
+					qemType:project?.qemType,
+					projectLevel:project?.projectLevel,
+					projectName:project?.projectName,
+					sn:sn.toString(),
+					otherLinks:project?.otherLinks,
+					beginYear:today.format("yyyy-MM-dd"),
+					expectedMid: today[YEAR]+Math.round(project?.qemType.cycle/2),
+					expectedEnd: today[YEAR]+project?.qemType.cycle,
+					fundingProvince:budget0?:0,
+					fundingUniversity:budget1?:0,
+					fundingCollege:budget2?:0,
+					status:QemTask.S_NEW,
+					runStatus:QemTask.S_NEW
+					
+					])
+					if(!task.save(flush:true)){
+						task.errors.each{
+							println it
+						}
+					}
+				}
+				//创建日志
+				QemTaskAudit qemAudit=new QemTaskAudit([
+					userId:securityService.userId,
+					userName:securityService.userName,
+					action:QemTaskAudit.ACTION_NEW_TASK,
+					date:new Date(),
+					objectId:task?.id,
+					src:task?.class.name])
+				if(!qemAudit.save(flush:true)){
+					qemAudit.errors.each{
 						println it
 					}
 				}
 			}
-			//创建日志
-			QemTaskAudit qemAudit=new QemTaskAudit([
-				userId:securityService.userId,
-				userName:securityService.userName,
-				action:QemTaskAudit.ACTION_NEW_TASK,
-				date:new Date(),
-				objectId:task?.id,
-				src:task?.class.name])
-			if(!qemAudit.save(flush:true)){
-				qemAudit.errors.each{
-					println it
-				}
-			}
-			
 //			project?.qemTask.save(flush:true)			
 			project?.review.save(flush:true)
 			

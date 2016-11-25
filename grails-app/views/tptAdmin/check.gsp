@@ -14,7 +14,7 @@
 
 </head>
 <body >
-	<div  ng-app="checkApp"  class="container" ng-controller="TrialCtrl">
+	<div  ng-app="checkApp"  class="row" ng-controller="TrialCtrl">
 	<div class="col-sm-3 sidebar">
 			<div class="list-group">
 				<a class="list-group-item statis" ng-class="{'active':checkStatus<4}" href="#"  ng-click="goTrial(1)"><span class="badge">{{pager.total[1]}}</span>材料初审</a>

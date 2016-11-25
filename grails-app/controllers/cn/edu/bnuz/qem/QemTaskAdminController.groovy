@@ -26,15 +26,23 @@ class QemTaskAdminController {
 	ReportService reportService
 	CollegeExportService	collegeExportService
     def index() { 
-		def taskList=taskAdminService.taskList()
-		def taskCounts=taskAdminService.taskCounts()
-		render (view:"index",model:[taskList:taskList,taskCounts:taskCounts])
+//		def taskList=taskAdminService.taskList()
+//		def taskCounts=taskAdminService.taskCounts()
+//		render (view:"index",model:[taskList:taskList,taskCounts:taskCounts])
 	}
 	/**
 	 * 取任务列表
 	 */
 	def showTasks(){
 		def taskList=taskAdminService.taskList()
+//		def taskCounts=taskAdminService.taskCounts()
+		render ([taskList:taskList,taskCounts:null] as JSON)
+	}
+	/**
+	 * 取合同审核列表
+	 */
+	def showConstracts(){
+		def taskList=taskAdminService.contractList()
 //		def taskCounts=taskAdminService.taskCounts()
 		render ([taskList:taskList,taskCounts:null] as JSON)
 	}

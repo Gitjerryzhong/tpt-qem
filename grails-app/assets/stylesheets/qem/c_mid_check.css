@@ -91,3 +91,9 @@ pre {
 white-space: pre-wrap;
 word-wrap: break-word;
 }
+.btn-toolbar .pull-right{
+	margin-top:15px;
+}
+.panel .form-group{
+	margin-top:15px;	
+}

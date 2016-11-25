@@ -47,6 +47,41 @@ from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt join q
 '''			
 				return results
 	}
+	def contractList(){
+		def results = QemTask.executeQuery '''
+select new map(
+	qp.id as id,
+    t.name	as userName,
+	m.shortName	as shortName,
+	m.name	as departmentName,
+	qp.projectName as projectName,
+	qp.projectLevel as projectLevel,
+	qp.currentTitle as currentTitle,
+	qp.currentDegree as currentDegree,
+	qp.position as position,
+	qt.name as type,
+	pt.parentTypeName as parentType,
+	qp.sn	as sn,
+	qp.fundingProvince+qp.fundingUniversity+qp.fundingCollege as budget,
+	qp.fundingProvince as fundingProvince,
+	qp.fundingUniversity as fundingUniversity,
+	qp.fundingCollege as fundingCollege,
+	SUBSTRING(qp.beginYear,1,4)	as beginYear,
+	qp.expectedMid	as expectedMid,
+	qp.expectedEnd	as expectedEnd,
+	date_format(qp.endDate,'%Y-%m')		as endDate,
+	qp.projectContent	as projectContent,
+	qp.members		as memberstr,
+	qp.status		as status,
+	qp.runStatus		as runStatus,	
+	qp.memo			as memo,
+	qp.hasMid		as hasMid,
+	qp.expectedGain	as expectedGain	
+)
+from QemTask qp join qp.teacher t left join qp.department m left join qp.qemType qt left join qt.parentType pt
+'''			
+				return results
+	}
 	def taskCounts(){
 		def results = QemTask.executeQuery '''
 select new map(
@@ -55,7 +90,7 @@ select new map(
 		SUM(CASE WHEN qp.runStatus=201 THEN 1 ELSE 0 END) as t2,
 		SUM(CASE WHEN qp.runStatus=202 THEN 1 ELSE 0 END) as t3,
 		SUM(CASE WHEN qp.runStatus=203 THEN 1 ELSE 0 END) as t4,
-		SUM(CASE WHEN qp.status >0 THEN 1 ELSE 0 END) as t5,
+		SUM(CASE WHEN qp.runStatus=2 THEN 1 ELSE 0 END) as t5,
 		SUM(CASE WHEN qp.runStatus=3 THEN 1 ELSE 0 END) as t6,
 		SUM(CASE WHEN qp.runStatus=4 THEN 1 ELSE 0 END) as t7
 )

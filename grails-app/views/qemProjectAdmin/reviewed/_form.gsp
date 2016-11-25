@@ -7,7 +7,7 @@
 			<tbody id="listBody">
 				<tr>
 					<td><strong>项目编号</strong></td>
-					<td><input type="text" ng-model="item.sn" size="10" ng-maxlength="10" required></td>
+					<td><input type="text" ng-model="item.sn" size="10" ng-maxlength="10"></td>
 					<td><strong>批准金额（万元）</strong></td>
 					<td><span>省级经费<input type="number" ng-model="item.budget0" size="3" max="999" min="0"></span>
 					<span>校级经费<input type="number" ng-model="item.budget1" size="3" max="999" min="0"></span>

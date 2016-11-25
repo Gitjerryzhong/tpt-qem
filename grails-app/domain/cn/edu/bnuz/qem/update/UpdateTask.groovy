@@ -8,6 +8,13 @@ import cn.edu.bnuz.tms.organization.Department;
 import cn.edu.bnuz.tms.organization.Teacher;
 
 class UpdateTask {
+	public static final int	F_PERSON=0									//负责人
+	public static final int	F_COLLEGE=1									//学院
+	public static final int	F_UNIVERSITY=2								//学校
+	public static final int	AU_NONE=0									//未审
+	public static final int	AU_PASS=1									//通过
+	public static final int	AU_NG=2										//不通过
+	public static final int	AU_BG=3										//退回
 
     /**
 	 * 负责人信息
@@ -52,6 +59,7 @@ class UpdateTask {
 	 */
 	String	updateTypes		//已变更内容id记录
 	String memo				//申请理由
+	
 	int flow				//流程状态 0：负责人，1：学院，2：学校
 	int auditStatus				//审核状态 0：未审，1：通过：，2：不通过，3：退回
 	static mapping = {

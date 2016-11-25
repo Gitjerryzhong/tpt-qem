@@ -3,14 +3,14 @@
 		<button class="btn btn-default"  ng-click="newtask()" >新建任务</button>
 	</div>       
     <div class="row">
-    	<span class="col-md-2"> <input type="radio" ng-model="action.type" value="0"><label >未提交</label><span class="badge">{{taskCounts.t0}}</span></span>
-		<span class="col-md-2"><input type="radio" ng-model="action.type" value="1"><label >已提交学院</label><span class="badge">{{taskCounts.t1}}</span></span>
-		<span class="col-md-2"> <input type="radio" ng-model="action.type" value="201"><label >学院同意</label><span class="badge agree">{{taskCounts.t2}}</span></span>
-		<span class="col-md-2"><input type="radio" ng-model="action.type" value="202"><label >学院不同意</label><span class="badge reject">{{taskCounts.t3}}</span></span>
-		<span class="col-md-2"><input type="radio" ng-model="action.type" value="203"><label >学院退回</label><span class="badge noreview">{{taskCounts.t4}}</span></span>
-		<span class="col-md-2"><input type="radio" ng-model="action.type" value="2"><label >学校同意</label><span class="badge">{{taskCounts.t5}}</span></span>
-		<span class="col-md-2"><input type="radio" ng-model="action.type" value="3"><label >终止项目</label><span class="badge">{{taskCounts.t6}}</span></span>
-		<span class="col-md-2"><input type="radio" ng-model="action.type" value="4"><label >学校退回</label><span class="badge">{{taskCounts.t7}}</span></span>
+    	<span class="col-md-2"> <input type="radio" ng-model="action.type" value="0"><label >未提交</label><span class="badge">{{getCounts(0)}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="action.type" value="1"><label >已提交学院</label><span class="badge">{{getCounts(1)}}</span></span>
+		<span class="col-md-2"> <input type="radio" ng-model="action.type" value="201"><label >学院同意</label><span class="badge agree">{{getCounts(201)}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="action.type" value="202"><label >学院不同意</label><span class="badge reject">{{getCounts(202)}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="action.type" value="203"><label >学院退回</label><span class="badge noreview">{{getCounts(203)}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="action.type" value="2"><label >学校同意</label><span class="badge">{{getCounts(2)}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="action.type" value="3"><label >终止项目</label><span class="badge">{{getCounts(3)}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="action.type" value="4"><label >学校退回</label><span class="badge">{{getCounts(4)}}</span></span>
     </div>  
 </div>
 <div class="modal-body">

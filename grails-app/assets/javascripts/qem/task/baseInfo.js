@@ -15,7 +15,8 @@ taskApp.controller('baseInfoCtrl',['$scope','$http','FileUploader', '$modal','$f
      		};
      	return LEVEL[level];
      }
-	if(!($scope.task.projectContent && $scope.task.expectedGain) ){
+//	if(!($scope.task.projectContent && $scope.task.expectedGain) ){
+	if(false){ //暂时不再弹窗提示补充材料
 		 var modalInstance=$modal.open({
 	         templateUrl : 'warning.html',  //创建负责人资料录入视图
 	         controller : 'warningCtrl',// 初始化模态范围

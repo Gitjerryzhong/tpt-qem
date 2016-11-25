@@ -16,8 +16,8 @@
 	<div  ng-app="cCheckApp"  class="container" ng-controller="defaultCtrl">
 	<div class="col-sm-2 sidebar">
 			<div class="list-group">
-			<a class="list-group-item statis active" href="#" data-status="0">学院结项审核</a>
-				<a class="list-group-item statis" href="#"  ng-click="end()"><span class="badge">{{taskCounts.t2?taskCounts.t2:0}}</span>结项审核</a>
+<%--			<a class="list-group-item statis active" href="#" data-status="0">学院结项审核</a>--%>
+				<a class="list-group-item statis active" href="#"  ng-click="end()"><span class="badge">{{taskCounts.t2?taskCounts.t2:0}}</span>结项审核</a>
 			</div>	
 		</div>
 		<div class="col-sm-10 content">
@@ -29,26 +29,26 @@
 		     <g:render template="task/annuList"></g:render>
 	       </div>
 	    </script>
-<script type="text/ng-template" id="qem-taskDetail.html">	
-		<div class="modal-header">            
-			<div class="pull-right">
-				<div class="btn-group">
-				<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="stageDetail(pagerT.prevId)">
-					<span class="glyphicon glyphicon-chevron-left"></span>
-				</button>
-				<button class="btn btn-default next {{disabled_n1T()}}" ng-click="stageDetail(pagerT.nextId)">
-					<span class="glyphicon glyphicon-chevron-right"></span>
-				</button>
+	<script type="text/ng-template" id="qem-taskDetail.html">	
+		<div class="btn-toolbar" role="toolbar">
+				 <div class="btn-group" role="group" aria-label="title"><h3 class="title">{{task.projectName}}</h3></div>
+				 
+				<div class="btn-group pull-right" role="group" aria-label="buttons">
+					<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="stageDetail(pagerT.prevId)">
+						<span class="glyphicon glyphicon-chevron-left"></span>
+					</button>
+					<button class="btn btn-default next {{disabled_n1T()}}" ng-click="stageDetail(pagerT.nextId)">
+						<span class="glyphicon glyphicon-chevron-right"></span>
+					</button>
 				</div>
-			</div>
-			<h3 class="title"><strong>项目名称：</strong>{{task.projectName}}</h3>
-        </div>
-	<div class="modal-body">			
-			<div class="form-horizontal" >				
-            	<g:render template="task/stageDetail"></g:render>
-        	</div>
-     </div>
-</script>
+        	</div>	
+			<hr>	
+        	<div class="">
+				<div class="form-horizontal" >				
+            		<g:render template="task/stageDetail"></g:render>
+        		</div>
+        	</div>	
+	</script>
 	</div>
 </body>
 </html>

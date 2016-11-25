@@ -25,11 +25,10 @@
 	<div class="col-sm-2 sidebar">
 			<div class="list-group">	
 				<a class="list-group-item statis" href="#" ng-click="goDefault()" ng-class="{'active':menuSelected==0}">项目总览</a>				
-<%--				<a class="list-group-item statis" href="#" ui-sref="contract" ><span class="badge agree" ng-if="task.status<10">★</span>任务书</a>			--%>
-				<a class="list-group-item statis"  ng-class="{'active':menuSelected==1}" href="#" ng-click="goStage(1)" ng-if="havingStage(1) || beforeMid()")><span class="badge agree" ng-show="beforeMid()">★</span>年度</a>
-				<a class="list-group-item statis"  ng-class="{'active':menuSelected==2}" href="#" ng-click="goStage(2)" ng-if="havingStage(2) || isMid()"><span class="badge agree" ng-show="isMid()">★</span>中检</a>
-				<a class="list-group-item statis"  ng-class="{'active':menuSelected==3}" href="#" ng-click="goStage(3)" ng-if="havingStage(3) || isEnd()"><span class="badge agree" ng-show="isEnd()">★</span>结题</a>
-				<a class="list-group-item statis"  ng-class="{'active':menuSelected==4}" href="#" ng-click="goUpdate()" ng-if="task.status!=0 && task.status!=20 && task.status!=32">项目变更</a>
+				<a class="list-group-item statis" ng-class="{'active':menuSelected==4}" href="#" ng-click="goContract()" ui-sref="contract" ng-if="task.status<10"><span class="badge agree" >★</span>任务书</a>			
+				<a class="list-group-item statis"  ng-class="{'active':menuSelected==1}" href="#" ng-click="goStage('1')" ng-if="havingStage(1) || beforeMid()")><span class="badge agree" ng-show="beforeMid()">★</span>年度</a>
+				<a class="list-group-item statis"  ng-class="{'active':menuSelected==2}" href="#" ng-click="goStage('2')" ng-if="havingStage(2) || isMid()"><span class="badge agree" ng-show="isMid()">★</span>中检</a>
+				<a class="list-group-item statis"  ng-class="{'active':menuSelected==3}" href="#" ng-click="goStage('3')" ng-if="havingStage(3) || isEnd()"><span class="badge agree" ng-show="isEnd()">★</span>结题</a>
 			
 			</div>			
 		</div>
@@ -69,7 +68,8 @@
 				 <div class="btn-group" role="group" aria-label="title"><h3 class="title">{{task.projectName}}</h3></div>
 				 
 				<div class="btn-group pull-right" role="group" aria-label="buttons">
-						<button class="btn btn-default" ng-click="edit()">编辑</button>
+<%--						<button class="btn btn-default" ng-click="edit()">编辑</button>--%>
+						<button class="btn btn-default" ng-click="goUpdate()" ng-if="task.status!=0 && task.status!=20 && task.status!=32">变更申请</button>
 					</div>
         	</div>	
 			<hr>	

@@ -1,5 +1,4 @@
-tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$filter','config','$modal',function($rootScope,$scope,$http,$location,$filter,config,$modal){ 
-		$scope.projectLevels=[{"id":"1","name":"校级"},{"id":"2","name":"省级"},{"id":"3","name":"国家级"}];
+tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$filter','$modal','aboutProject',function($rootScope,$scope,$http,$location,$filter,$modal,aboutProject){ 
 		$scope.maxExperts=["3","4","5","6","7","8","9"];
 		$scope.offset =0;
 		$scope.max=8;
@@ -15,24 +14,20 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 		$scope.allexperts={}
 		$scope.clicked={}  //点击标题
 		$scope.selected={} //筛选条件
-		$rootScope.actived=[1,0,0,0,0,0,0,0,0]; //当前活动菜单
 		var item_id=0;
-		$scope.taskList=config.taskList;
 		$scope.trial={};
 		$scope.trial.status='10';
 		$scope.task={};
-		$scope.taskCounts=config.taskCounts;
 		$scope.action={};
 		$scope.action.type='201';
 		$scope.action.stage='0';
 	    $scope.action.hasexpert = '0';
-	    $location.url('/taskList');
-	    $scope.projectLevels=[{"id":"1","name":"校级"},{"id":"2","name":"省级"},{"id":"3","name":"国家级"}];
-		$scope.projectStatus=[{"id":"10","name":"在研"},{"id":"20","name":"结题"},{"id":"32","name":"终止"},{"id":"33","name":"中止"}];
-		$scope.taskStatus=[
-		                      {"id":"1101","name":"学院通过年检"},{"id":"1102","name":"学院不通过年检"},{"id":"1103","name":"学院退回年检"},{"id":"11","name":"年检确定评审"},
-		                      {"id":"2101","name":"学院通过中报"},{"id":"2102","name":"学院不通过中报"},{"id":"2103","name":"学院退回中报"},{"id":"21","name":"中检确定评审"},
-		                      {"id":"3101","name":"学院通过结项"},{"id":"3102","name":"学院不通过结项"},{"id":"2103","name":"学院退回结项"},{"id":"31","name":"结项确定评审"}];
+	    $scope.projectLevels=aboutProject.projectLevels;
+		$scope.projectStatus=aboutProject.projectStatus;
+//		$scope.taskStatus=[
+//		                      {"id":"1101","name":"学院通过年检"},{"id":"1102","name":"学院不通过年检"},{"id":"1103","name":"学院退回年检"},{"id":"11","name":"年检确定评审"},
+//		                      {"id":"2101","name":"学院通过中报"},{"id":"2102","name":"学院不通过中报"},{"id":"2103","name":"学院退回中报"},{"id":"21","name":"中检确定评审"},
+//		                      {"id":"3101","name":"学院通过结项"},{"id":"3102","name":"学院不通过结项"},{"id":"2103","name":"学院退回结项"},{"id":"31","name":"结项确定评审"}];
 		var upper_vm=$scope;
 	    $scope.dateFormat = function(jsondate){
 	    	return new Date(jsondate);
@@ -91,7 +86,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 		}
 		$scope.onChange=function(fields){
 			$scope.clicked[fields]=false;
-			console.log($scope.selected.type);
+//			console.log($scope.selected.type);
 		}
 		
 		$scope.orderBy = function(col){
@@ -105,18 +100,21 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 	$scope.tasks=function(){
 	    	$http({
 	   		 method:'GET',
-	   			url:"/tms/qemTaskAdmin/showTasks"
+	   			url:"/tms/qemTaskAdmin/showConstracts"
 	   	 	}).success(function(data) {
 	   		 if(data!=null){			 
 	   			 $scope.taskList= data.taskList;
-	   			$scope.taskCounts=data.taskCounts;
+//	   			 console.log(data.taskList)
 	   		 }	
 	   		$scope.action.selectAll=false;
-	   		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
-	   		$rootScope.actived[0]=1;
 	   		$location.url('/taskList') 
 	   	 });
 	 }
+	$scope.getCounts = function(runstatus){
+		var data= $filter('filter')($scope.taskList,{'runStatus':runstatus},true);
+		if(data) return data.length;
+		return 0;
+	}
 	//已立项项目汇总
 	$scope.tasksummary=function(){
 		$scope.trial.runStatus =null;
@@ -126,11 +124,8 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 	   	 	}).success(function(data) {
 	   		 if(data!=null){			 
 	   			 $scope.taskList= data.taskList;
-	   			$scope.taskCounts=data.taskCounts;
 	   		 }	
 	   		$scope.action.selectAll=false;
-	   		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
-	   		$rootScope.actived[7]=1;
 	   		$location.url('/taskSummary') 
 	   	 });
 	}
@@ -183,7 +178,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
       			 $scope.task.userName=data.userName;
       			 $scope.pagerT = data.pager;
       			 $scope.fileList= data.fileList;
-      			 console.log($scope.task);
+//      			 console.log($scope.task);
       		 }	
       		$location.url('/taskDetail') 
       	 });
@@ -203,7 +198,6 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
       		 if(data!=null){			 
       			 $scope.taskList= data.taskList;
       			$scope.pager.total = data.total;	
-      			$scope.taskCounts=data.taskCounts;
       			$location.url('/taskList')
       		 }
       	 	}).error(function(data){
@@ -222,8 +216,6 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
       			 console.info("object",$scope.requests)
       		 }
       		$scope.action.selectAll=false;
-      		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
-      		$rootScope.actived[5]=1;
       		$location.url('/expertview')
       	 	});    	
     	
@@ -263,8 +255,6 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 			headers:{ 'Content-Type': 'application/json' } 
 		  }).success(function(data) {
 			  $scope.taskList= data.taskList;
-//	   			$scope.pager.total = data.total;
-	   			$scope.taskCounts=data.taskCounts;
 		  });
     }
     //需要年度检查的列表
@@ -277,11 +267,8 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
    	 	}).success(function(data) {
    		 if(data!=null){			 
    			 $scope.taskList= data.taskList;   			
-   			$scope.taskCounts=data.taskCounts;
    		 }	
    		 $scope.action.selectAll=false;
-   		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
-   		$rootScope.actived[1]=1;
    		$location.url('/annualList') 
    	 });
     }
@@ -295,12 +282,8 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
    	 	}).success(function(data) {
    		 if(data!=null){			 
    			 $scope.taskList= data.taskList;   			
-   			$scope.taskCounts=data.taskCounts;
-//   			 console.info("",$scope.taskList);
    		 }	
    		 $scope.action.selectAll=false;
-   		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
-   		$rootScope.actived[2]=1;
    		$location.url('/annualList') 
    	 });
     }
@@ -313,12 +296,8 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
    	 	}).success(function(data) {
    		 if(data!=null){			 
    			 $scope.taskList= data.taskList;   			
-   			$scope.taskCounts=data.taskCounts;
-//   			 console.info("",$scope.taskList);
    		 }	
    		 $scope.action.selectAll=false;
-   		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
-   		$rootScope.actived[3]=1;
    		$location.url('/annualList') 
    	 });
     }
@@ -352,14 +331,11 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
    	 	}).success(function(data) {
    		 if(data!=null){			 
    			 $scope.taskList= data.taskList;   
-   			 console.log(data.taskList);
+//   			 console.log(data.taskList);
    			 $scope.allexperts = data.experts;
-   			$scope.taskCounts=data.taskCounts;
    			$scope.showExperts();
    		 }	
    		 $scope.action.selectAll=false;
-   		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
-   		$rootScope.actived[4]=1;
    		$location.url('/confirmedList') 
    	 });
     }
@@ -457,7 +433,6 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 			headers:{ 'Content-Type': 'application/json' } 
 		  }).success(function(data) {
 			  	$scope.taskList= data.taskList;
-	   			$scope.taskCounts=data.taskCounts;
 	   			$scope.showExperts();
 		  });
     }  
@@ -507,13 +482,10 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
     //过滤器方法
     $scope.filterTask = function(item){
 		var result=true;
-		if($scope.action.type!=null && $scope.action.type!='2'){
+		if($scope.action.type!=null ){
 			var type=parseInt($scope.action.type)
 			result=result && (item.runStatus==type);
-		}
-		if($scope.action.type=='2'){
-			result=result && (item.status>0);
-		}
+		}		
 		return result;
 	}
   //前一个和后一个任务书按钮
@@ -611,8 +583,6 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 					 $scope.trial={};					
 				  }
 				  	$scope.action.selectAll=false;
-			   		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
-			   		$rootScope.actived[0]=1;
 				 }
 			});
 	};
@@ -644,8 +614,6 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 					 $scope.trial={};					
 				  }
 				  	$scope.action.selectAll=false;
-//			   		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
-//			   		$rootScope.actived[0]=1;
 				 }
 			});
 	};

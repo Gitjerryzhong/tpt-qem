@@ -1,4 +1,4 @@
-cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location',function($rootScope,$scope,$http,$location){ 
+cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$filter','runStatusText',function($rootScope,$scope,$http,$location,$filter,runStatusText){ 
 		$scope.offset =0;
 		$scope.max=10;
 		$scope.audits={}
@@ -40,7 +40,7 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location',fu
 		   		 if(data!=null){			 
 		   			 $scope.taskList= data.taskList;
 		   			$scope.taskCounts=data.taskCounts;
-//		   			 console.info("",$scope.taskList);
+		   			$scope.taskList=$filter('groupForCollege')($scope.taskList);
 		   		 }	
 		   		$location.url('/taskList') 
 		   	 	});
@@ -126,35 +126,35 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location',fu
 				$scope.order = col;		
 	    }
 		//已立项项目汇总筛选
-		$scope.listConditions = function(item){
-			var result=true;
-			result=result && (item.status!=0); //首先过滤掉未立项的
-			if($scope.trial.discipline){
-				result=result && (item.discipline===$scope.trial.discipline);
-			}
-			if($scope.trial.level){				
-				result=result && (item.projectLevel==$scope.trial.level);
-			}
-			if($scope.trial.departmentName){				
-				result=result && (item.departmentName==$scope.trial.departmentName);
-			}
-			if($scope.trial.typeName){				
-				result=result && (item.type==$scope.trial.typeName);
-			}
-			if($scope.trial.bn){				
-				result=result && (item.bn==$scope.trial.bn);
-			}
-			if($scope.trial.status){
-				result=result && (item.runStatus==$scope.trial.status);
-			}
-			if($scope.trial.beginYear){
-				result=result && (item.beginYear==$scope.trial.beginYear);
-			}
-			if($scope.trial.expectedEnd){
-				result=result && (item.expectedEnd==$scope.trial.expectedEnd);
-			}
-			return result;
-		}
+//		$scope.listConditions = function(item){
+//			var result=true;
+//			result=result && (item.status!=0); //首先过滤掉未立项的
+//			if($scope.trial.discipline){
+//				result=result && (item.discipline===$scope.trial.discipline);
+//			}
+//			if($scope.trial.level){				
+//				result=result && (item.projectLevel==$scope.trial.level);
+//			}
+//			if($scope.trial.departmentName){				
+//				result=result && (item.departmentName==$scope.trial.departmentName);
+//			}
+//			if($scope.trial.typeName){				
+//				result=result && (item.type==$scope.trial.typeName);
+//			}
+//			if($scope.trial.bn){				
+//				result=result && (item.bn==$scope.trial.bn);
+//			}
+//			if($scope.trial.status){
+//				result=result && (item.runStatus==$scope.trial.status);
+//			}
+//			if($scope.trial.beginYear){
+//				result=result && (item.beginYear==$scope.trial.beginYear);
+//			}
+//			if($scope.trial.expectedEnd){
+//				result=result && (item.expectedEnd==$scope.trial.expectedEnd);
+//			}
+//			return result;
+//		}
 		$scope.stageDetail=function(id){
 	    	$http({
 	     		 method:'GET',
@@ -193,8 +193,15 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location',fu
 			});
 		}
 	    $scope.auditAble=function(item){
-	    	console.log(item.runStatus);
+//	    	console.log(item.runStatus);
 	    	if(item.runStatus==10 || item.runStatus==20 ||item.runStatus==30) return true;
 	    	else return false;
 	    }
+	    $scope.statusText = function(status){
+			var STATUS = runStatusText;
+	    	return STATUS[status];
+	    }
+	    $scope.getFileName = function(item){
+			return item.slice(item.lastIndexOf('___') + 3);
+		}
 	}]);

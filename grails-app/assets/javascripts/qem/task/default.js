@@ -1,10 +1,10 @@
-taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','$filter','config','$state','aboutLeaders',function($scope,$http,FileUploader,$location,$filter,config,$state,aboutLeaders){ //项目信息	
+taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','$filter','config','$state','aboutUpdate','runStatusText',function($scope,$http,FileUploader,$location,$filter,config,$state,aboutUpdate,runStatusText){ //项目信息	
 	$scope.task=config.task
 	var uploadStage =0;
 	$scope.member={};
 	$scope.newData ={};
 	$scope.updateQueue=[];//变更申请的附件
-	$scope.updateTypes=aboutLeaders.updateTypes;
+	$scope.updateTypes=aboutUpdate.updateTypes;
 	$scope.members=[];
 	$scope.uploadQueue=[];
 	$scope.clicked=false;
@@ -12,7 +12,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
 	$scope.notice=config.notice;
 	$scope.fileList = config.fileList;
 	$scope.stage={}
-	$scope.stageNum=0;
+	$scope.stageNum="0";
 	$scope.menuSelected=0;
 	$scope.flows=[{"id":"0","statuses":[{"title":"提交合同","runStatusCheck":{"no":["0","203"],"done":["1","2","3","4","5","201","202"]}},
 	                              {"title":"学院审核","runStatusCheck":{"no":["0","1","203"],"done":["2","3","4","5","201","202"]}},
@@ -61,20 +61,35 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
 
 	}
 	
+	currentStageIndex = function(){
+   	 var id="0";
+   	 if($scope.task.status==10){
+   		 if($scope.beforeMid()) id="1";
+   		 else if($scope.isMid()) id="2";
+   		 else if($scope.isEnd()) id="3";
+   		 else if($scope.task.runStatus>=10){
+   			 var runstatus=$scope.task.runStatus.toString();
+   			 id=runstatus.left(1)
+   		 }
+   	 }else if($scope.task.status==20){
+   		 id="3";
+   	 }
+   	 return id;
+    }
 	$scope.uploadType=uploadType = function(){
    	 var type="合同";
    	 switch(uploadStage){
-   	 case 0: type="合同"; break;
-   	 case 1: type="年度"; break;
-   	 case 2: type="中期"; break;
-   	 case 3: type="结题"; break;
+   	 case "0": type="合同"; break;
+   	 case "1": type="年度"; break;
+   	 case "2": type="中期"; break;
+   	 case "3": type="结题"; break;
    	 }
         return type
     }
 //	初始化，将memberstr转换为数组，将文件名列表分类
 	members2List = function(){
 		$scope.members=[];
-		if($scope.task.memberstr!=null){
+		if($scope.task.memberstr){
 			 var items=$scope.task.memberstr.split(";");				 
 			 angular.forEach(items,function(item){
 				 if(item!=null && item!="") {
@@ -85,7 +100,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
 		 }
 	}
 	members2List();
-	$location.url('/default');
+//	$location.url('/default');
 	groupFiles();
 	$scope.changeBegin=function(){
 		var mytask=$scope.task;
@@ -178,11 +193,10 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
 					}),
 				headers:{ 'Content-Type': 'application/json' } 
 			  }).success(function(data) {
-//				  $scope.task.status=10;
 				  $scope.fileList = data.fileList;
 //				  $scope.task = data.task;
 //				  console.log($scope.task);
-				  $location.url('/default');
+				  $location.url('/contract');
 				}).error(function(data){
 					alert("信息保存失败！");					
 				});
@@ -203,7 +217,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
      	return STATUS[status];
      }
      $scope.apply=function(){
-    	 $scope.save();
+//    	 $scope.save();
      	$http({
  			method:'GET',
  			url:"/tms/qemTask/applyTask",
@@ -211,11 +225,11 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
  				id: $scope.task.id
  			}
  		  }).success(function(data) {
- 			 $scope.fileList = data.fileList;
+// 			 $scope.fileList = data.fileList;
  			  $scope.task = data.task;
 // 			 console.log($scope.task);
  			 $scope.editAble=false;
- 	     	$location.url('/default');
+ 	     	$location.url('/contract');
  			}).error(function(data){
  				alert("无法提交任务书！")				
  			});
@@ -243,7 +257,14 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
  			}
  		  }).success(function(data) {
 			  $scope.task = data.task;
-//			  console.log($scope.task);
+			  $scope.fileList = data.fileList;
+			  $scope.uploadQueue=[]
+  			  angular.forEach($scope.fileList,function(item){
+  				  var filename = item.slice(item.lastIndexOf('___') + 3)
+  				  var file={'file':{'name':filename}};
+  				  $scope.uploadQueue.push(file);
+  			  })
+			  $location.url('/edit');
  			}).error(function(data){
  				alert("无法撤销申请！")				
  			});
@@ -282,6 +303,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
  			}
   		  }).success(function(data) {
   			  $scope.stage=data.stage;
+  			  $scope.stage.finishDate = new Date($scope.stage.finishDate);
   			  $scope.fileList = data.fileList;
 //  			item.file.name
   			  $scope.uploadQueue=[]
@@ -315,6 +337,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
      $scope.saveStage=function(){
 //    	 $scope.stage.finishDate
 //    	 console.info("stage",$scope.stage)
+    	 if(!$scope.stage.finishDate) $scope.stage.finishDate=new Date();
     	 $http({
 				method:'POST',
 				url:"/tms/qemTask/saveStage",
@@ -336,6 +359,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
      $scope.applyStage=function(){
 //    	 $scope.stage.finishDate
 //    	 console.info("stage",$scope.stage)
+    	 if(!$scope.stage.finishDate) $scope.stage.finishDate=new Date();
     	 $http({
 				method:'POST',
 				url:"/tms/qemTask/applyStage",
@@ -379,9 +403,9 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
     	 if(!$scope.notice)  return true;//如果没有发任何通知，直接disabled
     	 var isTime = new Date($scope.notice.start) < new Date()&& new Date($scope.notice.end)> new Date() && $scope.notice.workType=='CHE';
     	 switch($scope.stageNum){
-    	 case 1: return !$scope.beforeMid() || !isTime;
-    	 case 2: return !$scope.isMid() || !isTime;
-    	 case 3: return !$scope.isEnd() || !isTime;
+    	 case "1": return !$scope.beforeMid() || !isTime;
+    	 case "2": return !$scope.isMid() || !isTime;
+    	 case "3": return !$scope.isEnd() || !isTime;
     	 default : return true;
     	 
     	 }
@@ -493,9 +517,20 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
     	 		return new Date(jsondate);
     	 	else return null;
 	    }
-     $scope.goUpdate = function(){
+     $scope.isEditAble=function(){
+    	 return $scope.editAble;
+     }
+     $scope.goContract = function(){
     	 $scope.menuSelected=4;
+    	 $scope.editAble=false;
+     }
+     $scope.goUpdate = function(){
     	 $state.go('update');
      }
+     if(currentStageIndex()=="0"){
+    	 $scope.menuSelected=4;
+    	 $state.go("contract");
+     }
+     else $scope.goStage(currentStageIndex());
      
 }]);

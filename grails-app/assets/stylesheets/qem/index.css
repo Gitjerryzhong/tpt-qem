@@ -47,11 +47,11 @@ a:focus { outline:none }
 .table .checkboxStyle{
 	margin-left:10px;
 }
-.btn-toolbar {
-    margin-top: 0px;
-    margin-bottom: 10px;
-    text-align: right;
-}
+/* .btn-toolbar { */
+/*     margin-top: 0px; */
+/*     margin-bottom: 10px; */
+/*     text-align: right; */
+/* } */
 .error-ul{
 	margin-top: 20px;
 	padding-top: 10px;
@@ -65,15 +65,7 @@ a:focus { outline:none }
 	max-width:150px£»
 	text-align: center;
 }
-.title {
-	font-size: 20px;
-	 white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-.pull-right {
-  float: right !important;
-}
+
 .Emphasis{
 	color: #ff0000;
 }
@@ -120,4 +112,20 @@ word-wrap: break-word;
 }
 .noreview{
 	background-color:#31b0d5;
+}
+.form-body .form-group{
+	margin-right:0;
+	margin-left:0;
+}
+.btn-toolbar h3{
+	margin-top:5px;
+}
+#updateInfo td{
+    vertical-align: middle;
+}
+.oldInfo{
+	background-color:#f9f9f9;
+}
+.panel .form-group{
+	margin-top:15px;	
 }

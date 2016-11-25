@@ -6,3 +6,5 @@
 //= require index/myTaskCtrl
 //= require index/publicCtrl
 //= require index/attaCtrl
+//= require index/myUpdateTaskCtrl
+//= require index/updateViewCtrl

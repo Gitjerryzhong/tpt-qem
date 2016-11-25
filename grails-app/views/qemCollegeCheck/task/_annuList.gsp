@@ -1,23 +1,8 @@
-<div class="modal-header"> 
-	<h4>筛选条件</h4>          
-    <div class="row">
-    	<span class="col-md-2 text-right"><label  class="form-control-static">项目等级</label></span>
-		<span class="col-md-2"><select class="form-control input-sm" name="level"  ng-model="trial.level"  ng-options="y.id as y.name for y in projectLevels"  ><option value="">全选</option></select></span>
-		<span class="col-md-2 text-right"><label class="form-control-static">项目类别</label></span>
-		<span class="col-md-2"><select class="form-control input-sm" ng-model="trial.typeName"  ng-options="y for y in taskList |uniKey:'type'"  ><option value="">全选</option></select></span>
-		<span class="col-md-2 text-right"><label  class="form-control-static">当前进度</label></span>
-		<span class="col-md-2"><select class="form-control input-sm"  ng-model="trial.status"  ng-options="y.id as y.name for y in projectStatus"  ><option value="">全选</option></select></span>
-	</div>
-    <div class="row">
-		<span class="col-md-2 text-right"><label class="form-control-static">立项年份</label></span>
-		<span class="col-md-2"><select class="form-control input-sm" ng-model="trial.beginYear"  ng-options="y for y in taskList | orderBy:'beginYear' |uniKey:'beginYear'"  ><option value="">全选</option></select></span>
-		<span class="col-md-2 text-right"><label class="form-control-static">结项年份</label></span>
-		<span class="col-md-2"><select class="form-control input-sm" ng-model="trial.expectedEnd"  ng-options="y for y in taskList | orderBy:'expectedEnd' |uniKey:'expectedEnd' "  ><option value="">全选</option></select></span>
-		
-    </div>
-
-</div>
-<div class="modal-body">
+<div class="row" ng-init="checkStatus='未审'">
+   	<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="未审" ng-click=""><label >未审核</label><span class="badge">{{(taskList | filter:{'groups':'未审'}).length}}</span></span>
+	<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="已审" ng-click=""><label >已审核</label><span class="badge">{{(taskList | filter:{'groups':'已审'}).length}}</span></span>
+	<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="未提交或其他" ng-click=""><label >未提交或其他</label><span class="badge">{{(taskList | filter:{'groups':'未提交或其他'}).length}}</span></span>
+</div>  
 <table class="table table-hover">
 	<thead>
 		<tr>
@@ -34,7 +19,7 @@
 		</tr>
 	</thead>
 	<tbody id="listBody">
-		<tr ng-repeat="item in taskList | filter:listConditions | orderBy:order" class='repeat-animation'>
+		<tr ng-repeat="item in taskList |filter:{'groups':checkStatus} | orderBy:order" class='repeat-animation'>
 		<td><input type="checkbox" ng-model="item.selected">{{$index+1}}</td>				
 		<td>{{item.projectName}}</td>
 		<td>{{item.sn}}</td>
@@ -49,4 +34,3 @@
 	</tbody>
 
 </table>
-</div>

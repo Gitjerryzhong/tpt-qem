@@ -1,24 +1,19 @@
-<div class="modal-header"> 
-	<h4>筛选条件</h4>          
-    <div class="row">
-    	<span class="col-md-2 text-right"><label  class="form-control-static">项目等级</label></span>
-		<span class="col-md-2"><select class="form-control input-sm" name="level"  ng-model="trial.level"  ng-options="y.id as y.name for y in projectLevels"  ><option value="">全选</option></select></span>
-		<span class="col-md-2 text-right"><label class="form-control-static">项目类别</label></span>
-		<span class="col-md-2"><select class="form-control input-sm" ng-model="trial.typeName"  ng-options="y for y in taskList |uniKey:'type'"  ><option value="">全选</option></select></span>
-		<span class="col-md-4 text-right"><button class="btn btn-primary" ng-click="confirmAll(action.stage)" ng-if="trial.runStatus=='1101' || trial.runStatus=='1102'  || trial.runStatus=='2102'  || trial.runStatus=='2102'">确认安排评审</button></span>
+   <div class="form-group" ng-init="checkStatus='未安排评审'" style="margin-bottom:15px;">
+	   	<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="未安排评审"><label >未安排评审</label><span class="badge">{{(taskList | filter:{'groups':'未安排评审'}).length}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="需评审" ><label >需评审</label><span class="badge">{{(taskList | filter:{'groups':'需评审'}).length}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="已审" ><label >已审核</label><span class="badge">{{(taskList | filter:{'groups':'已审'}).length}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="未提交或其他" ><label >未提交或其他</label><span class="badge">{{(taskList | filter:{'groups':'未提交或其他'}).length}}</span></span>
+	</div>  
+    <div class="input-group small">
+    	<span class="input-group-addon">项目等级</span>
+		<select style="min-width:10em" class="form-control" name="level"  ng-model="trial.level"  ng-options="y.id as y.name for y in projectLevels"  ><option value="">全选</option></select>
+		<span class="input-group-addon">项目类别</span>
+		<select style="min-width:10em" class="form-control " ng-model="trial.typeName"  ng-options="y for y in taskList |uniKey:'type'"  ><option value="">全选</option></select>
+		<span class="input-group-addon">立项年份</span>
+		<select style="min-width:10em" class="form-control " ng-model="trial.beginYear"  ng-options="y for y in taskList | orderBy:'beginYear' |uniKey:'beginYear'"  ><option value="">全选</option></select>
+		<span class="input-group-addon">结项年份</span>
+		<select style="min-width:10em" class="form-control " ng-model="trial.expectedEnd"  ng-options="y for y in taskList | orderBy:'expectedEnd' |uniKey:'expectedEnd' "  ><option value="">全选</option></select>
 	</div>
-    <div class="row">
-		<span class="col-md-2 text-right"><label class="form-control-static">立项年份</label></span>
-		<span class="col-md-2"><select class="form-control input-sm" ng-model="trial.beginYear"  ng-options="y for y in taskList | orderBy:'beginYear' |uniKey:'beginYear'"  ><option value="">全选</option></select></span>
-		<span class="col-md-2 text-right"><label class="form-control-static">结项年份</label></span>
-		<span class="col-md-2"><select class="form-control input-sm" ng-model="trial.expectedEnd"  ng-options="y for y in taskList | orderBy:'expectedEnd' |uniKey:'expectedEnd' "  ><option value="">全选</option></select></span>
-    </div>
-    <div class="row">
-    	<span class="col-md-2 text-right"><label  class="form-control-static">当前进度</label></span>
-		<span class="col-md-2"><select class="form-control input-sm"  ng-model="trial.runStatus"  ng-options="y.id as y.name for y in taskStatus"  ><option value="">全选</option></select></span>
-    </div>
-
-</div>
 <div class="modal-body">
 <table class="table table-hover">
 	<thead>

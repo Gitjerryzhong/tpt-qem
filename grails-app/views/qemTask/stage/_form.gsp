@@ -10,7 +10,7 @@
     <label class="col-sm-2 control-label">参与人</label>
     <div class="col-sm-6 form-control-static"><span>{{stage.members}}</span></div>     
 </div>
-<div class="form-group">
+<div class="form-group" ng-if="stage.currentStage=='3'">
     <label  class="col-sm-2 control-label">完成日期</label>
     <div class="col-sm-3">
     	<div class="input-group">
