@@ -27,23 +27,7 @@ a:focus { outline:none }
 	margin-bottom: 20px;
 }
 
-@media (max-width : 1200px) {
-	.form-list .reason {
-		max-width: 200px;
-	}
-}
 
-@media (max-width : 992px) {
-	.form-list .reason {
-		max-width: 60px;
-	}
-}
-
-@media only screen and (max-width : 768px) {
-	.form-list .reason {
-		max-width: 100px;
-	}
-}
 .table .checkboxStyle{
 	margin-left:10px;
 }
@@ -71,8 +55,8 @@ a:focus { outline:none }
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.pull-right {
-  float: right !important;
+.btn-toolbar .pull-right{
+	margin-top:15px;
 }
 .Emphasis{
 	color: #ff0000;
@@ -80,10 +64,7 @@ a:focus { outline:none }
 .hand{
 	cursor:pointer
 }
-.form-group h4{
-	
-	border-bottom:double #c0c0c0;
-}
+
 .striped{
 	background-color: #f9f9f9;
 }
@@ -137,10 +118,21 @@ opacity: 0;
     padding-bottom: 2px !important;
 }
 
-label {
-    font-weight: normal !important;
+pre {
+white-space: pre-wrap;
+word-wrap: break-word;
+border: 0pt;
+background-color: white;
+padding-left: 0;
 }
-
+#mainLayout {
+	padding-left:0px;
+	padding-right:0px;
+}
+#rightSlideLayout{
+	padding-left:5pt;
+	padding-right:0px;
+}
 .div-percent-bar {
     display: inline-block;
     height: 100%;

@@ -88,24 +88,43 @@
 <%--	</form>		--%>
 	</script>
 	<script type="text/ng-template" id="qem-stageDetail.html">		
-		<div class="modal-header">            
-			<div class="pull-right">
-				<div class="btn-group">
-				<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="stageDetail(pagerT.prevId)">
-					<span class="glyphicon glyphicon-chevron-left"></span>
-				</button>
-				<button class="btn btn-default next {{disabled_n1T()}}" ng-click="stageDetail(pagerT.nextId)">
-					<span class="glyphicon glyphicon-chevron-right"></span>
-				</button>
+			<div class="btn-toolbar" role="toolbar">
+				 <div class="btn-group" role="group" aria-label="title"><h3 class="title">{{task.projectName}}</h3></div>
+				 
+				<div class="btn-group pull-right" role="group" aria-label="buttons">
+					<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="stageDetail(pagerT.prevId)">
+						<span class="glyphicon glyphicon-chevron-left"></span>
+					</button>
+					<button class="btn btn-default next {{disabled_n1T()}}" ng-click="stageDetail(pagerT.nextId)">
+						<span class="glyphicon glyphicon-chevron-right"></span>
+					</button>
 				</div>
-			</div>
-			<h3 class="title"><strong>项目名称：</strong>{{task.projectName}}</h3>
-        </div>
-	<div class="modal-body">			
-			<div class="form-horizontal" >				
-            	<g:render template="task/stageDetail"></g:render>
-        	</div>
-     </div>			
+        	</div>	
+			<hr>	
+        	<div class="">
+				<div class="form-horizontal" >				
+            		<g:render template="task/stageDetail"></g:render>
+        		</div>
+        	</div>	
+
+<%--		<div class="modal-header">            --%>
+<%--			<div class="pull-right">--%>
+<%--				<div class="btn-group">--%>
+<%--				<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="stageDetail(pagerT.prevId)">--%>
+<%--					<span class="glyphicon glyphicon-chevron-left"></span>--%>
+<%--				</button>--%>
+<%--				<button class="btn btn-default next {{disabled_n1T()}}" ng-click="stageDetail(pagerT.nextId)">--%>
+<%--					<span class="glyphicon glyphicon-chevron-right"></span>--%>
+<%--				</button>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--			<h3 class="title"><strong>项目名称：</strong>{{task.projectName}}</h3>--%>
+<%--        </div>--%>
+<%--	<div class="modal-body">			--%>
+<%--			<div class="form-horizontal" >				--%>
+<%--            	<g:render template="task/stageDetail"></g:render>--%>
+<%--        	</div>--%>
+<%--     </div>			--%>
 	</script>
 	<script type="text/ng-template" id="qem-stageAudit.html">	
 	<div class="modal-header">            

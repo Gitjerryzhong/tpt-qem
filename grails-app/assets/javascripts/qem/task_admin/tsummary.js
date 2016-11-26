@@ -1,7 +1,7 @@
 (function() {
     agGrid.initialiseAgGridWithAngular1(angular);
 
-    tAdminApp.controller('tsummaryController',['$rootScope','$scope','$http','$state','$filter','config',function($rootScope,$scope,$http,$state,$filter) {
+    tAdminApp.controller('tsummaryController',['$rootScope','$scope','$http','$state','$filter',function($rootScope,$scope,$http,$state,$filter) {
     	var vm=$scope;
     	vm.gridData=[];
     	vm.college_static={}

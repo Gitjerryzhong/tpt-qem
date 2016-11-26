@@ -231,9 +231,9 @@ class QemCollegeCheckController {
 		def taskCounts=collegeService.taskCounts()
 		render ([taskList:taskList,taskCounts:taskCounts] as JSON)
 	}
-	def taskDetail(){
+	def taskDetail(long id){
 		//		println params.id
-		def form_id=params.int('id')?:0
+		def form_id=id
 		println form_id
 		def task = QemTask.get(form_id)
 		if(task){
@@ -255,7 +255,7 @@ class QemCollegeCheckController {
 	def auditTaskSave(){
 		def audit=new AuditForm(request.JSON)
 		def qemTask=QemTask.get(audit.form_id)
-		if(qemTask.runStatus==QemTask.S_ANNUAL_SUBMIT || qemTask.runStatus==QemTask.S_MID_SUBMIT || qemTask.runStatus==QemTask.S_END_SUBMIT ){
+		if(qemTask.runStatus in[QemTask.S_ANNUAL_SUBMIT,QemTask.S_MID_SUBMIT,QemTask.S_END_SUBMIT,QemTask.S_ANNUAL_BK,QemTask.S_MID_BK,QemTask.S_END_BK] ){
 			def stage 
 			def currentStage=getCurrentStage(qemTask)
 			qemTask.stage.each {item->

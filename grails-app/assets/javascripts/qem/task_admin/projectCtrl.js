@@ -1,4 +1,4 @@
-tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$filter','$modal','aboutProject',function($rootScope,$scope,$http,$location,$filter,$modal,aboutProject){ 
+tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$filter','$modal','aboutProject','runStatusText',function($rootScope,$scope,$http,$location,$filter,$modal,aboutProject,runStatusText){ 
 		$scope.maxExperts=["3","4","5","6","7","8","9"];
 		$scope.offset =0;
 		$scope.max=8;
@@ -132,26 +132,14 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 	//已立项项目汇总筛选
 	$scope.listConditions = function(item){
 		var result=true;
-		if($scope.trial.discipline){
-			result=result && (item.discipline===$scope.trial.discipline);
+		if($scope.trial.departmentName){				
+			result=result && (item.departmentName==$scope.trial.departmentName);
 		}
 		if($scope.trial.level){				
 			result=result && (item.projectLevel==$scope.trial.level);
 		}
-		if($scope.trial.departmentName){				
-			result=result && (item.departmentName==$scope.trial.departmentName);
-		}
 		if($scope.trial.typeName){				
 			result=result && (item.type==$scope.trial.typeName);
-		}
-		if($scope.trial.bn){				
-			result=result && (item.bn==$scope.trial.bn);
-		}
-		if($scope.trial.status){
-			result=result && (item.status==$scope.trial.status);
-		}
-		if($scope.trial.runStatus){
-			result=result && (item.runStatus==$scope.trial.runStatus);
 		}
 		if($scope.trial.beginYear){
 			result=result && (item.beginYear==$scope.trial.beginYear);
@@ -235,7 +223,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
     $scope.doselectAllTask= function(){		
 //    	console.log($scope.taskList);
 		angular.forEach($scope.taskList,function(data){				
-			if(data.runStatus==$scope.action.type) 
+			if(data.runStatus.toString()==$scope.action.type) 
 				data.selected=$scope.action.selectAll;					
 		});
 	}
@@ -243,10 +231,11 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
     $scope.confirmAll=function(type){
     	var options=[]
 		angular.forEach($scope.taskList,function(data){
-			if(data.selected) options.push(data.id);
+			if(data.selected && data.runStatus.toString()==$scope.trial.runStatus) options.push(data.id);
 		});
-//    	console.log(type);
-    	$scope.action.selectALl=false
+    	console.log($scope.taskList);
+    	console.log($scope.trial.runStatus);
+    	$scope.action.selectAll=false
 		$http({
 			method:'POST',
 			url:"/tms/QemTaskAdmin/confirmAll",
@@ -255,6 +244,8 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 			headers:{ 'Content-Type': 'application/json' } 
 		  }).success(function(data) {
 			  $scope.taskList= data.taskList;
+			  $scope.taskList=$filter('groupForUniversity')($scope.taskList);
+			  console.log($scope.taskList);
 		  });
     }
     //需要年度检查的列表
@@ -266,7 +257,9 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
    			url:"/tms/qemTaskAdmin/annualTasks"
    	 	}).success(function(data) {
    		 if(data!=null){			 
-   			 $scope.taskList= data.taskList;   			
+   			 $scope.taskList= data.taskList;
+   			$scope.taskList=$filter('groupForUniversity')($scope.taskList);
+//   			console.log($scope.taskList);
    		 }	
    		 $scope.action.selectAll=false;
    		$location.url('/annualList') 
@@ -281,7 +274,9 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
    			url:"/tms/qemTaskAdmin/midTasks"
    	 	}).success(function(data) {
    		 if(data!=null){			 
-   			 $scope.taskList= data.taskList;   			
+   			 $scope.taskList= data.taskList;   
+   			$scope.taskList=$filter('groupForUniversity')($scope.taskList);
+//   			console.log($scope.taskList);
    		 }	
    		 $scope.action.selectAll=false;
    		$location.url('/annualList') 
@@ -290,12 +285,15 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
   //需要结题检查的列表
     $scope.end=function(){
     	$scope.action.stage='3';
+    	$scope.trial.runStatus='3101';
     	$http({
    		 method:'GET',
    			url:"/tms/qemTaskAdmin/endTasks"
    	 	}).success(function(data) {
    		 if(data!=null){			 
-   			 $scope.taskList= data.taskList;   			
+   			 $scope.taskList= data.taskList;  
+   			$scope.taskList=$filter('groupForUniversity')($scope.taskList);
+//   			console.log($scope.taskList);
    		 }	
    		 $scope.action.selectAll=false;
    		$location.url('/annualList') 
@@ -373,6 +371,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
      			 $scope.task= data.task;
      			 $scope.fileList= data.fileList;
      			 $scope.stages= data.stages;
+     			$scope.pagerT = data.pager;
 //     			 console.info("stage",data.stages);
      		 }	
      		$location.url('/stageDetail') 
@@ -390,6 +389,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
      			 $scope.task= data.task;
      			 $scope.fileList= data.fileList;
      			 $scope.stages= data.stages;
+     			$scope.pagerT = data.pager;
 //     			 console.info("stage",data.stages);
      		 }	
      		$location.url('/stageAudit') 
@@ -501,60 +501,13 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
     }
     //状态注释
     $scope.statusText = function(status){
-    	var STATUS = {
-    			"0": "未提交",
-    			"1": "已提交",
-    			"201": "学院确认合同",
-    			"202": "学院不同意",
-    			"203": "学院退回",
-    			"2" : "学校确认合同",
-    			"3" : "项目终止",
-    			"4" : "学校退回合同",
-    			"5" : "项目中止",
-    			"10" : "年检报告提交",
-    			"11" : "年检确定评审",
-    			"1101" : "学院通过年检",
-    			"1102" : "学院不通过年检",
-    			"1103" : "学院退回年检",
-    			"12" : "正安排专家",
-    			"13" : "专家评审中",
-    			"14" : "年检评审通过",
-    			"15" : "年检评审不通过",
-    			"16" : "年检退回学院",
-    			"20" : "中检报告提交",
-    			"21" : "中检确定评审",
-    			"2101" : "学院通过中报",
-    			"2102" : "学院不通过中报",
-    			"2103" : "学院退回中报",
-    			"22" : "正安排专家",
-    			"23" : "专家评审中",
-    			"24" : "中报评审通过",
-    			"25" : "中报评审不通过",
-    			"26" : "中报退回学院",
-    			"30" : "结题报告提交",
-    			"31" : "结题确定评审",
-    			"3101" : "学院通过结题",
-    			"3102" : "学院不通过结题",
-    			"3103" : "学院退回结题",
-    			"32" : "正安排专家",
-    			"33" : "专家评审中",
-    			"34" : "结题评审通过",
-    			"35" : "结题评审不通过",
-    			"36" : "结题退回学院"
-    		};
+    	var STATUS =runStatusText;
     	return STATUS[status];
     }
   //建设情况注释
     $scope.statusTT = function(status){
-    	var STATUS = {
-    			"0" : "合同未审",
-    			"10" : "在研",
-    			
-    			"20" : "结题",
-    			"32" : "终止",
-    			"33" : "中止"
-    		};
-    	return STATUS[status];
+    	var STATUS = aboutProject.projectStatus;
+    	return $filter('filter')(STATUS,{'id':status})[0].name;
     }
   //审批
     $scope.okT = function(act,formId,prevId,nextId){ 
@@ -662,5 +615,16 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 				  });
 	    	}
 		 }
+    }
+    $scope.getFileName = function(item){
+		return item.slice(item.lastIndexOf('___') + 3);
+	}
+    $scope.showConditions = function(){
+    	console.log($scope.trial);
+    }
+    $scope.auditAble=function(item){
+    	var auditStatus = {'1101':true,'1102':true,'2101':true,'2102':true,'3101':true,'3102':true}
+    	var status = item.runStatus.toString();
+    	return auditStatus[status];
     }
 	}]);

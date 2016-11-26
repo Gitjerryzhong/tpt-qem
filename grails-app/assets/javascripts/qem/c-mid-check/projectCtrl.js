@@ -247,8 +247,11 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 	     }
 	    $scope.auditAble=function(item){
 //	    	console.log(item.runStatus);
-	    	if(item.runStatus==10 || item.runStatus==20 ||item.runStatus==30) return true;
-	    	else return false;
+	    	var auditStatus = {'10':true,'16':true,'20':true,'26':true,'30':true,'36':true}
+	    	var status = item.runStatus.toString();
+	    	return auditStatus[status];
+//	    	if(item.runStatus==10 || item.runStatus==20 ||item.runStatus==30 || item.runStatus==30) return true;
+//	    	else return false;
 	    }
 	    $scope.countStatus =function(type){
 	    	var count=0

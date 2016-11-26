@@ -59,16 +59,16 @@ class QemTaskAdminController {
 	 */
 	def midTasks(){
 		def taskList=taskAdminService.midList()
-		def taskCounts=taskAdminService.midCounts()
-		render ([taskList:taskList,taskCounts:taskCounts] as JSON)
+//		def taskCounts=taskAdminService.midCounts()
+		render ([taskList:taskList,taskCounts:null] as JSON)
 	}
 	/**
 	 * 取结题检查列表
 	 */
 	def endTasks(){
 		def taskList=taskAdminService.endList()
-		def taskCounts=taskAdminService.endCounts()
-		render ([taskList:taskList,taskCounts:taskCounts] as JSON)
+//		def taskCounts=taskAdminService.endCounts()
+		render ([taskList:taskList,taskCounts:null] as JSON)
 	}
 	/**
 	 * 确认任务书

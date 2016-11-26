@@ -1,4 +1,4 @@
-<div ng-class="{'col-sm-9':task.runStatus==10 || task.runStatus==20 || task.runStatus==30}">
+<div ng-class="{'col-sm-9':auditAble(task)}">
 <div class="panel panel-default"  id="baseInfo" >
 <div class="panel-heading title">基本信息</div>
 <div class="form-group">
@@ -147,7 +147,7 @@
 
 </div>
 </div>
-<div class="col-sm-3" ng-if="task.runStatus==10 || task.runStatus==20 || task.runStatus==30">
+<div class="col-sm-3" ng-if="auditAble(task)">
 <form name="myForm" role="form" novalidate>
 <div class="bs-docs-sidebar affix panel panel-info">
 	<div class="panel-heading">

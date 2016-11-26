@@ -149,16 +149,19 @@ class QemTask {
 			case S_CONFIRM_C:
 				return S_CONFIRM
 			case S_ANNUAL_SUBMIT:
+			case S_ANNUAL_BK:
 				return S_ANNUAL_PASS_C										//学院通过年检
 			case S_ANNUAL_PASS_C:
 			case S_ANNUAL_NG_C:
 				return S_ANNUAL_PASS										//学校通过年检
 			case S_MID_SUBMIT:
+			case S_MID_BK:
 				return S_MID_PASS_C											//学院通过中期
 			case S_MID_PASS_C:
 			case S_MID_NG_C:
 				return S_MID_PASS
 			case S_END_SUBMIT:
+			case S_END_BK:
 				return S_END_PASS_C
 			case S_END_PASS_C:
 			case S_END_NG_C:
@@ -175,16 +178,19 @@ class QemTask {
 			case S_CONFIRM_C:
 				return S_NG
 			case S_ANNUAL_SUBMIT:
+			case S_ANNUAL_BK:
 				return S_ANNUAL_NG_C										//学院不通过年检
 			case S_ANNUAL_PASS_C:
 			case S_ANNUAL_NG_C:
 				return S_ANNUAL_NG										//学校不通过年检
 			case S_MID_SUBMIT:
+			case S_MID_BK:
 				return S_MID_NG_C											//学院不通过中期
 			case S_MID_PASS_C:
 			case S_MID_NG_C:
 				return S_MID_NG
 			case S_END_SUBMIT:
+			case S_END_BK:
 				return S_END_NG_C
 			case S_END_PASS_C:
 			case S_END_NG_C:
@@ -201,16 +207,19 @@ class QemTask {
 			case S_NG_C:
 				return S_BK
 			case S_ANNUAL_SUBMIT:
+			case S_ANNUAL_BK:
 				return S_ANNUAL_BK_C										//学院退回年检
 			case S_ANNUAL_PASS_C:
 			case S_ANNUAL_NG_C:
 				return S_ANNUAL_BK											//学校退回年检
 			case S_MID_SUBMIT:
+			case S_MID_BK:
 				return S_MID_BK_C											//学院退回中期
 			case S_MID_PASS_C:
 			case S_MID_NG_C:
 				return S_MID_BK
 			case S_END_SUBMIT:
+			case S_END_BK:
 				return S_END_BK_C
 			case S_END_PASS_C:
 			case S_END_NG_C:
