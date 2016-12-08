@@ -20,7 +20,7 @@
 					<th ng-click="orderBy('position')" style="cursor: pointer;">职务</th>
 					<th ng-click="orderBy('major')" style="cursor: pointer;">学院</th>		
 					<th ng-click="orderBy('pass')" style="cursor: pointer;width:8em;">专家意见	</th>					
-					<th ng-click="orderBy('avgScore')" style="cursor: pointer;">平均分</th>
+<%--					<th ng-click="orderBy('avgScore')" style="cursor: pointer;">平均分</th>--%>
 					<th style="width:15em">综合意见</th>
 					<th>操作</th>
 				</tr>
@@ -37,7 +37,7 @@
 				<td style="width:8em"><span class="badge agree">{{item.pass}}</span>
 				<span class="badge reject">{{item.ng}}</span>
 				<span class="badge giveup">{{item.waiver}}</span><span class="badge noreview">{{reviewLeft(item)}}</span></td>
-				<td>{{item.avgScore | number:2}}</td>
+<%--				<td>{{item.avgScore | number:2}}</td>--%>
 				<td style="width:15em">{{item.view}}</td>	
 				<td><button type="button" class="btn btn-default btn-xs" ng-click="stageAudit(item.id)" ><span class="glyphicon glyphicon-pencil"></span></button></td>			 
 				</tr>

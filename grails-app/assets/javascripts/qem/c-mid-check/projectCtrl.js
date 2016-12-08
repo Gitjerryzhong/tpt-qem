@@ -246,22 +246,19 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 	    	 return id;
 	     }
 	    $scope.auditAble=function(item){
-//	    	console.log(item.runStatus);
 	    	var auditStatus = {'10':true,'16':true,'20':true,'26':true,'30':true,'36':true}
 	    	var status = item.runStatus.toString();
 	    	return auditStatus[status];
-//	    	if(item.runStatus==10 || item.runStatus==20 ||item.runStatus==30 || item.runStatus==30) return true;
-//	    	else return false;
 	    }
-	    $scope.countStatus =function(type){
-	    	var count=0
-	    	switch(type){
-	    	case 0: count=$filter('filter')($scope.taskList,{'runStatus':10}).length+
-	    				$filter('filter')($scope.taskList,{'runStatus':20}).length+
-	    				$filter('filter')($scope.taskList,{'runStatus':30}).length
-	    	}
-	    	status$scope.taskList
-	    }
+//	    $scope.countStatus =function(type){
+//	    	var count=0
+//	    	switch(type){
+//	    	case 0: count=$filter('filter')($scope.taskList,{'runStatus':10}).length+
+//	    				$filter('filter')($scope.taskList,{'runStatus':20}).length+
+//	    				$filter('filter')($scope.taskList,{'runStatus':30}).length
+//	    	}
+//	    	status$scope.taskList
+//	    }
 	    $scope.statusText = function(status){
 			var STATUS = runStatusText;
 	    	return STATUS[status];

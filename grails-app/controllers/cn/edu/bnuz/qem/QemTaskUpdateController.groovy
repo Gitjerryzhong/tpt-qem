@@ -22,6 +22,12 @@ class QemTaskUpdateController {
 	 */
 	def uploadFiles(){
 		def dateStr=new Date().format("yyyyMMdd")
+//		处理申请单修改状态下文件上传
+		def updateId = params.updateId
+		if(updateId){
+			def updateView= UpdateTask.get(updateId)
+			dateStr=updateView.commitDate.format("yyyyMMdd")
+		}
 		def taskId=params.taskId
 		def isDeclaration =params.isDeclaration
 		java.util.List<String> fileList = getFileNames(taskId,dateStr)
@@ -113,6 +119,13 @@ class QemTaskUpdateController {
 	 */
 	def delAttach(){
 		def dateStr=new Date().format("yyyyMMdd")
+//		处理申请单修改状态下文件上传
+		def updateId = params.updateId
+		if(updateId){
+			def updateView= UpdateTask.get(updateId)
+			dateStr=updateView.commitDate.format("yyyyMMdd")
+		}
+
 		def filename = params.filename
 		def taskId=params.taskId
 		def isDeclaration =params.isDeclaration
@@ -147,6 +160,54 @@ class QemTaskUpdateController {
 				}
 			}else 	render status: HttpStatus.BAD_REQUEST 
 	}
+	/**
+	 * 提交变更申请
+	 * @return
+	 */
+	def editCommit(){
+		def updation= request.JSON
+		if(updation?.id && updation.updateTypes){
+			def task = UpdateTask.get(updation.id)
+			if(!task) return
+			def updateTypes=updation.updateTypes.split(";")
+			updateTypes.each {item->
+				def itemValue=item.toInteger()
+//				println itemValue
+				switch(itemValue){			
+				case 2:
+						task.setExpectedMid(updation.expectedMid)
+						task.setExpectedEnd(updation.expectedEnd)
+						break;
+				case 3:
+						task.setProjectName(updation.projectName)
+						break;
+				case 4:
+						task.setProjectContent(updation.projectContent)
+						break;
+				case 6:
+						task.setExpectedGain(updation.expectedGain)
+						break;
+				case 7:
+						task.setMembers(updation.members)
+						break;
+				case 8:task.setOthers(updation.others)
+						break;
+				}
+			}
+			task?.setMemo(updation.memo)
+			task?.setUpdateTypes(updation.updateTypes)
+			task?.setFlow(1)
+			task?.setAuditStatus(0)
+			if(!task?.save(flush:true)){
+				task.errors.each {
+					println it
+				}
+				render status: HttpStatus.BAD_REQUEST
+			}else{
+				render status: HttpStatus.OK
+			}
+		}else 	render status: HttpStatus.BAD_REQUEST
+	}
 	def getUpdateList(){
 		render ([updateList:taskService.updateList()] as JSON)
 	}
@@ -165,5 +226,53 @@ class QemTaskUpdateController {
 			declarations = getFileNames("${updateView.taskId}")
 		}
 		render ([updateView:updateView,task:task,fileList: fileList,declarations:declarations] as JSON)
+	}
+	private doUpdate(updation){
+		def updateTypes=updateTask.updateTypes.split(";")
+		updateTypes.each {item->
+			def itemValue=item.toInteger()
+//			println itemValue
+			switch(itemValue){
+			case 1:oldData=[teacherId:task.teacher.id,
+					currentTitle:task.currentTitle,
+					currentDegree:task.currentDegree,
+					specailEmail:task.specailEmail,
+					phoneNum:task.phoneNum,
+					position:task.position]
+				   task.setTeacher(Teacher.get(updateTask.teacherId))
+				   task.setCurrentTitle(updateTask.currentTitle)
+				   task.setCurrentDegree(updateTask.currentDegree)
+				   task.setSpecailEmail(updateTask.specailEmail)
+				   task.setPhoneNum(updateTask.phoneNum)
+				   task.setPosition(updateTask.position)
+					break;
+			case 2:oldData=[expectedMid:task.expectedMid,
+					expectedEnd:task.expectedEnd]
+					task.setExpectedMid(updateTask.expectedMid)
+					task.setExpectedEnd(updateTask.expectedEnd)
+					if(!task.delay)task.setDelay(1)
+					else task.setDelay(task.delay+1)
+					break;
+			case 3:oldData=[projectName:task.projectName]
+					task.setProjectName(updateTask.projectName)
+					break;
+			case 4:oldData=[projectContent:task.projectContent]
+					task.setProjectContent(updateTask.projectContent)
+					break;
+			case 5:oldData=[status:task.status,
+					runStatus:task.runStatus]
+					task.setStatus(QemTask.STATUS_EXCEPTION_NG)
+					task.setRunStatus(QemTask.S_NG)
+					break;
+			case 6:oldData=[expectedGain:task.expectedGain]
+					task.setExpectedGain(updateTask.expectedGain)
+					break;
+			case 7:oldData=[members:task.members]
+					task.setMembers(updateTask.members)
+					break;
+			case 8:task.setMemo("${task.memo};${updateTask.others}")
+					break;
+			}
+		}
 	}
 }

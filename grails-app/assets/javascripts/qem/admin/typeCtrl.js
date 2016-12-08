@@ -2,6 +2,7 @@ adminApp.controller('TypeCtrl',['$rootScope','$scope','$http','FileUploader','$f
 	$scope.parentTypes ={}
 	$scope.type ={}
 	$scope.type.parentTypeId =0;
+	$scope.type.actived =false;
 	$scope.order="id";
 	$scope.getParentTypes = function(){ //显示通知
     	$http({

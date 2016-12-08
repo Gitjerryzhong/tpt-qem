@@ -35,7 +35,7 @@ tAdminApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', functio
     })
     .state('stageAudit', {
         url: '/stageAudit',
-        templateUrl: 'qem-stageAudit.html'
+        templateUrl: 'qem-stageDetail.html'
     })
     .state('newtask', {
         url: '/newtask',
@@ -103,6 +103,15 @@ tAdminApp.filter('unique',function(){
         return out;
 	}
 })
+.filter('mkIndex',function(){
+	return function(items){
+		var index=1;
+		angular.forEach(items, function (item) {
+			item.index=index++;
+        })
+        return items;
+	}
+})
 .filter('stageText',function(){
 	return function(value){
 		var TITLE = {
@@ -122,7 +131,12 @@ tAdminApp.filter('unique',function(){
     			"2": "确认进行评审",
     			"30": "评审中",
     			"31": "评审通过",
-    			"32": "评审不通过"
+    			"32": "评审不通过",
+    			"33": "学校退回",
+    			"34": "暂缓通过",
+    			"41": "学院通过",
+    			"42": "学院不通过",
+    			"43": "学院退回",
     		};
     	return TITLE[value];
 	}

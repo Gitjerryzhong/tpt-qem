@@ -10,10 +10,10 @@
 	</thead>
 	<tbody id="listBody">
 		<tr ng-repeat="item in notices | orderBy:order">	
-		<td class="col-md-1">{{$index+1}}</td>			
-		<td class="col-md-6"><a href="#" ng-click="showNotice(item)">{{item.title}}</a></td>
-		<td class="col-md-2">{{workTypeText(item.workType)}}</td>
-		<td class="col-md-3">{{dateFormat(item.publishDate) | date : 'yyyy-MM-dd'}}</td>
+		<td >{{$index+1}}</td>			
+		<td><a href="#" ng-click="showNotice(item)">{{item.title}}</a></td>
+		<td>{{workTypeText(item.workType)}}</td>
+		<td >{{dateFormat(item.publishDate) | date : 'yyyy-MM-dd'}}</td>
 		<td><a class="btn btn-primary" href="/tms/qemCollegeCheck/check/{{item.bn}}">审核</a></td>
 		</tr>
 	</tbody>

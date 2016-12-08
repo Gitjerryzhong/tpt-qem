@@ -100,7 +100,8 @@ app.controller('requestCtrl',['$rootScope','$scope','$http','$location','FileUpl
 				  }).success(function(data) {
 					  alert("OK");
 //					  $scope.taskCounts=data.taskCounts;
-//					  $location.url('/contractList');
+					  $scope.tabs[2].active=true;
+					  $scope.go("tab3");
 					}).error(function(data){
 						$scope.commitAction=true;
 						if(data.userName)

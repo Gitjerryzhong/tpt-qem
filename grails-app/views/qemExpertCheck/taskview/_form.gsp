@@ -12,10 +12,10 @@
 				</tr>
 			</thead>
 			<tbody id="listBody">
-				<tr ng-repeat="item in requests | orderBy:order">	
+				<tr ng-repeat="item in requests ">	
 				<td><a href="/tms/qemExpertCheck/downloadTask/{{item.id}}" class="button btn-info btn-xs" toolTip="下载附件">
 				<span class="glyphicon glyphicon-download-alt " ></span></a> {{item.projectName}} </td>			
-				<td><a href="/tms/qemExpertCheck/relatedTask/{{item.id}}" target="_brank">{{item.userName}}</a></td>
+				<td>{{item.userName}}</td>
 				<td>{{item.currentTitle}}</td>
 				<td>{{item.currentDegree}}</td>
 				<td>{{item.departmentName}}</td>

@@ -134,6 +134,35 @@ class QemCollegeUpdateController {
 				}
 			}else 	render status: HttpStatus.BAD_REQUEST
 	}
+	/**
+	 * 提交变更申请
+	 * @return
+	 */
+	def editCommit(){
+		def updation= request.JSON
+		if(updation.id){
+			def edition = UpdateTask.get(updation.id)
+			edition.setTeacherId(updation.teacherId)
+			edition.setCurrentDegree(updation.currentDegree)
+			edition.setCurrentTitle(updation.currentTitle)
+			edition.setMemo(updation.memo)
+			edition.setPosition(updation.position)
+			edition.setPhoneNum(updation.phoneNum)
+			edition.setSpecailEmail(updation.specailEmail)
+			if(edition){
+				edition.setFlow(2)
+				edition.setAuditStatus(0)
+			}
+			if(!edition?.save(flush:true)){
+				edition.errors.each {
+					println it
+				}
+				render status: HttpStatus.BAD_REQUEST
+			}else{
+				render status: HttpStatus.OK
+			}
+		}else 	render status: HttpStatus.BAD_REQUEST
+	}
 	def updateDetail(){
 		def form_id=params.int('id')?:0
 		def form = UpdateTask.get(form_id)

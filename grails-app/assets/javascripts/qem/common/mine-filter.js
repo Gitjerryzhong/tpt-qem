@@ -73,14 +73,30 @@ angular.module('mine.filter', [])
 .filter("groupForUniversity", function () {                       
     return function (items) {
 //    	console.log(items);
+    	var index1=1;
+    	var index2=1;
+    	var index3=1;
+    	var index4=1;
     	var groups={"1101":"未安排评审","1102":"未安排评审","2101":"未安排评审","2102":"未安排评审","3101":"未安排评审","3102":"未安排评审",
     				"11":"需评审","12":"已安排评审","13":"已安排评审","14":"已审","15":"已审","16":"已审",
-    				"21":"需评审","22":"已安排评审","23":"已安排评审","24":"已审","25":"已审","26":"已审",
-    				"31":"需评审","32":"已安排评审","33":"已安排评审","34":"已审","35":"已审","36":"已审"}
+    				"21":"需评审","22":"已安排评审","23":"已安排评审","24":"已审","25":"已审","26":"已审","27":"已审",
+    				"31":"需评审","32":"已安排评审","33":"已安排评审","34":"已审","35":"已审","36":"已审","37":"已审"}
     	angular.forEach(items, function (item) {
     		if(groups[item.runStatus]==undefined)item.groups="未提交或其他";
     		else item.groups=groups[item.runStatus];
+    		switch(item.groups){
+    		case "未安排评审": item.index=index1++; break;
+    		case "需评审": item.index=index2++; break;
+    		case "已审": item.index=index3++; break;
+    		case "未提交或其他": item.index=index4++; break;
+    		}
     	})
     return items;    
+    }
+})
+.filter("auditActionText", function () {                       
+    return function (id) {
+    	var actionText ={"20":"审核通过","21":"审核不通过","26":"退回"}
+    	return actionText[id.toString()];    
     }
 });

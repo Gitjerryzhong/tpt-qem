@@ -29,7 +29,8 @@
 <%--		<td>{{updateTypesText(item.updateTypes)}}</td>--%>
 		<td>{{updateStatusText(item.flow,item.auditStatus)}}{{}}</td>
 		<td>{{item.userName}}</td>
-		<td><a href="" ng-click="view(item.id)"><span class='glyphicon glyphicon-search'></span></a></td>
+		<td><a href="" ng-click="view(item.id)"><span class='glyphicon glyphicon-search' tooltip="查看"></span></a>
+		<a href="" ng-click="edit(item.id)" ng-if="item.flow==1"><span class='glyphicon glyphicon-edit' tooltip="编辑"></span></a></td>
 		</tr>
 	</tbody>
 

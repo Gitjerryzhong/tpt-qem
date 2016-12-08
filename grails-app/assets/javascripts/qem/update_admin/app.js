@@ -1,4 +1,4 @@
-var updateAdminApp = angular.module('updateAdminApp', ['ui.router','ui.bootstrap','mine.filter']);
+var updateAdminApp = angular.module('updateAdminApp', ['ui.router','ui.bootstrap','mine.filter','mine.constant']);
 updateAdminApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function($stateProvider, $urlRouterProvider,$httpProvider) {
 //	禁止IE11缓存数据
 	if (!$httpProvider.defaults.headers.get) {
@@ -15,31 +15,15 @@ updateAdminApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', fu
     })
     .state('updateDetail', {
         url: '/updateDetail',
-        templateUrl: 'qem-updateDetail.html'
+        templateUrl: 'qem-updateView.html'
     });
 }]);
-//updateAdminApp.filter('uniKey',function(){
-//	return function(items,key){
-//		var out = [];
-////		console.info(items);
-//		angular.forEach(items, function (item) {
-//			var exists=false;
-//            for (var i = 0; i < out.length; i++) {
-//                if (item[key] == out[i]) { 
-//                	exists=true;
-//                    break;
-//                }
-//            }
-//            if(!exists) {
-//            	out.push(item[key]);            	
-//            }
-//        })
-////        倒序排序
-//        out.sort( function(b,a){
-//				if(typeof(a)=="number") 
-//					return a>b;
-//				return a.localeCompare(b);
-//				});        
-//        return out;
-//	}
-//});
+updateAdminApp.filter("groups", function () {                       
+    return function (items) {
+    	var groups =[['未提交或其他','未知','未知','未提交或其他'], ['未提交或其他','未提交或其他','未提交或其他','未提交或其他'],['未审','已审','已审','未知']]; 
+    	angular.forEach(items, function (item) {
+    		item.groups=groups[item.flow][item.auditStatus];
+    	})
+    return items;    
+    }
+});

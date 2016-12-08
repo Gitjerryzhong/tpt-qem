@@ -21,7 +21,9 @@ cIndexApp.value("config", {
 		<tabset>
                 <tab heading="{{tabs[0].title}}" active="tabs[0].active" ng-click="go(tabs[0].link)">
 				</tab>
-                <tab heading="{{tabs[1].title}}" ng-click="historyTaskList()" active="tabs[1].active">
+                <tab heading="{{tabs[2].title}}" ng-click="go(tabs[2].link)" active="tabs[2].active">
+				</tab>
+				<tab heading="{{tabs[1].title}}" ng-click="historyTaskList()" active="tabs[1].active">
 				</tab>
          </tabset>
         <div  ui-view=""> </div>
@@ -56,6 +58,31 @@ cIndexApp.value("config", {
         	</div>
         </div>       
         </script> 
+        <script type="text/ng-template" id="tab3.html">
+         <div ng-controller="contractCtrl" style="margin-top:15px;">		
+		     <g:render template="task/taskList"></g:render>
+	       </div>     
+        </script> 
+        <script type="text/ng-template" id="qem-taskDetail.html">	
+			<div class="btn-toolbar" role="toolbar" style="margin-top:15px;">
+				 <div class="btn-group" role="group" aria-label="title"><h3 class="title">{{task.projectName}}</h3></div>
+				 
+				<div class="btn-group pull-right" role="group" aria-label="buttons">
+					<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="taskDetail(pagerT.prevId)">
+						<span class="glyphicon glyphicon-chevron-left"></span>
+					</button>
+					<button class="btn btn-default next {{disabled_n1T()}}" ng-click="taskDetail(pagerT.nextId)">
+						<span class="glyphicon glyphicon-chevron-right"></span>
+					</button>
+				</div>
+        	</div>	
+			<hr>	
+			<div class="">			
+				<div class="form-horizontal" >				
+            		<g:render template="task/contractDetail"></g:render>
+        		</div>
+     		</div>
+		</script>
 	</div>
 	   
 </body>

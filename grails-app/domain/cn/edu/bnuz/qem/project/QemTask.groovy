@@ -35,6 +35,7 @@ class QemTask {
 	public static final int	S_MID_PASS=24							//中检报告评审通过
 	public static final int	S_MID_NG=25								//中检报告评审不通过
 	public static final int	S_MID_BK=26								//中检报告退回学院
+	public static final int	S_MID_DL=27								//中检报告限期整改
 	public static final int	S_END_START=29							//结题开始
 	public static final int	S_END_SUBMIT=30							//结题书提交
 	public static final int	S_END_CONFIRM=31						//结题书确定评审
@@ -46,6 +47,7 @@ class QemTask {
 	public static final int	S_END_PASS=34							//结题书评审通过
 	public static final int	S_END_NG=35								//结题不通过
 	public static final int	S_END_BK=36								//结题退回学院
+	public static final int	S_END_DL=36								//结题暂缓通过
 	public static final int	STATUS_ACTIVE=10						//在研
 	public static final int	STATUS_ENDING=20						//结题
 	public static final int	STATUS_EXCEPTION_OK=31					//免结题终止：已弃用
@@ -88,8 +90,11 @@ class QemTask {
 	String mainGain			//主要成果
 	String applicationArea	//应用情况
 	String collegeAudit
+	String contractAudit	//合同审核意见
 	String otherLinks
 	boolean hasMid			//已中期
+	int delay
+
 	
 	/***
 	 * 执行状态：在研、结题、结题异常、免结题
@@ -136,7 +141,9 @@ class QemTask {
 		currentStage	nullable:true
 		position		nullable:true
 		collegeAudit	nullable:true
+		contractAudit	nullable:true
 		otherLinks		nullable:true
+		delay			nullable:true
 		summary(nullable:true,maxSize:1500)
 		mainContent(nullable:true,maxSize:1500)
 		mainGain(nullable:true,maxSize: 1500)
@@ -145,6 +152,7 @@ class QemTask {
 	int passAction() {
 		switch(runStatus) {
 			case S_SUBMIT:
+			case S_BK:
 				return 	S_CONFIRM_C											//学院审核通过
 			case S_CONFIRM_C:
 				return S_CONFIRM
@@ -173,6 +181,7 @@ class QemTask {
 	int ngAction(){
 		switch(runStatus) {
 			case S_SUBMIT:
+			case S_BK:
 				return 	S_NG_C													//学院审核不通过
 			case S_NG_C:
 			case S_CONFIRM_C:
@@ -202,6 +211,7 @@ class QemTask {
 	int bkAction(){
 		switch(runStatus) {
 			case S_SUBMIT:
+			case S_BK:
 				return 	S_BK_C													//学院审核退回
 			case S_CONFIRM_C:
 			case S_NG_C:
@@ -224,6 +234,18 @@ class QemTask {
 			case S_END_PASS_C:
 			case S_END_NG_C:
 				return S_END_BK
+			default:
+				return runStatus
+		}
+	}
+	int dlAction(){
+		switch(runStatus) {
+			case S_MID_PASS_C:
+			case S_MID_NG_C:
+				return S_MID_DL
+			case S_END_SUBMIT:
+			case S_END_BK:
+				return S_END_DL
 			default:
 				return runStatus
 		}

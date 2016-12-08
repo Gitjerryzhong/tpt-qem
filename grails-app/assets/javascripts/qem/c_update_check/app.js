@@ -28,8 +28,21 @@ app.config(['$stateProvider','$urlRouterProvider','$httpProvider', function($sta
     .state('updateRequest', {
         url: '/updateRequest',
         templateUrl: 'qem-updateRequest.html'
+    })
+    .state('editRequest', {
+        url: '/editRequest',
+        templateUrl: 'qem-editRequest.html'
     });
 }]);
+app.filter("groups", function () {                       
+    return function (items) {
+    	var groups =[['未提交或其他','未知','未知','已审'], ['未审','未知','已审','未审'],['已审','已审','已审','未知']]; 
+    	angular.forEach(items, function (item) {
+    		item.groups=groups[item.flow][item.auditStatus];
+    	})
+    return items;    
+    }
+});
 app.controller('defaultCtrl',['$scope','$http','$filter','$state',function($scope,$http,$filter$state,$state){ //项目信息	
 	$scope.tabs =[{title:'变更审批',active:false,link:'tab1'},{title:'负责人变更申请',active:false,link:'tab2'},{title:'负责人变更申请列表',active:false,link:'tab3'}]
 	$scope.updateView={};

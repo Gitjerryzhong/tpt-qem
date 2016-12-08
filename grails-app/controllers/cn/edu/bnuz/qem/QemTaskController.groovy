@@ -31,6 +31,8 @@ class QemTaskController {
 	def showTask(long id){
 //		println id
 //		def task = securityService.userId.equals(project?.teacher.id)?project?.qemTask:null
+		def isUpdateRequest=params.boolean("update")?:false
+		println isUpdateRequest
 		def task = QemTask.get(id)
 //		println task?.teacher
 		def stages = task?.stage
@@ -39,6 +41,11 @@ class QemTaskController {
 			havingStage+=["${item.currentStage}"]
 		}
 		if(task?.teacher.id==securityService.userId){
+			def project =QemProject.get(task.projectId)
+			def auditContent
+			if(project){
+				auditContent=project?.review?.detail
+			}
 			render (view:"taskMenagement",model:[
 					task:[
 						id:task.id,
@@ -60,9 +67,12 @@ class QemTaskController {
 						status:task.status,
 						havingStage:havingStage,
 						otherLinks:task.otherLinks,
-						runStatus:task.runStatus
+						runStatus:task.runStatus,
+						contractAudit:task.contractAudit,
+						auditContent:auditContent
 						],
 					notice:taskService.getLastCheckNotice(),
+					isUpdate:[isUpdateRequest],
 					fileList:getFileNames(task.id.toString())
 				])			
 		}
@@ -77,6 +87,11 @@ class QemTaskController {
 					havingStage+=["${item.currentStage}"]
 				}
 				if(task?.teacher.id==securityService.userId){
+					def project =QemProject.get(task.projectId)
+					def auditContent
+					if(project){
+						auditContent=project?.review?.detail
+					}
 					render ([task:[
 								id:task.id,
 								projectName:task.projectName,
@@ -97,7 +112,9 @@ class QemTaskController {
 								status:task.status,
 								havingStage:havingStage,
 								otherLinks:task.otherLinks,
-								runStatus:task.runStatus
+								runStatus:task.runStatus,
+								contractAudit:task.contractAudit,
+								auditContent:auditContent
 								],
 							fileList:getFileNames(task.id.toString())
 						] as JSON)
@@ -330,6 +347,7 @@ class QemTaskController {
 				progressText:		stage?.progressText?:"",
 				unfinishedReson:	stage?.unfinishedReson?:"",
 				memo:				stage?.memo?:"",
+				endAudit:			stage?.endAudit,
 				status:				stage?.status],
 			fileList:getFileNames(task.id.toString(),currentStage)] as JSON)
 		}else{
@@ -478,9 +496,6 @@ class QemTaskController {
 		def f = request.getFile('file')
 		if(!f.empty) {
 			//计算文件前缀
-//			def pre=fileList?.size()+1
-//			Notice notice= Notice.last()
-//			def filePath= grailsAttributes.getApplicationContext().getResource("/qemUpload/").getFile().toString()+"/task/"+securityService.userId+"/"+taskId
 			def filePath= grailsApplication.config.tms.qem.uploadPath+"/task/"+securityService.userId+"/"+taskId
 			if(isDeclaration) filePath+="/"+isDeclaration
 			File dir = new File(filePath)
@@ -488,7 +503,13 @@ class QemTaskController {
 				dir.mkdirs()
 			}
 			def filename=f.originalFilename
-			fileList.add(filename)
+//			申报书增加时间戳
+			def sbs=message(code:"qem.stageIndex.${100}",args:[])
+			def fileType=filename.substring(filename.lastIndexOf("."))
+			if(sbs==isDeclaration){
+				filename=filename.substring(0,filename.lastIndexOf("."))+"${new Date().format('yyyyMMddHHmm')}${fileType}"
+			}			
+			fileList.add("${sbs}___${filename}")
 			f.transferTo( new File(filePath+"/"+filename) )
 			render ( [fileList:fileList] as JSON)
 		}

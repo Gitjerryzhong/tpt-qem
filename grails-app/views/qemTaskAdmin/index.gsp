@@ -54,48 +54,53 @@
 		<g:render template="task/annuList"></g:render>
 	</div>
 	</script>
-	<script type="text/ng-template" id="qem-taskDetail.html">	
-	<div class="modal-header">            
-			<div class="pull-right">
-				<div class="btn-group">
-				<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="taskDetail(pagerT.prevId)">
-					<span class="glyphicon glyphicon-chevron-left"></span>
-				</button>
-				<button class="btn btn-default next {{disabled_n1T()}}" ng-click="taskDetail(pagerT.nextId)">
-					<span class="glyphicon glyphicon-chevron-right"></span>
-				</button>
+	<script type="text/ng-template" id="qem-taskDetail.html">
+	<div class="btn-toolbar" role="toolbar">
+				 <div class="btn-group" role="group" aria-label="title"><h3 class="title">{{task.projectName}}</h3></div>
+				 
+				<div class="btn-group pull-right" role="group" aria-label="buttons">
+					<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="taskDetail(task.preid)">
+						<span class="glyphicon glyphicon-chevron-left"></span>
+					</button>
+					<button class="btn btn-default next {{disabled_n1T()}}" ng-click="taskDetail(task.nextid)">
+						<span class="glyphicon glyphicon-chevron-right"></span>
+					</button>
 				</div>
-			</div>
-			<h3 class="title">{{task.projectName}}</h3>
-        </div>
-<%--		<form name="myForm" role="form" novalidate>	--%>
-	<div class="modal-body">			
-			<div class="form-horizontal" >				
-            	<g:render template="task/taskDetail"></g:render>
-<%--				<div class="form-group" ng-if="task.runStatus==201 || task.runStatus==202">--%>
-<%--					 <label for="content" class="col-sm-2 control-label">审核意见</label>--%>
-<%--					 <div class="col-sm-10">--%>
-<%--						<textarea name="content"  rows="4" class="form-control" placeholder="请输入意见！不少于6个字！" ng-model="trial.content" required></textarea>--%>
-<%--					 </div>--%>
+        	</div>	
+			<hr>	
+        	<div class="">
+				<div class="form-horizontal" >				
+            		<g:render template="task/taskDetail"></g:render>
+        		</div>
+        	</div>		
+<%--	<div class="modal-header">            --%>
+<%--			<div class="pull-right">--%>
+<%--				<div class="btn-group">--%>
+<%--				<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="taskDetail(pagerT.prevId)">--%>
+<%--					<span class="glyphicon glyphicon-chevron-left"></span>--%>
+<%--				</button>--%>
+<%--				<button class="btn btn-default next {{disabled_n1T()}}" ng-click="taskDetail(pagerT.nextId)">--%>
+<%--					<span class="glyphicon glyphicon-chevron-right"></span>--%>
+<%--				</button>--%>
 <%--				</div>--%>
-        	</div>
-     </div>
-<%--	<div class="modal-footer col-sm-9" ng-if="task.runStatus==201 || task.runStatus==202">--%>
-<%-- 			<button class="btn btn-success" ng-click="okT('20',task.id,pagerT.prevId,pagerT.nextId)" ng-disabled="myForm.$invalid || trial.content.length<6"> 同意</button>--%>
-<%--			<button class="btn btn-warning" ng-click="okT('21',task.id,pagerT.prevId,pagerT.nextId)" ng-disabled="myForm.$invalid || trial.content.length<6"> 不同意</button>--%>
-<%--			<button class="btn btn-danger" ng-click="okT('26',task.id,pagerT.prevId,pagerT.nextId)" ng-disabled="myForm.$invalid || trial.content.length<6"> 退回</button>--%>
-<%--	</div>--%>
-<%--	</form>		--%>
+<%--			</div>--%>
+<%--			<h3 class="title">{{task.projectName}}</h3>--%>
+<%--        </div>--%>
+<%--	<div class="modal-body">			--%>
+<%--			<div class="form-horizontal" >				--%>
+<%--            	<g:render template="task/taskDetail"></g:render>--%>
+<%--        	</div>--%>
+<%--     </div>--%>
 	</script>
 	<script type="text/ng-template" id="qem-stageDetail.html">		
 			<div class="btn-toolbar" role="toolbar">
 				 <div class="btn-group" role="group" aria-label="title"><h3 class="title">{{task.projectName}}</h3></div>
 				 
 				<div class="btn-group pull-right" role="group" aria-label="buttons">
-					<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="stageDetail(pagerT.prevId)">
+					<button class="btn btn-default prev {{disabled_p1T()}}" ng-click="stageDetail(task.preid)">
 						<span class="glyphicon glyphicon-chevron-left"></span>
 					</button>
-					<button class="btn btn-default next {{disabled_n1T()}}" ng-click="stageDetail(pagerT.nextId)">
+					<button class="btn btn-default next {{disabled_n1T()}}" ng-click="stageDetail(task.nextid)">
 						<span class="glyphicon glyphicon-chevron-right"></span>
 					</button>
 				</div>

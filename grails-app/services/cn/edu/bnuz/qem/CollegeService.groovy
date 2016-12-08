@@ -271,6 +271,34 @@ where  qp.status=10 and qp.department.id=:id
 ''',[id:securityService.departmentId]			
 				return results
 	}
+	def contractList(){
+		def results = QemTask.executeQuery '''
+select new map(
+	qp.id as id,
+    t.name	as userName,
+	qp.projectName as projectName,
+	qp.projectLevel as projectLevel,
+	m.shortName	as departmentName,
+	qt.name as type,
+	qp.sn	as sn,
+	qp.fundingProvince+qp.fundingUniversity+qp.fundingCollege as budget,
+	SUBSTRING(qp.beginYear,1,7)	as beginYear,
+	qp.expectedMid	as expectedMid,
+	qp.expectedEnd	as expectedEnd,
+	qp.projectContent	as projectContent,
+	qp.members		as memberstr,
+	qp.status		as status,
+	qp.endDate		as endDate,
+	qp.runStatus		as runStatus,
+	qp.hasMid		as hasMid,
+	''				as memo,
+	qp.expectedGain	as expectedGain	
+)
+from QemTask qp join qp.teacher t join qp.qemType qt join qp.department m
+where  qp.status=0 and qp.department.id=:id 
+''',[id:securityService.departmentId]			
+				return results
+	}
 	def taskCounts(){
 		def results = QemTask.executeQuery '''
 select new map(

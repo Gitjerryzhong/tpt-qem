@@ -5,6 +5,7 @@ import cn.edu.bnuz.tms.organization.Teacher;
 import cn.edu.bnuz.tms.organization.Department;
 import cn.edu.bnuz.tms.security.SecurityService;
 import cn.edu.bnuz.qem.project.QemTask;
+import cn.edu.bnuz.qem.project.QemTaskAudit
 import cn.edu.bnuz.qem.project.QemType;
 import cn.edu.bnuz.qem.update.UpdateTask
 import grails.converters.JSON
@@ -13,12 +14,11 @@ import org.springframework.http.HttpStatus
 class QemUpdateAdminController {
 	SecurityService securityService
 	ExportService exportService
+	AttachService attachService
 	UpdateAdminService	updateAdminService
     def index() {
-		def taskList=updateAdminService.taskUpdateList()
-//		def taskCounts=updateAdminService.taskUpdateCounts()
+		def taskList=updateAdminService.updateList()
 		render (view:"index",model:[taskList:taskList])
-//		render (view:"taskMenagement",model:[id:id])
 	}
 	def historyRequestList(){
 		def taskList=updateAdminService.taskUpdateList()
@@ -30,47 +30,117 @@ class QemUpdateAdminController {
 	 * @return
 	 */
 	def updateDetail(){
+//		updateAdminService.moveAttch("","")
 		def form_id=params.int('id')?:0
-		def form = UpdateTask.get(form_id)
-		if(form){
-			def nextId= updateAdminService.checkingNext(form_id,form.status)
-			def prevId= updateAdminService.checkingPrev(form_id,form.status)
-			def task=QemTask.get(form.taskId)
-			render([form:form,
-					pager:[nextId:nextId,prevId:prevId],
-					teacherName: Teacher.get(form.teacherId)?.name,
-					type:QemType.get(form.qemTypeId)?.name,
-					commitDate:form.commitDate.format("yyyy-MM-dd"),
+		def updateView = UpdateTask.get(form_id)
+		if(updateView){
+			def isMyUpdate = updateView.updateTypes=='1;'?true:false
+			def fileList
+			def declarations
+			def task=QemTask.get(updateView.taskId)
+			def audits=QemTaskAudit.findAllBySrcAndObjectId(updateView.class.name,updateView.id)
+			audits.each {
+				println it
+			}
+			def filePath= grailsApplication.config.tms.qem.uploadPath+"/update/${task.teacher.id}/${updateView.taskId}/${updateView.commitDate.format('yyyyMMdd')}"
+			if(isMyUpdate) {
+				def departmentId=Teacher.get(updateView.userId)?.department.id
+				filePath = grailsApplication.config.tms.qem.uploadPath+"/update/${departmentId}/${updateView.taskId}/${updateView.commitDate.format('yyyyMMdd')}"
+			}
+//			println updateView.userId
+			fileList = attachService.getFileNames_Qem(filePath)
+			def filePath_old= grailsApplication.config.tms.qem.uploadPath+"/task/${task.teacher.id}/${updateView.taskId}"
+			declarations = attachService.getFileNames_Qem(filePath_old)
+			render([updateView:updateView,
+					teacherName: Teacher.get(updateView.teacherId)?.name,
+//					commitDate:updateView.commitDate.format("yyyy-MM-dd"),
 					task:task,
 					origTeacherName:task?.teacher.name,
-					origType:task?.qemType.name,
-					fileList:getFileNames(form.taskId.toString(),form.commitDate.format("yyyyMMdd"))] as JSON)
+					type:task?.qemType.name,
+					fileList:fileList,
+					audits:audits,
+					declarations:declarations] as JSON)
 		}else{
 			render status: HttpStatus.BAD_REQUEST
 		}
 		
 	}
-	/***
-	 * 用于获取指定项目变更单和指定日期的所有附件
-	 * @param projectId
+	/**
+	 * 审核
 	 * @return
 	 */
-	private List<String> getFileNames(String taskId,String dateStr){
-		def filePath= grailsApplication.config.tms.qem.uploadPath+"/update/"+taskId+"/"+dateStr
-		
-		List<String> fileNames=new ArrayList<String>()
-		File dir= new File(filePath)
-		if(dir.isDirectory()){
-			for(File file: dir.listFiles()){
-				if(file.isDirectory()){ //如果申报书子目录
-					for(File f:file.listFiles()){
-						if(f.name.indexOf("del_")==-1) fileNames.add(file.name+"___"+f.name)
-					}
-				}else if(file.name.indexOf("del_")==-1){
-					fileNames.add(file.name)
-				}
+	def audit(){
+		def audit=new AuditForm(request.JSON)
+		def updateTask=UpdateTask.get(audit.form_id)
+		if(updateTask.flow==UpdateTask.F_UNIVERSITY && updateTask.auditStatus ==UpdateTask.AU_NONE){
+			int check= Integer.parseInt(audit.check)
+			def oldData
+			switch(check){
+			case 20: oldData=updateAdminService.doUpdate(updateTask,grailsApplication.config.tms.qem.uploadPath)
+//					 println "${oldData as JSON}"
+					 break;
+			case 21: updateTask.setAuditStatus(UpdateTask.AU_NG)
+					 break;
+			case 26: updateTask.setFlow(UpdateTask.F_COLLEGE)
+					 updateTask.setAuditStatus(UpdateTask.AU_BG)
+					 break;
 			}
+			updateTask.save(flush:true)
+			def content=oldData?"${audit.content};${oldData as JSON}":audit.content
+			QemTaskAudit qemAudit=new QemTaskAudit([
+				userId:securityService.userId,
+				userName:securityService.userName,
+				action:audit.check,
+				content:content,
+				date:new Date(),
+				objectId:updateTask.id,
+				src:updateTask.class.name])
+			qemAudit.save(flush:true)
+			def taskList=updateAdminService.updateList()
+			render ([taskList:taskList]as JSON)
+		}else render status: HttpStatus.BAD_REQUEST
+	}
+	/**
+	 * 下载附件
+	 * @return
+	 */
+	def downloadT(){
+		def taskId=params.taskId
+		def fileType =params.fileType
+		if(taskId){
+			def task = QemTask.get(taskId) 
+			if(task?.department.id != securityService.departmentId) { return}
+			def filePath= grailsApplication.config.tms.qem.uploadPath+"/task/${task.teacher.id}/${taskId}/${fileType}"
+//			println filePath
+			response.setContentType("application/zip")
+			response.setHeader("Content-disposition",
+				 "attachment;filename=\""+
+				 java.net.URLEncoder.encode("${fileType}.zip", "UTF-8")+"\"")
+			response.outputStream << exportService.download(filePath)
+			response.outputStream.flush()
+		}else {
+			render status: HttpStatus.NOT_FOUND
 		}
-		return fileNames
+	}
+	def downloadU(){
+		def updateId=params.taskId
+		def fileType =params.fileType
+		def isMine = params.int("isMine")
+		if(updateId){
+			def updateView = UpdateTask.get(updateId)
+			def task = QemTask.get(updateView.taskId)
+			if(task?.department.id != securityService.departmentId) { return}
+			def filePath= grailsApplication.config.tms.qem.uploadPath+"/update/${task.teacher.id}/${updateView.taskId}/${updateView.commitDate.format('yyyyMMdd')}/${fileType}"
+			if(isMine)filePath= grailsApplication.config.tms.qem.uploadPath+"/update/${securityService.departmentId}/${updateView.taskId}/${updateView.commitDate.format('yyyyMMdd')}/${fileType}"
+			println filePath
+			response.setContentType("application/zip")
+			response.setHeader("Content-disposition",
+				 "attachment;filename=\""+
+				 java.net.URLEncoder.encode("${fileType}.zip", "UTF-8")+"\"")
+			response.outputStream << exportService.download(filePath)
+			response.outputStream.flush()
+		}else {
+			render status: HttpStatus.NOT_FOUND
+		}
 	}
 }

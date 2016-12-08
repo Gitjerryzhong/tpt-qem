@@ -1,4 +1,4 @@
-app.controller('checkCtrl',['$scope','$http','$filter','$location','aboutUpdate',function($scope,$http,$filter$state,$location,aboutUpdate){ //项目信息	
+app.controller('checkCtrl',['$scope','$http','$filter','$location','aboutUpdate',function($scope,$http,$filter,$location,aboutUpdate){ //项目信息	
 	$scope.requestList =[];
 	$scope.checkStatus ="0";
 	$http({
@@ -6,6 +6,8 @@ app.controller('checkCtrl',['$scope','$http','$filter','$location','aboutUpdate'
 			url:"/tms/qemUpdateCollegeCheck/requestList"
 		  }).success(function(data) {
 			  $scope.requestList = data.updateList;
+			  $scope.requestList = $filter('groups')($scope.requestList);
+			  console.log($scope.requestList);
 			});
 	$scope.updateTypesText = function(updateTypes){
 		var items=updateTypes.split(";");
@@ -36,7 +38,7 @@ app.controller('checkCtrl',['$scope','$http','$filter','$location','aboutUpdate'
    				id:id
    			}
    		  }).success(function(data) {
-   			  console.log(data);
+//   			  console.log(data);
    			  $scope.getUpdateView(data);
    			$location.url("/updateView");
    			});

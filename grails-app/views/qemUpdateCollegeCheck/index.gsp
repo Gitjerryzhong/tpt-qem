@@ -17,8 +17,6 @@
 		<tabset>
                 <tab ng-repeat="index in [0,1,2]" heading="{{tabs[index].title}}" active="tabs[index].active" ng-click="go(tabs[index].link)">
 				</tab>
-<%--                <tab heading="{{tabs[1].title}}" ng-click="go(tabs[1].link)" active="tabs[1].active">--%>
-<%--				</tab>--%>
          </tabset>
         <div  ui-view=""> </div>
         <script type="text/ng-template" id="tab1.html">
@@ -40,6 +38,14 @@
         	<div class="form-horizontal" ng-controller="requestCtrl">
 				<form name="myForm" role="form" novalidate>				
             		<g:render template="update/form"></g:render>
+					<button class="btn btn-primary pull-right" ng-click="commit(myForm.$invalid)" > 提交</button>
+				</form>
+        	</div>      
+        </script> 
+        <script type="text/ng-template" id="qem-editRequest.html">
+        	<div class="form-horizontal" ng-controller="editCtrl">
+				<form name="myForm" role="form" novalidate>				
+            		<g:render template="update/edit"></g:render>
 					<button class="btn btn-primary pull-right" ng-click="commit(myForm.$invalid)" > 提交</button>
 				</form>
         	</div>      

@@ -28,34 +28,30 @@ cCheckApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', functio
     .state('historyList', {
         url: '/historyList',
         templateUrl: 'qem-historyTaskList.html'
-    })
-    .state('taskDetail', {
-        url: '/taskDetail',
-        templateUrl: 'qem-taskDetail.html'
     });
+//    .state('taskDetail', {
+//        url: '/taskDetail',
+//        templateUrl: 'qem-taskDetail.html'
+//    })
+    
 }]);
-//cCheckApp.filter('uniKey',function(){
-//	return function(items,key){
-//		var out = [];
-////		console.info(items);
-//		angular.forEach(items, function (item) {
-//			var exists=false;
-//            for (var i = 0; i < out.length; i++) {
-//                if (item[key] == out[i]) { 
-//                	exists=true;
-//                    break;
-//                }
-//            }
-//            if(!exists) {
-//            	out.push(item[key]);            	
-//            }
-//        })
-////        倒序排序
-//        out.sort( function(b,a){
-//				if(typeof(a)=="number") 
-//					return a>b;
-//				return a.localeCompare(b);
-//				});        
-//        return out;
-//	}
-//})
+cCheckApp.filter("groups", function () {                       
+	return function (items) {
+//    	console.log(items);
+		var index1=1;
+    	var index2=1;
+    	var index3=1;
+    	var groups={"0":"未提交或其他","1":"未审","2":"已审","3":"已审","4":"未审","5":"已审",
+    				"201":"已审","202":"已审","203":"已审"}
+    	angular.forEach(items, function (item) {
+    		if(groups[item.runStatus]==undefined)item.groups="未提交或其他";
+    		else item.groups=groups[item.runStatus];
+    		switch(item.groups){
+    		case "未审": item.index=index1++; break;
+    		case "已审": item.index=index2++; break;
+    		case "未提交或其他": item.index=index3++; break;
+    		}
+    	})
+    return items;    
+    }
+});

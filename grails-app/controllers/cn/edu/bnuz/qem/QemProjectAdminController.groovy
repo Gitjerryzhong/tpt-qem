@@ -179,7 +179,7 @@ class QemProjectAdminController {
 			project?.review.setResult(result)
 			project?.review.setDetail(content)
 			project?.review.setStatus(Review.STATUS_PASS+Integer.parseInt(result))
-			project?.save(flush:true)
+			
 			def audit = new QemAudit([
 				userId:securityService.userId,
 				userName:securityService.userName,
@@ -188,6 +188,7 @@ class QemProjectAdminController {
 				date: new Date(),
 				form:project])
 			audit.save(flush:true)
+			project?.save(flush:true)
 			if(result!="1"){
 				def today= new Date()
 				def task

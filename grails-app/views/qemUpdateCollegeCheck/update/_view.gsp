@@ -1,8 +1,14 @@
 <div class="row">
 <div ng-class="{'col-sm-9':updateView.flow==1 &&(updateView.auditStatus==0 || updateView.auditStatus==3),'col-sm-12':updateView.flow!=1 || updateView.auditStatus==1 || updateView.auditStatus==2}">
 <div class="panel panel-default"  id="mainInfo" >
-<div class="panel-heading title">基本信息</div>
+<div class="panel-heading title">基本信息  <button class="btn btn-default pull-right" ng-if="updateView.flow==2 &&updateView.auditStatus==0" ng-click="cancel(updateView.id)">撤销</button></div>
 <div class="form-body">
+	<div class="form-group" >
+	<label class="col-sm-2 control-label">项目名称</label>
+		<div class="col-sm-10 form-control-static">
+				<p>{{taskView.projectName}}</p>
+		</div>
+	</div>
 	<div class="form-group" >
 	<label class="col-sm-2 control-label">变更内容</label>
 		<div class="col-sm-10 form-control-static">
@@ -25,19 +31,19 @@
 					<th colspan="2" >原项目信息</th>
 					<th colspan="2" >变更为</th>
 				</tr>
-				<tr>
-					<th style="width:6em">标题</th>
-					<th style="width:30em">内容</th>
-					<th style="width:6em">标题</th>
-					<th style="width:30em">内容</th>
-				</tr>
+<%--				<tr>--%>
+<%--					<th style="width:6em">标题</th>--%>
+<%--					<th style="width:30em">内容</th>--%>
+<%--					<th style="width:6em">标题</th>--%>
+<%--					<th style="width:30em">内容</th>--%>
+<%--				</tr>--%>
 			</thead>
 			<tbody id="listBody">
 				<tr ng-if="hasUpdateType('3')">
-					<td class="oldInfo">项目名称</td>
-					<td class="oldInfo">{{taskView.projectName}}</td>
-					<td><span >项目名称</span></td>
-					<td>{{updateView.projectName}}</td>
+					<td class="oldInfo" style="width:6em">项目名称</td>
+					<td class="oldInfo" style="width:30em">{{taskView.projectName}}</td>
+					<td style="width:6em"><span >项目名称</span></td>
+					<td style="width:30em">{{updateView.projectName}}</td>
 				</tr>
 				<tr ng-if="hasUpdateType('7')">
 					<td class="oldInfo">参与人</td>
@@ -127,7 +133,7 @@
 </div>
 </div>
 <div class="form-group"  ng-if="fileList">
-<label class="col-sm-2 control-label"><a href="/tms/qemUpdateCollegeCheck/downloadU?taskId={{updateView.id}}&fileType=申报书&isMine=1"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>申报书变更为</label>
+<label class="col-sm-2 control-label"><a href="/tms/qemUpdateCollegeCheck/downloadU?taskId={{updateView.id}}&fileType=申报书&isMine={{updateView.updateTypes=='1;'?1:0}}"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>申报书变更为</label>
 <div class="col-sm-10 form-control-static">
 	<ul>
 		<li ng-repeat="item in fileList"><span>{{getFileName(item)}}</span></li>

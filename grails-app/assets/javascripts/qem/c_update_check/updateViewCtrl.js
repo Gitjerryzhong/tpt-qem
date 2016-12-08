@@ -36,5 +36,18 @@ app.controller('updateViewCtrl',['$scope','$http','$location','$filter','aboutUp
 			  $location.url("/tab1");
 		  })
 	}
-	
+	$scope.cancel = function(id){
+		$http({
+   			method:'GET',
+   			url:"/tms/qemUpdateCollegeCheck/cancel",
+   			params:{
+   				id:id,
+   				isMine:true
+   			}
+   		  }).success(function(data) {
+   			  console.log(data);
+   			  $scope.getUpdateView(data);
+   			$location.url("/editRequest");
+   			});
+	}
 }]);

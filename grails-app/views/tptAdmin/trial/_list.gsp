@@ -2,16 +2,27 @@
 	<div class="pull-right">
 		<button  class="btn btn-default" ng-click="open()" ng-if="checkStatus>=4" ng-disabled="!checkSelected()">设置导师</button>
 	</div>
-    <div class="row" ng-if="checkStatus<4">
-    	<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="1" ng-click="goTrial(1)"><label >未审核</label><span class="badge">{{pager.total[1]}}</span></span>
-		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="2" ng-click="goTrial(2)"><label >审核通过</label><span class="badge">{{pager.total[2]}}</span></span>
-		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="3" ng-click="goTrial(3)"><label >审核不通过</label><span class="badge agree">{{pager.total[3]}}</span></span>
+    <div  ng-if="checkStatus<4">
+<%--    	<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="1" ng-click="goTrial(1)"><label >未审核</label><span class="badge">{{pager.total[1]}}</span></span>--%>
+<%--		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="2" ng-click="goTrial(2)"><label >审核通过</label><span class="badge">{{pager.total[2]}}</span></span>--%>
+<%--		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="3" ng-click="goTrial(3)"><label >审核不通过</label><span class="badge agree">{{pager.total[3]}}</span></span>--%>
+	<ul class="nav nav-pills" role="tablist" ng-init="tabActive=1">
+	  <li role="presentation" ng-class="{'active':tabActive==1}"><a href="#" ng-click="goTrial(1);tabActive=1">未审核 <span class="badge">{{pager.total[1]}}</span></a></li>
+	  <li role="presentation" ng-class="{'active':tabActive==2}"><a href="#" ng-click="goTrial(2);tabActive=2">审核通过<span class="badge">{{pager.total[2]}}</span></a></li>
+	  <li role="presentation" ng-class="{'active':tabActive==3}"><a href="#"ng-click="goTrial(3);tabActive=3">审核不通过 <span class="badge">{{pager.total[3]}}</span></a></li>
+	</ul>
     </div> 
 	<div class="row" ng-if="checkStatus>=4">
-    	<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="4" ng-click="goTrial(4)"><label >未审核</label><span class="badge">{{pager.total[4]}}</span></span>
-		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="5" ng-click="goTrial(5)"><label >审核通过</label><span class="badge">{{pager.total[5]}}</span></span>
-		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="7" ng-click="goTrial(7)"><label >审核不通过</label><span class="badge agree">{{pager.total[7]}}</span></span>
-		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="6" ng-click="goTrial(6)"><label >已关闭</label><span class="badge agree">{{pager.total[6]}}</span></span>
+<%--    	<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="4" ng-click="goTrial(4)"><label >未审核</label><span class="badge">{{pager.total[4]}}</span></span>--%>
+<%--		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="5" ng-click="goTrial(5)"><label >审核通过</label><span class="badge">{{pager.total[5]}}</span></span>--%>
+<%--		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="7" ng-click="goTrial(7)"><label >审核不通过</label><span class="badge agree">{{pager.total[7]}}</span></span>--%>
+<%--		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="6" ng-click="goTrial(6)"><label >已关闭</label><span class="badge agree">{{pager.total[6]}}</span></span>--%>
+	<ul class="nav nav-pills" role="tablist" ng-init="tabActive=4">
+	  <li role="presentation" ng-class="{'active':tabActive==4}"><a href="#" ng-click="goTrial(4);tabActive=4">未审核 <span class="badge">{{pager.total[4]}}</span></a></li>
+	  <li role="presentation" ng-class="{'active':tabActive==5}"><a href="#" ng-click="goTrial(5);tabActive=5">审核通过<span class="badge">{{pager.total[5]}}</span></a></li>
+	  <li role="presentation" ng-class="{'active':tabActive==7}"><a href="#"ng-click="goTrial(7);tabActive=7">审核不通过 <span class="badge">{{pager.total[7]}}</span></a></li>
+	   <li role="presentation" ng-class="{'active':tabActive==6}"><a href="#"ng-click="goTrial(6);tabActive=6">已关闭 <span class="badge">{{pager.total[6]}}</span></a></li>
+	</ul>
     </div>    
 </div>
 	<div class="modal-body">		

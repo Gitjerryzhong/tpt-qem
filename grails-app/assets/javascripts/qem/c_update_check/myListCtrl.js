@@ -27,6 +27,7 @@ app.controller('myListCtrl',['$scope','$http','$location','$filter','aboutUpdate
      }
 	$scope.updateStatusText = function(flow,auditStatus){
 		if(flow==2 && auditStatus==0) return "学校未审";
+		if(flow==1 && auditStatus==0) return "未提交";
 		return aboutUpdate.updateStatus[flow][auditStatus];
 	}
 	$scope.view = function(id){
@@ -41,6 +42,20 @@ app.controller('myListCtrl',['$scope','$http','$location','$filter','aboutUpdate
    			  console.log(data);
    			  $scope.getUpdateView(data);
    			$location.url("/updateView");
+   			});
+	}
+	$scope.edit = function(id){
+		$http({
+   			method:'GET',
+   			url:"/tms/qemUpdateCollegeCheck/updateDetail",
+   			params:{
+   				id:id,
+   				isMine:true
+   			}
+   		  }).success(function(data) {
+   			  console.log(data);
+   			  $scope.getUpdateView(data);
+   			$location.url("/editRequest");
    			});
 	}
 }]);

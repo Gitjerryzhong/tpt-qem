@@ -1,7 +1,6 @@
-<div class="col-sm-9">
-	<div class="form-group">
-	<h4 class="col-sm-offset-4 col-sm-4 control-label" style="text-align:center;padding-bottom:15px"><strong>任务书内容</strong></h4>
-	</div>
+<div class="col-sm-9" id="mainLayout">
+<div class="panel panel-default"  id="baseInfo" >
+<div class="panel-heading title">基本信息</div>
 	<div class="form-group">
 	    <label class="col-sm-2 control-label">项目编号</label>
 	    <div class="col-sm-2 form-control-static"><span class="Emphasis">{{task.sn}}</span></div>
@@ -32,7 +31,7 @@
 	    <label class="col-sm-2 control-label">参与人</label>
 	    <div class="col-sm-2 form-control-static"><span>{{task.members}}</span></div>
 	</div>
-	<div class="form-group">
+	<div class="form-group" ng-if="task.fundingUniversity">
 	    <label class="col-sm-2 control-label">省级划拨</label>
 	    <div class="col-sm-2 form-control-static"><span>{{task.fundingProvince}}万元</span></div>
 	    <label class="col-sm-2 control-label">校级划拨</label>
@@ -48,42 +47,150 @@
 	    <label for="expectedEnd" class="col-sm-2 control-label">结题预期</label>
 	    <div class="col-sm-2 form-control-static"><span>{{task.expectedEnd}}年</span></div>    
 	</div>
-	<div class="form-group">
+	<div class="form-group" ng-if="task.projectContent">
 	    <label for="projectContent" class="col-sm-2 control-label">主要内容</label>
 	    <div class="col-sm-10">
 	    	<pre>{{task.projectContent}}</pre>
 	    </div>
 	</div>
-	<div class="form-group">
+	<div class="form-group" ng-if="task.expectedGain">
 	    <label for="expectedGain" class="col-sm-2 control-label">预期成果</label>
 	    <div class="col-sm-10">
 	    	<pre>{{task.expectedGain}}</pre>
 	    </div>    
 	</div>
-	<div class="form-group">
+	<div class="form-group" ng-if="task.collegeAudit">
 	    <label for="expectedGain" class="col-sm-2 control-label">学院意见</label>
 	    <div class="col-sm-10">
 	    	<pre>{{task.collegeAudit}}</pre>
 	    </div>    
 	</div>
-	
-	<div class="form-group">
-	<h4 class="col-md-offset-4 col-md-4 control-label" style="text-align:center;padding-bottom:15px"><strong>附    件</strong><a href="/tms/qemTaskAdmin/downloadAttch_T/{{task.id}}">（下载全部<span class="glyphicon glyphicon-download-alt"></span>）</a></h4>
+</div>
+<div class="panel panel-warning" ng-if="auditList">
+			<div class="panel-heading">
+		    <h4 class="panel-title">变更溯源</h4>
+		    </div>
+		    <div class="panel-body">
+			    <div ng-repeat="item in auditList">
+			    <span  class="form-group">
+			    	<label >{{$index+1}}.变更日期</label>	
+			    	<span >{{dateFormat(item.date) | date:"yyyy-MM-dd"}}</span>	
+			    </span>		
+			<table class="table table-bordered" id="updateInfo">
+			<thead>
+				<tr>
+					<th>变更项目</th>
+					<th >原信息</th>
+				</tr>
+			</thead>
+			<tbody id="listBody">
+				<tr ng-if="item.taskView.projectName">
+					<td >项目名称</td>
+					<td >{{item.taskView.projectName}}</td>
+				</tr>
+				<tr ng-if="item.taskView.members">
+					<td >参与人</td>
+					<td >{{item.taskView.members}}</td>
+				</tr>
+				<tr ng-if="item.taskView.expectedMid">
+					<td >中期预期</td>
+					<td >{{item.taskView.expectedMid}}</td>
+				</tr>
+				<tr ng-if="item.taskView.expectedEnd">
+					<td >结题预期</td>
+					<td >{{item.taskView.expectedEnd}}</td>
+				</tr>
+				<tr ng-if="item.taskView.projectContent">
+					<td >研究内容</td>
+					<td >{{item.taskView.projectContent}}</td>
+				</tr>
+				<tr ng-if="item.taskView.expectedGain">
+					<td >成果形式</td>
+					<td >{{item.taskView.expectedGain}}</td>
+				</tr>
+				<tr ng-if="item.taskView.teacherId">
+					<td >负责人</td>
+					<td >{{item.taskView.teacherId}}</td>
+				</tr>
+				<tr ng-if="item.taskView.currentTitle">
+					<td >职称</td>
+					<td >{{item.taskView.currentTitle}}</td>
+				</tr>
+				<tr ng-if="item.taskView.position">
+					<td >职务</td>
+					<td >{{item.taskView.position}}</td>
+				</tr>
+				<tr ng-if="item.taskView.currentDegree">
+					<td >学历</td>
+					<td >{{item.taskView.currentDegree}}</td>
+				</tr>
+				<tr ng-if="item.taskView.specailEmail">
+					<td >原EMAIL</td>
+					<td >{{item.taskView.specailEmail}}</td>
+				</tr>
+				<tr ng-if="item.taskView.phoneNum">
+					<td >原电话</td>
+					<td >{{item.taskView.phoneNum}}</td>
+				</tr>
+			</tbody>
+			</table>
+			    </div>		    
+		    </div>		    
 	</div>
-	<div class="form-group" ng-show="fileList">
-		<label for="doc" class="col-md-2 control-label">已上传附件</label>
-		<div class="col-md-10 ">
-			<ul class="col-md-10 form-control-static">
-				<li ng-repeat="filename in fileList" >{{filename}}</li>
-			</ul>
-		</div>
+<div class="panel panel-default"  id="attchInfo" >
+	<div class="panel-heading title">附  件<a href="/tms/qemTaskAdmin/downloadAttch_T/{{task.id}}">（下载全部<span class="glyphicon glyphicon-download-alt"></span>）</a></div>
+	<div class="form-group" ng-if="(fileList | filter:'申报书').length">
+	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=申报书"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>申报书</label>
+	<div class="col-md-10 form-control-static">
+	<ul>
+		<li ng-repeat="filename in fileList | filter:'申报书'" >
+				<span>{{getFileName(filename)}}</span>
+		</li>
+	</ul>
 	</div>
-	<div class="form-group" ng-if="task.otherLinks">
-		<label  class="col-md-2 control-label">相关网址</label>
-		<ul class="col-md-10 form-control-static">
-			<li ng-repeat="site in task.otherLinks.split('\n')" ><a href="{{site}}" target="_brank">{{site}}</a></li>
-		</ul>
 	</div>
+	<div class="form-group" ng-if="(fileList | filter:'合同').length">
+	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=合同"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>合同</label>
+	<div class="col-md-10 form-control-static">
+	<ul>
+		<li ng-repeat="filename in fileList | filter:'合同'" >
+				<span>{{getFileName(filename)}}</span>
+		</li>
+	</ul>
+	</div>
+	</div>
+	<div class="form-group" ng-if="(fileList | filter:'年度').length">
+	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=年度"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>年度</label>
+	<div class="col-md-10 form-control-static">
+	<ul>
+		<li ng-repeat="filename in fileList | filter:'年度'" >
+				<span>{{getFileName(filename)}}</span>
+		</li>
+	</ul>
+	</div>
+	</div>
+	<div class="form-group" ng-if="(fileList | filter:'中期').length">
+	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=中期"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>中期</label>
+	<div class="col-md-10 form-control-static">
+	<ul>
+		<li ng-repeat="filename in fileList | filter:'中期'" >
+				<span>{{getFileName(filename)}}</span>
+		</li>
+	</ul>
+	</div>
+	</div>
+	<div class="form-group" ng-if="(fileList | filter:'结题').length">
+	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=结题"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>结题</label>
+	<div class="col-md-10 form-control-static">
+	<ul>
+		<li ng-repeat="filename in fileList | filter:'结题'" >
+				<span>{{getFileName(filename)}}</span>
+		</li>
+	</ul>
+	</div>
+	</div>
+
+</div>
 </div>
 <div class="col-sm-3" class="bs-docs-sidebar affix">
 	<form name="myForm" role="form" novalidate>

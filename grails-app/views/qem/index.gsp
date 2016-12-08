@@ -178,6 +178,14 @@
 		</form>
 			</div>	
         </script>
+        <script type="text/ng-template" id="qem-updationEdit.html">  
+			<div class="form-horizontal" ng-controller="updationEditCtrl">
+				<form name="myForm" role="form" novalidate>				
+            		<g:render template="update/edit"></g:render>
+					<button class="btn btn-primary pull-right" ng-click="commit(myForm.$valid)" > 提交</button>
+				</form>
+        	</div>  
+        </script>
     <script type="text/ng-template" id="attachment.html">
         %{--//创建文件上传视图--}%
         <div class="modal-header">

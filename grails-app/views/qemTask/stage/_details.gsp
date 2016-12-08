@@ -12,22 +12,28 @@
     <label  class="col-sm-2 control-label">完成日期</label>
     <div class="col-sm-3 form-control-static"> <span>{{dateFormat(stage.finishDate) | date : 'yyyy-MM-dd'}}</span> </div>
 </div>
-<div class="form-group">
+<div class="form-group" ng-if="stage.progressText">
     <label for="projectContent" class="col-sm-2 control-label">{{isEnd()?"主要内容和特色":"进展正文"}}</label>
-    <div class="col-sm-10 form-control-static" ng-if="stage.progressText">
+    <div class="col-sm-10 form-control-static" >
     	<p>{{stage.progressText}}</p>
     </div>
 </div>
-<div class="form-group">
+<div class="form-group" ng-if="stage.unfinishedReson">
     <label for="unfinishedReson" class="col-sm-2 control-label">{{isEnd()?"主要成果":"未完成原因"}}</label>
-    <div class="col-sm-10 form-control-static" ng-if="stage.unfinishedReson">
+    <div class="col-sm-10 form-control-static">
     	<p>{{stage.unfinishedReson}}</p>
     </div>
 </div>
-<div class="form-group" style="border-bottom:0px;">
+<div class="form-group" style="border-bottom:0px;" ng-if="stage.memo">
     <label for="memo" class="col-sm-2 control-label">{{isEnd()?"成果应用情况":"其他说明"}}</label>
-    <div class="col-sm-10 form-control-static" ng-if="stage.memo">
+    <div class="col-sm-10 form-control-static">
     	<p>{{stage.memo}}</p>
+    </div>
+</div>
+<div class="form-group" style="border-bottom:0px;" ng-if="stage.endAudit">
+    <label for="memo" class="col-sm-2 control-label">学校审核意见</label>
+    <div class="col-sm-10 form-control-static">
+    	<p>{{stage.endAudit}}</p>
     </div>
 </div>
 </div>

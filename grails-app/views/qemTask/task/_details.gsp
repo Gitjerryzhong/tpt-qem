@@ -45,10 +45,22 @@
     	<p>{{task.projectContent}}</p>
     </div>
 </div>
-<div class="form-group" ng-if="task.expectedGain" style="border-bottom:0px">
+<div class="form-group" ng-if="task.expectedGain">
     <label for="expectedGain" class="col-sm-2 control-label">预期成果</label>
     <div class="col-sm-10  form-control-static">
     	<p>{{task.expectedGain}}</p>
+    </div>    
+</div>
+<div class="form-group" ng-if="task.auditContent" style="border-bottom:0px">
+    <label for="expectedGain" class="col-sm-2 control-label">立项评审意见</label>
+    <div class="col-sm-10  form-control-static">
+    	<p>{{task.auditContent}}</p>
+    </div>    
+</div>
+<div class="form-group" ng-if="task.contractAudit" style="border-bottom:0px">
+    <label for="expectedGain" class="col-sm-2 control-label">合同审核意见</label>
+    <div class="col-sm-10  form-control-static">
+    	<p>{{task.contractAudit}}</p>
     </div>    
 </div>
 </div>

@@ -6,7 +6,7 @@ qemApp.controller('myUpdateCtrl',['$scope','$http','$location','$filter','runSta
    			url:"/tms/qemTaskUpdate/getUpdateList"
    		  }).success(function(data) {
    			  $scope.updateList=data.updateList;
-   			  console.log($scope.udpateList);
+//   			  console.log($scope.updateList);
    			});
 	}
 	$scope.getList();
@@ -38,9 +38,25 @@ qemApp.controller('myUpdateCtrl',['$scope','$http','$location','$filter','runSta
    				id:id
    			}
    		  }).success(function(data) {
-   			  console.log(data);
+//   			  console.log(data);
    			  $scope.getUpdateView(data);
    			$location.url("/updateView");
    			});
 	}
+	$scope.edit = function(id){
+		$http({
+   			method:'GET',
+   			url:"/tms/qemTaskUpdate/updateDetail",
+   			params:{
+   				id:id
+   			}
+   		  }).success(function(data) {
+//   			  console.log(data);
+   			  $scope.getUpdateView(data);
+   			$location.url("/edit");
+   			});
+	}
+	$scope.dateFormat = function(jsondate){
+    	return new Date(jsondate);
+    }
 }]);

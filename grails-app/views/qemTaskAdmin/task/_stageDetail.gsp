@@ -90,9 +90,9 @@
 </div>
 </div>
 <div class="panel panel-default"  id="attchInfo" >
-<div class="panel-heading title">附  件<a href="/tms/qemCollegeCheck/downloadAttch_T/{{task.id}}">（下载全部<span class="glyphicon glyphicon-download-alt"></span>）</a></div>
+<div class="panel-heading title">附  件<a href="/tms/qemTaskAdmin/downloadAttch_T/{{task.id}}">（下载全部<span class="glyphicon glyphicon-download-alt"></span>）</a></div>
 <div class="form-group" ng-if="(fileList | filter:'申报书').length">
-<label for="doc" class="col-md-2 control-label"><a href="/tms/qemUpdateCollegeCheck/downloadT?taskId={{task.id}}&fileType=申报书"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>申报书</label>
+<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=申报书"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>申报书</label>
 <div class="col-md-10 form-control-static">
 <ul>
 	<li ng-repeat="filename in fileList | filter:'申报书'" >
@@ -102,7 +102,7 @@
 </div>
 </div>
 <div class="form-group" ng-if="(fileList | filter:'合同').length">
-<label for="doc" class="col-md-2 control-label"><a href="/tms/qemUpdateCollegeCheck/downloadT?taskId={{task.id}}&fileType=合同"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>合同</label>
+<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=合同"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>合同</label>
 <div class="col-md-10 form-control-static">
 <ul>
 	<li ng-repeat="filename in fileList | filter:'合同'" >
@@ -112,7 +112,7 @@
 </div>
 </div>
 <div class="form-group" ng-if="(fileList | filter:'年度').length">
-<label for="doc" class="col-md-2 control-label"><a href="/tms/qemUpdateCollegeCheck/downloadT?taskId={{task.id}}&fileType=年度"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>年度</label>
+<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=年度"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>年度</label>
 <div class="col-md-10 form-control-static">
 <ul>
 	<li ng-repeat="filename in fileList | filter:'年度'" >
@@ -122,7 +122,7 @@
 </div>
 </div>
 <div class="form-group" ng-if="(fileList | filter:'中期').length">
-<label for="doc" class="col-md-2 control-label"><a href="/tms/qemUpdateCollegeCheck/downloadT?taskId={{task.id}}&fileType=中期"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>中期</label>
+<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=中期"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>中期</label>
 <div class="col-md-10 form-control-static">
 <ul>
 	<li ng-repeat="filename in fileList | filter:'中期'" >
@@ -132,7 +132,7 @@
 </div>
 </div>
 <div class="form-group" ng-if="(fileList | filter:'结题').length">
-<label for="doc" class="col-md-2 control-label"><a href="/tms/qemUpdateCollegeCheck/downloadT?taskId={{task.id}}&fileType=结题"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>结题</label>
+<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=结题"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>结题</label>
 <div class="col-md-10 form-control-static">
 <ul>
 	<li ng-repeat="filename in fileList | filter:'结题'" >
@@ -161,19 +161,23 @@
     	 <pre>{{task.collegeAudit}}</pre>
 	    <label for="result">审核意见</label>
 		<textarea name="result"  rows="4" class="form-control" placeholder="请输入意见！不少于6个字！" ng-model="trial.content" required></textarea>
-		<label for="province">省级划拨</label>
-	    <input id="provice" type="text" class="form-control" ng-model="trial.fundingProvince">
-	    <label for="university">学校划拨</label>
-	    <input id="university" type="text" class="form-control" ng-model="trial.fundingUniversity">
-	    <label for="college">学院划拨</label>
-	    <input id="college" type="text" class="form-control" ng-model="trial.fundingCollege">
+<%--		<label for="province">省级划拨</label>--%>
+<%--	    <input id="provice" type="text" class="form-control" ng-model="trial.fundingProvince">--%>
+<%--	    <label for="university">学校划拨</label>--%>
+<%--	    <input id="university" type="text" class="form-control" ng-model="trial.fundingUniversity">--%>
+<%--	    <label for="college">学院划拨</label>--%>
+<%--	    <input id="college" type="text" class="form-control" ng-model="trial.fundingCollege">--%>
 		
     </div>
     <div class="panel-footer">
- 			<button class="btn btn-success" ng-click="okS('20',task.id,pagerT.prevId,pagerT.nextId)" ng-disabled="myForm.$invalid || trial.content.length<6"> 同意</button>
-			<button class="btn btn-warning" ng-click="okS('21',task.id,pagerT.prevId,pagerT.nextId)" ng-disabled="myForm.$invalid || trial.content.length<6"> 不同意</button>
-			<button class="btn btn-danger" ng-click="okS('26',task.id,pagerT.prevId,pagerT.nextId)" ng-disabled="myForm.$invalid || trial.content.length<6"> 退回</button>
-    	
+    	<div class="btn-group">
+				<button class="btn btn-success btn-sm" ng-click="okS('20',task.id,task.preid,task.nextid)" ng-disabled="myForm.$invalid || trial.content.length<6"> 通过</button>
+			<button class="btn btn-warning btn-sm" ng-click="okS('21',task.id,task.preid,task.nextid)" ng-disabled="myForm.$invalid || trial.content.length<6"> 不通过</button>
+		</div>
+ 		<div class="btn-group" style="margin-top:10px">
+			<button class="btn btn-default btn-sm" ng-click="okS('26',task.id,task.preid,task.nextid)" ng-disabled="myForm.$invalid || trial.content.length<6"> 退回</button>
+			<button class="btn btn-default btn-sm" ng-click="okS('27',task.id,task.preid,task.nextid)" ng-disabled="myForm.$invalid || trial.content.length<6" ng-if="delayBtnText(task)"> {{delayBtnText(task)}}</button>
+		</div>	
 	</div>
 </div>
 </form>

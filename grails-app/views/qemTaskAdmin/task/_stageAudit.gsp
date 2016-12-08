@@ -1,4 +1,4 @@
-<div class="col-sm-9 well">
+<div class="col-sm-9 ">
 <div class="form-group">
 <h4 class="col-sm-offset-4 col-sm-4 control-label" style="text-align:center;padding-bottom:15px"><strong>任务书内容</strong></h4>
 </div>
@@ -117,6 +117,7 @@
 	    <select id="result" class="form-control" ng-model="summary.result">
 	    	<option value="0">通过</option>
 	    	<option value="1">不通过</option>
+	    	<option value="2">暂缓通过</option>
 	    </select>
 	    <label for="review">汇总意见</label>
 	    <textarea  id="review" class="form-control" rows="5" cols="10" ng-model="summary.review"></textarea>

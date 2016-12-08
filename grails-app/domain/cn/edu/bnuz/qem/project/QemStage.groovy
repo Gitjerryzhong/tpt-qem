@@ -21,11 +21,14 @@ class QemStage {
 	public static final int	S_REVIEW=30								//评审
 	public static final int	S_REVIEW_PASS=31						//评审通过
 	public static final int	S_REVIEW_NG=32							//评审不通过
+	public static final int	S_REVIEW_BK=33							//学校退回
+	public static final int	S_REVIEW_PN=34							//暂缓通过
 	/**
 	 * 后来插进的学院审批状态
 	 */
 	public static final int	S_C_PASS=41								//学院通过
 	public static final int	S_C_NG=42								//学院不通过
+	public static final int	S_C_BK=43								//学院退回
 	Integer currentStage
 	String submitYear												//检查报告提交年份
 	float fundingProvince
@@ -35,6 +38,8 @@ class QemStage {
 	String progressText
 	String unfinishedReson
 	String memo
+	String collegeAudit
+	String endAudit
 	Review	review
 	int status
 	static belongsTo =[task:QemTask]
@@ -59,5 +64,7 @@ class QemStage {
 		memo			nullable:true,maxsize:1500
 		review			nullable:true
 		submitYear		nullable:true
+		collegeAudit	nullable:true
+		endAudit	nullable:true
     }
 }

@@ -37,6 +37,10 @@ qemApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function($
         url: '/updateView',
         templateUrl: 'qem-updateView.html'
     })
+    .state('edit', {
+        url: '/edit',
+        templateUrl: 'qem-updationEdit.html'
+    })
     .state('qemTemplates', {
         url: '/qemTemplates',
         templateUrl: 'qem-template.html'

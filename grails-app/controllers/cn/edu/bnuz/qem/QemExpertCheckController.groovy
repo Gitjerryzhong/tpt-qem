@@ -115,18 +115,20 @@ class QemExpertCheckController {
 	def getReviewByStage(){
 		long id=params.long("id")
 		if(id) {
+			def stage = QemStage.get(id)
 			def expertsReview=expertService.getExpertViewByStage(id)
 			if(expertsReview){
-				render ([expertReview:[
+				render ([collegeAudit:stage.collegeAudit,
+					expertReview:[
 					id:expertsReview.id,
 					scoreList:expertsReview.scoreArray,
 					result:expertsReview.result,
 					totalScore:expertsReview.totalScore,
 					commit:expertsReview.commit,
 					content:expertsReview.view]]as JSON)
-			}else render status: HttpStatus.OK
+			}else render ([collegeAudit:stage.collegeAudit] as JSON)
 		}
-		else render status: HttpStatus.OK
+		else render status: HttpStatus.BAD_REQUEST
 	}
 	def download(long id){
 		def qemProject=QemProject.get(id)
@@ -189,15 +191,19 @@ class QemExpertCheckController {
 				expertsReview = new ExpertsView([
 				expert:expertService.expert,
 				view:exp_review.content,
-				scoreArray:exp_review.scoreList,
-				totalScore:exp_review.totalScore,
+				scoreArray:exp_review.scoreList?:"",
+				totalScore:exp_review.totalScore?:0,
 				commit:exp_review.commit?true:false,
 				result:exp_review.result,
 				review:stage.review
 				])
 			}
 			
-			expertsReview.save(flush:true)
+			if(!expertsReview.save(flush:true)){
+				expertsReview.errors.each{
+					println it
+				}
+			}
 			
 			if(exp_review.commit){ //如果提交，创建操作日志
 				stage.setStatus(QemStage.S_REVIEW)

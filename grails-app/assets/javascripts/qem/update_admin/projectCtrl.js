@@ -1,48 +1,19 @@
-updateAdminApp.controller('defaultCtrl',['config','$scope','$http','$location',function(config,$scope,$http,$location){ 
-		$scope.offset =0;
-		$scope.show1=true;
-		$scope.max=10;
-		var index=1;
+updateAdminApp.controller('defaultCtrl',['config','$scope','$http','$filter','$location','aboutUpdate',function(config,$scope,$http,$filter,$location,aboutUpdate){ 
+		$scope.updateView={};
+		$scope.taskView={};
+		$scope.fileList ={};
+		$scope.declarations ={};
+		$scope.teachers ={};
+		$scope.qemTypes ={};
 		$scope.commitAction=false;
 		$scope.audits={}
 		$scope.qemTypes={}
 		$scope.trial={}
-		$scope.trial.show1=true;
-		$scope.trial.show2=true;
-		$scope.trial.show3=true;
 		$scope.trial.status=0;
-		$scope.pager={}
 		$scope.teachers={}
 		$scope.taskList=config.taskList;
-		$scope.taskCounts={}
-		$scope.projectLevels=[{"id":1,"name":"校级"},{"id":2,"name":"省级"},{"id":3,"name":"国家级"}];
-		$scope.titles=['教授', '副教授', '讲师', '助教', '其他正高级', '其他副高级', '其他中级', '其他初级', '未评级'];
-		$scope.positions=['校长', '副校长', '处长', '副处长', '院长/部长/主任', '副院长/副部长/副主任', '系主任/专业负责人', '院长助理/部长助理', '实验室负责人','其他','无'];
-		$scope.degrees=['大专','本科','硕士','博士'];
-		$scope.updateTypes=[{"id":1,"name":"变更项目负责人"},{"id":2,"name":"延期"},{"id":3,"name":"改变项目名称"},{"id":4,"name":"研究内容重大调整"},{"id":5,"name":"自行中止项目"},{"id":6,"name":"改变成果形式"},{"id":7,"name":"其他"}];
-		$scope.statuses=[{"id":0,"name":"未审"},{"id":1,"name":"同意变更"},{"id":2,"name":"不同意变更"},{"id":3,"name":"退回"}];
-	    $scope.disabled_prev =function(){
-	    	if($scope.offset<$scope.max){
-	    		return 'disabled';
-	    	}else return '';
-	    }
-	    $scope.disabled_next =function(){
-	    	if($scope.pager.total==null ){return 'disabled';}
-	    	else if($scope.offset+$scope.max> $scope.pager.total[checkStatus]){
-	    		return 'disabled';
-	    	}else return '';
-	    }
-	    $scope.disabled_p1 =function(){
-	    	if($scope.pager.prevId==null){
-	    		return 'disabled';
-	    	}else return '';
-	    }
-	    $scope.disabled_n1 =function(){
-	    	if($scope.pager.nextId==null){
-	    		return 'disabled';
-	    	}else return '';
-	    }
-	   
+		$scope.taskList=$filter('groups')($scope.taskList);
+	    	   
 
 	    $scope.dateFormat = function(jsondate){
 	    	return new Date(jsondate);
@@ -64,7 +35,6 @@ updateAdminApp.controller('defaultCtrl',['config','$scope','$http','$location',f
 		   	 	}).success(function(data) {
 		   		 if(data!=null){			 
 		   			 $scope.taskList= data.taskList;
-		   			$scope.taskCounts=data.taskCounts;
 		   			 console.info("",$scope.taskList);
 		   		 }	
 		   		$location.url('/historyList') 
@@ -94,18 +64,22 @@ updateAdminApp.controller('defaultCtrl',['config','$scope','$http','$location',f
 	    	return STATUS[status];
 	    }
 	    //变更内容注释
-	    $scope.updateText = function(id){
-	    	var UPDATECONTENT = {
-	    			"1" : "变更项目负责人",
-	    			"2" : "延期",
-	    			"3" : "改变项目名称",
-	    			"4" : "研究内容重大调整",
-	    			"5" : "自行中止项目",
-	    			"6" : "改变成果形式",
-	    			"7" : "其他"
-	    		};
-	    	return UPDATECONTENT[id];
+	    $scope.updateText = function(updateTypes){
+	    	var items=updateTypes.split(";");
+	    	var typesText ="";
+	    	angular.forEach(items,function(item){
+	    		if(item){
+	    			typesText +=aboutUpdate.updateTypeText[item]+"；"
+//	    			console.log(item);
+	    		}
+	    			
+	    	})
+	    	return typesText;
 	    }
+	    $scope.updateStatusText = function(flow,auditStatus){
+			if(flow==2 && auditStatus==0) return "学校未审";
+			return aboutUpdate.updateStatus[flow][auditStatus];
+		}
 	    //排序
 		$scope.orderBy = function(col){
 //			console.info(col,$scope.order);
@@ -141,54 +115,49 @@ updateAdminApp.controller('defaultCtrl',['config','$scope','$http','$location',f
 			return result;
 		}
 	    //变更申请表详情
-	    $scope.updateDetail=function(id){
+	    $scope.updateDetail=function(item){
 	    	$http({
 	      		 method:'GET',
 	      			url:"/tms/qemUpdateAdmin/updateDetail",
 	      			params:{
-	      				id:id
+	      				id:item.id
 	      			}
 	      	 	}).success(function(data) {
 	      		 if(data!=null){
-	      			 console.log(data);
-	      			$scope.form=data.form;
-	      			$scope.form.teacherName=data.teacherName;
-	      			$scope.form.type=data.type;
-	      			$scope.form.commitDate=data.commitDate;
-	      			$scope.task= data.task;
-	      			$scope.task.origType=data.origType;
-	      			$scope.task.origTeacherName = data.origTeacherName;
-	      			$scope.fileList= data.fileList;
-	      			$scope.pager=data.pager;
+	      			$scope.getUpdateView(data);
+	      			$scope.updateView.groups=item.groups;
 	      		 }	
-	      		$location.url('/updateDetail') 
+	      		$location.url('/updateDetail') ;
 	      	 });
 	    }
-	  //审批
-	    $scope.okT = function(act,formId,prevId,nextId){
-			$http({
-				method:'POST',
-				url:"/tms/qemUpdateAdmin/auditUpdateSave",
-				data:JSON.stringify({
-							form_id:formId,
-							check:act,
-							prevId:prevId,
-							nextId:nextId,
-							content:$scope.trial.content}),
-				headers:{ 'Content-Type': 'application/json' } 
-			  }).success(function(data) {
-				  if(data!=null ){
-					  if(data.none){
-						  $scope.historyRequestList();
-					  }else{
-						  $scope.task= data.task;
-		      			 $scope.task.typeName=data.taskType;
-		      			 $scope.task.userName=data.userName;
-		      			 $scope.pagerT = data.pager;
-		      			 $scope.fileList= data.fileList;
-						 $scope.trial={};					
-					  }
-					 }
-				});
-		};
+	    
+	  //刷新
+	    $scope.refresh = function(data){
+	    	$scope.taskList=data.taskList;
+	    	$scope.taskList=$filter('groups')($scope.taskList);
+	    }
+
+		$scope.getUpdateView=function(data){
+//			console.log(data);
+			$scope.taskView=data.task;
+			$scope.taskView.teacherName = data.origTeacherName;
+			$scope.taskView.type = data.type;
+			$scope.updateView=data.updateView;
+			$scope.updateView.teacherName = data.teacherName;
+			$scope.fileList =data.fileList;
+			$scope.auditList=data.audits;
+//			处理审批通过后的情况
+			if($scope.updateView.flow==2 && $scope.updateView.auditStatus==1){
+				$scope.auditList = $filter('orderBy')($scope.auditList,'date',true);
+				var content=$scope.auditList[0].content;
+				content=content.slice(content.lastIndexOf(';{"')+1);
+				$scope.taskView=angular.fromJson(content);
+				console.log(content);
+			}
+			$scope.declarations = data.declarations;
+
+		}
+		$scope.getFileName = function(item){
+			return item.slice(item.lastIndexOf('___') + 3);
+		}
 	}]);

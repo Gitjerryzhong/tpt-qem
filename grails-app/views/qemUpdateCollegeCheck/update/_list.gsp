@@ -1,9 +1,8 @@
 <div class="list-body">
-<div class="form-group">
-		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="0"><label >未审核</label><span class="badge">{{(requestList|filter:{'auditStatus':0}).length}}</span></span>
-		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="1" ><label >审核通过</label><span class="badge">{{(requestList|filter:{'auditStatus':1}).length}}</span></span>
-		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="2" ><label >审核不通过</label><span class="badge">{{(requestList|filter:{'auditStatus':2}).length}}</span></span>
-		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="3" ><label >退回</label><span class="badge">{{(requestList|filter:{'auditStatus':3}).length}}</span></span>
+<div class="form-group" ng-init="checkStatus='未审'">
+		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="未审"><label >未审核</label><span class="badge">{{(requestList|filter:{'groups':'未审'}).length}}</span></span>
+		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="已审" ><label >已审</label><span class="badge">{{(requestList|filter:{'groups':'已审'}).length}}</span></span>
+		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="未提交或其他" ><label >未提交或其他</label><span class="badge">{{(requestList|filter:{'groups':'未提交或其他'}).length}}</span></span>
 </div>
 <table class="table table-hover" >
 	<thead>
@@ -20,7 +19,7 @@
 		</tr>
 	</thead>
 	<tbody id="listBody">
-		<tr ng-repeat="item in requestList |filter:{'auditStatus':checkStatus}" >
+		<tr ng-repeat="item in requestList |filter:{'groups':checkStatus}" >
 		<td>{{$index+1}}</td>				
 		<td>{{item.sn}}</td>
 		<td>{{item.userName}}</td>

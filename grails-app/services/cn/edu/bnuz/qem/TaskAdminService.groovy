@@ -38,7 +38,8 @@ select new map(
 	qp.projectContent	as projectContent,
 	qp.members		as memberstr,
 	qp.status		as status,
-	qp.runStatus		as runStatus,	
+	qp.runStatus		as runStatus,
+	qp.delay		as delay,
 	qp.memo			as memo,
 	qp.hasMid		as hasMid,
 	qp.expectedGain	as expectedGain	
@@ -145,6 +146,7 @@ select new map(
 )
 from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt
 where qp.beginYear<:currentYear and qp.expectedMid > :currentYear
+order by qp.id
 ''',[currentYear:currentYear]			
 				return results
 	}
@@ -188,6 +190,7 @@ select new map(
 )
 from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt
 where qp.expectedMid = :currentYear
+order by qp.id
 ''',[currentYear:currentYear]			
 				return results
 	}
@@ -231,6 +234,7 @@ select new map(
 )
 from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt
 where  qp.expectedEnd = :currentYear
+order by qp.id
 ''',[currentYear:currentYear]			
 				return results
 	}

@@ -164,9 +164,31 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
       			 $scope.task= data.task;
       			 $scope.task.typeName=data.taskType;
       			 $scope.task.userName=data.userName;
-      			 $scope.pagerT = data.pager;
+//     			 处理pre 和next按钮
+     			 var item=$filter('filter')($scope.taskList,{'id':id},true)[0];
+     			 if(item.index>1) {
+     				var preid=$filter('filter')($scope.taskList,{'index':item.index-1},true);
+     				if(preid)$scope.task.preid=preid[0].id;
+     			 }
+     			 else $scope.task.preid=item.id;
+     			 var groups=$scope.taskList.length;
+     			 if(item.index<groups){
+     				var nextid=$filter('filter')($scope.taskList,{'index':item.index+1},true);
+         			if(nextid) $scope.task.nextid=nextid[0].id;
+     			 }
+    			 else $scope.task.nextid=item.id;
+//     			 console.log(data.audit);
+//     			 变更溯源
+     			$scope.auditList = $filter('orderBy')(data.audit,'date',true);
+     			angular.forEach($scope.auditList,function(item){				
+     				var content=item.content;
+     				content=content.slice(content.lastIndexOf(';{"')+1);
+    				var taskView=angular.fromJson(content);
+    				console.log(taskView);	
+    				item.taskView = taskView;
+     			});
+				
       			 $scope.fileList= data.fileList;
-//      			 console.log($scope.task);
       		 }	
       		$location.url('/taskDetail') 
       	 });
@@ -233,8 +255,8 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 		angular.forEach($scope.taskList,function(data){
 			if(data.selected && data.runStatus.toString()==$scope.trial.runStatus) options.push(data.id);
 		});
-    	console.log($scope.taskList);
-    	console.log($scope.trial.runStatus);
+//    	console.log($scope.taskList);
+//    	console.log($scope.trial.runStatus);
     	$scope.action.selectAll=false
 		$http({
 			method:'POST',
@@ -245,7 +267,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 		  }).success(function(data) {
 			  $scope.taskList= data.taskList;
 			  $scope.taskList=$filter('groupForUniversity')($scope.taskList);
-			  console.log($scope.taskList);
+//			  console.log($scope.taskList);
 		  });
     }
     //需要年度检查的列表
@@ -360,6 +382,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 	}
     
     $scope.stageDetail=function(id){
+    	$scope.trial={};
     	$http({
      		 method:'GET',
      			url:"/tms/qemTaskAdmin/stageDetail",
@@ -367,16 +390,30 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
      				id:id
      			}
      	 	}).success(function(data) {
-     		 if(data!=null){			 
+     		 if(data!=null){		
      			 $scope.task= data.task;
      			 $scope.fileList= data.fileList;
      			 $scope.stages= data.stages;
-     			$scope.pagerT = data.pager;
-//     			 console.info("stage",data.stages);
+//     			 处理pre 和next按钮
+     			 var item=$filter('filter')($scope.taskList,{'id':id},true)[0];
+     			 if(item.index>1) {
+     				var preid=$filter('filter')($scope.taskList,{'groups':item.groups,'index':item.index-1},true);
+     				if(preid)$scope.task.preid=preid[0].id;
+     			 }
+     			 else $scope.task.preid=item.id;
+     			 var groups=$filter('filter')($scope.taskList,{'groups':item.groups},true).length;
+     			 if(item.index<groups){
+     				var nextid=$filter('filter')($scope.taskList,{'groups':item.groups,'index':item.index+1},true);
+         			if(nextid) $scope.task.nextid=nextid[0].id;
+     			 }
+    			 else $scope.task.nextid=item.id;
+     			
+//     			 console.log($scope.task);
      		 }	
      		$location.url('/stageDetail') 
      	 });
     }
+    
     $scope.stageAudit=function(id){
     	$http({
      		 method:'GET',
@@ -490,12 +527,12 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 	}
   //前一个和后一个任务书按钮
     $scope.disabled_p1T =function(){
-    	if($scope.pagerT.prevId==null){
+    	if($scope.task.preid==$scope.task.id){
     		return 'disabled';
     	}else return '';
     }
     $scope.disabled_n1T =function(){
-    	if($scope.pagerT.nextId==null){
+    	if($scope.task.nextid==$scope.task.id){
     		return 'disabled';
     	}else return '';
     }
@@ -511,7 +548,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
     }
   //审批
     $scope.okT = function(act,formId,prevId,nextId){ 
-    	$scope.trial={}
+//    	$scope.trial={}
 		$scope.trial.form_id=formId
 		$scope.trial.check = act;
 		$scope.trial.prevId = prevId;
@@ -541,11 +578,14 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 	};
 	 //阶段检查审批
     $scope.okS = function(act,formId,prevId,nextId){ 
-    	$scope.trial={}
+//    	var content=$scope.trial.content;
+//    	$scope.trial={};
+//    	$scope.trial.content = content;
 		$scope.trial.form_id=formId
 		$scope.trial.check = act;
 		$scope.trial.prevId = prevId;
-		$scope.trial.nextId = nextId;			
+		$scope.trial.nextId = nextId;	
+//		console.log($scope.trial);
 		$http({
 			method:'POST',
 			url:"/tms/QemTaskAdmin/auditStageSave",
@@ -556,13 +596,12 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 			  if(data!=null ){
 				  if(!data.task){
 					  $scope.taskList= data.taskList;
-			   		  $scope.taskCounts=data.taskCounts;
+					  $scope.taskList=$filter('groupForUniversity')($scope.taskList);
 			   		  $location.url('/annualList');
 				  }else{
 					  $scope.task= data.task;
 	      			 $scope.task.typeName=data.taskType;
 	      			 $scope.task.userName=data.userName;
-	      			 $scope.pagerT = data.pager;
 	      			 $scope.fileList= data.fileList;
 					 $scope.trial={};					
 				  }
@@ -619,12 +658,21 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
     $scope.getFileName = function(item){
 		return item.slice(item.lastIndexOf('___') + 3);
 	}
-    $scope.showConditions = function(){
-    	console.log($scope.trial);
+    
+    $scope.delayBtnText =function(task){
+    	var currentYear=$filter('date')(new Date(),'yyyy');
+    	if(currentYear==task.expectedMid) return "限期整改";
+    	if(currentYear==task.expectedEnd) return "暂缓通过";
+    	return null;
     }
     $scope.auditAble=function(item){
-    	var auditStatus = {'1101':true,'1102':true,'2101':true,'2102':true,'3101':true,'3102':true}
+    	var auditStatus = {'1101':true,'1102':true,'2101':true,'2102':true,'3101':true,'3102':true,
+    			'11':true,'12':true,'13':true,'21':true,'22':true,'23':true,'31':true,'32':true,'33':true};
     	var status = item.runStatus.toString();
+//    	console.log(item.runStatus);
     	return auditStatus[status];
+    }
+    $scope.refreshTaskList = function(tasklist){
+    	$scope.taskList= tasklist;
     }
 	}]);

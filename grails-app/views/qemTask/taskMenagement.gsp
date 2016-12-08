@@ -16,6 +16,7 @@
 	taskApp.value("config", {
 		task: ${task as grails.converters.JSON},
 		notice: ${notice  as grails.converters.JSON},
+		isUpdate: ${isUpdate  as grails.converters.JSON},
 		fileList: ${fileList as grails.converters.JSON },
 	});
 </script>

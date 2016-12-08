@@ -1,7 +1,6 @@
-<div class="well" ng-class="{'col-sm-9':task.runStatus==1}">
-<div class="form-group">
-<h4 class="col-sm-offset-4 col-sm-4 control-label" style="text-align:center;padding-bottom:15px"><strong>任务书内容</strong></h4>
-</div>
+<div ng-class="{'col-sm-9':task.runStatus==1 || task.runStatus==4}">
+<div class="panel panel-default"  id="baseInfo" >
+<div class="panel-heading title">基本信息</div>
 <div class="form-group">
     <label class="col-sm-2 control-label">项目编号</label>
     <div class="col-sm-2 form-control-static"><span class="Emphasis">{{task.sn}}</span></div>
@@ -32,14 +31,6 @@
     <label class="col-sm-2 control-label">参与人</label>
     <div class="col-sm-2 form-control-static"><span>{{task.members}}</span></div>
 </div>
-<div class="form-group">
-    <label class="col-sm-2 control-label">省级划拨</label>
-    <div class="col-sm-2 form-control-static"><span>{{task.fundingProvince}}万元</span></div>
-    <label class="col-sm-2 control-label">校级划拨</label>
-    <div class="col-sm-2 form-control-static"><span>{{task.fundingUniversity}}万元</span></div>
-    <label for="team" class="col-sm-2 control-label">学院配套</label>
-    <div class="col-sm-2 form-control-static"><span>{{task.fundingCollege}}万元</span></div>
-</div>
 <div class="form-group"> 
 	 <label for="beginYear" class="col-sm-2 control-label">立项日期</label>
 	 <div class="col-sm-2 form-control-static"><span>{{task.beginYear}}</span></div>     
@@ -48,32 +39,52 @@
     <label for="expectedEnd" class="col-sm-2 control-label">结题预期</label>
     <div class="col-sm-2 form-control-static"><span>{{task.expectedEnd}}年</span></div>    
 </div>
-<div class="form-group">
+<div class="form-group" ng-if="task.projectContent">
     <label for="projectContent" class="col-sm-2 control-label">主要内容</label>
     <div class="col-sm-10">
     	<pre>{{task.projectContent}}</pre>
     </div>
 </div>
-<div class="form-group">
+<div class="form-group" ng-if="task.expectedGain">
     <label for="expectedGain" class="col-sm-2 control-label">预期成果</label>
     <div class="col-sm-10">
     	<pre>{{task.expectedGain}}</pre>
     </div>    
 </div>
-
-<div class="form-group">
-<h4 class="col-md-offset-4 col-md-4 control-label" style="text-align:center;padding-bottom:15px"><strong>附    件</strong><a href="/tms/qemCollegeCheck/downloadAttch_T/{{task.id}}">（下载全部<span class="glyphicon glyphicon-download-alt"></span>）</a></h4>
 </div>
-<div class="form-group" ng-if="fileList">
-<label for="doc" class="col-md-2 control-label">已上传附件</label>
-<div class="col-md-10 ">
-<ul class="col-md-10 form-control-static">
-	<li ng-repeat="filename in fileList" >{{filename}}</li>
+<div class="panel panel-default"  id="attchInfo" >
+<div class="panel-heading title">附  件<a href="/tms/qemCollegeCheck/downloadAttch_T/{{task.id}}">（下载全部<span class="glyphicon glyphicon-download-alt"></span>）</a></div>
+<div class="form-group" ng-if="(fileList | filter:'申报书').length">
+<label for="doc" class="col-md-2 control-label">申报书</label>
+<div class="col-md-10 form-control-static">
+<ul>
+	<li ng-repeat="filename in fileList | filter:'申报书'" >
+			<span>{{getFileName1(filename)}}</span>
+	</li>
+</ul>
+</div>
+</div>
+<div class="form-group" ng-if="(fileList | filter:'合同').length">
+<label for="doc" class="col-md-2 control-label">合同</label>
+<div class="col-md-10 form-control-static">
+<ul>
+	<li ng-repeat="filename in fileList | filter:'合同'" >
+			<span>{{getFileName1(filename)}}</span>
+	</li>
 </ul>
 </div>
 </div>
 </div>
-<div class="col-sm-3" ng-if="task.runStatus==1">
+<%--<div class="form-group" ng-if="fileList">--%>
+<%--<label for="doc" class="col-md-2 control-label">已上传附件</label>--%>
+<%--<div class="col-md-10 ">--%>
+<%--<ul class="col-md-10 form-control-static">--%>
+<%--	<li ng-repeat="filename in fileList" >{{filename}}</li>--%>
+<%--</ul>--%>
+<%--</div>--%>
+<%--</div>--%>
+</div>
+<div class="col-sm-3" ng-if="task.runStatus==1 || task.runStatus==4">
 <form name="myForm" role="form" novalidate>
 <div class="bs-docs-sidebar affix panel panel-info">
 	<div class="panel-heading">

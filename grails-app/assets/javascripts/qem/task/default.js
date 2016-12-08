@@ -1,5 +1,6 @@
 taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','$filter','config','$state','aboutUpdate','runStatusText',function($scope,$http,FileUploader,$location,$filter,config,$state,aboutUpdate,runStatusText){ //项目信息	
-	$scope.task=config.task
+	$scope.task=config.task;
+	console.log($scope.task);
 	var uploadStage =0;
 	$scope.member={};
 	$scope.newData ={};
@@ -72,7 +73,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
    			 id=runstatus.left(1)
    		 }
    	 }else if($scope.task.status==20){
-   		 id="3";
+   		 id="0";
    	 }
    	 return id;
     }
@@ -160,6 +161,18 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
     		 $scope.uploadQueue.push(fileItem);
     		 fileItem.upload();
     	 }
+     };
+     uploader1.onSuccessItem = function(fileItem, response, status, headers) {
+    	 $scope.fileList= response.fileList;
+    	 console.log($scope.fileList);
+    	 $scope.uploadQueue=[]
+		  angular.forEach($scope.fileList,function(item){
+			  var filename = item.slice(item.lastIndexOf('___') + 3);
+			  var dir = item.slice(0,item.lastIndexOf('___'));
+			  var file={'file':{'name':filename},'formData':[{'isDeclaration':dir}]};
+//			  console.log(file);
+			  $scope.uploadQueue.push(file);
+		  })
      };
      $scope.washMembers = function(){
     	 var options=[];
@@ -457,6 +470,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
     	 return result;
      }
      $scope.saveAble=function(){
+    	 
     	 var statuses=['2','9','19','29','1103','2103','3103'];
     	 var result= false;
     	 angular.forEach(statuses,function(item){
@@ -476,6 +490,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
 //    	 计算出显示符合√或×
     	 var value =step*100+key
     	 var status = $scope.currentFlow.id+ value;
+    	 if(step==1)console.log($scope.task.runStatus);
     	 if($scope.task.runStatus==status) return true
     	 else return false;
      }
@@ -527,7 +542,10 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
      $scope.goUpdate = function(){
     	 $state.go('update');
      }
-     if(currentStageIndex()=="0"){
+//     如果是从update入口进来则打开变更页面，如果是阶段检查就跳到相应检查页面，否则跳到项目总览
+     if(config.isUpdate[0]){
+    	 $scope.goUpdate();
+     }else if(currentStageIndex()=="0"){
     	 $scope.menuSelected=4;
     	 $state.go("contract");
      }

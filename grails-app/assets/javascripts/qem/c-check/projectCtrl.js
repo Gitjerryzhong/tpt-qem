@@ -1,4 +1,4 @@
-cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','config',function($rootScope,$scope,$http,$location,config){ 
+cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','config','$filter',function($rootScope,$scope,$http,$location,config,$filter){ 
 		$scope.offset =0;
 		$scope.max=10;
 		var index=1;
@@ -21,7 +21,7 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','c
 		 $scope.pager = config.pager;
 		 $scope.bn=config.bn;
 		$scope.showRequests = function(){ 
-			console.log($scope.bn);
+//			console.log($scope.bn);
 	    	$http({
 				 method:'GET',
 					url:"/tms/qemCollegeCheck/showRequests",
@@ -75,7 +75,7 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','c
 	    	
 	    };
 	    $scope.details = function(itemId){
-	    	console.info("projectId",itemId);
+//	    	console.info("projectId",itemId);
 	    	$http({
 				 method:'GET',
 					url:"/tms/qemCollegeCheck/getRequestDetail",
@@ -88,7 +88,7 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','c
 //					 $scope.audits=data.audits;
 					 $scope.fileList = data.fileList;
 					 $scope.pager = data.pager;
-					 console.info($scope.project);
+//					 console.info($scope.project);
 					 if($scope.auditAble())
 						 $location.url('/details');
 					 else 
@@ -136,6 +136,9 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','c
 	    }
 		$scope.getFileName = function(src){
 			return src.slice(src.lastIndexOf('/') + 1);
+		}
+		$scope.getFileName1 = function(item){
+			return item.slice(item.lastIndexOf('___') + 3);
 		}
 		$scope.clearNull= function(str){
 			return str=='null'?'':str;
@@ -198,8 +201,9 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','c
 		   	 	}).success(function(data) {
 		   		 if(data!=null){			 
 		   			 $scope.taskList= data.taskList;
-		   			$scope.taskCounts=data.taskCounts;
-		   			 console.info("",$scope.taskList);
+		   			$scope.taskList=$filter('groups')($scope.taskList);
+//		   			$scope.taskCounts=data.taskCounts;
+		   			 console.log($scope.taskList);
 		   		 }	
 		   		$location.url('/contractList') 
 		   	 	});
@@ -219,7 +223,7 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','c
 		}
 		//任务书详情
 	    $scope.taskDetail=function(id){
-	    	console.log(id);
+//	    	console.log(id);
 	    	$http({
 	      		 method:'GET',
 	      			url:"/tms/qemCollegeCheck/taskDetail",
@@ -254,7 +258,7 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','c
 			$scope.trial.form_id=formId;
 			$scope.trial.check = act;
 			$scope.trial.prevId = prevId;
-			$scope.trial.nextId = nextId;			
+			$scope.trial.nextId = nextId;		
 			$http({
 				method:'POST',
 				url:"/tms/qemCollegeCheck/auditTaskSave",
@@ -264,7 +268,8 @@ cCheckApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','c
 				  if(data!=null ){
 					  if(data.none){
 						  $scope.taskList= data.taskList;
-				   		  $scope.taskCounts=data.taskCounts;
+						  $scope.taskList=$filter('groups')($scope.taskList);
+//				   		  $scope.taskCounts=data.taskCounts;
 						  $location.url('/contractList')
 					  }else{
 						  $scope.task= data.task;

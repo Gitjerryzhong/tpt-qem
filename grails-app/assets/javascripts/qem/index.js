@@ -8,3 +8,4 @@
 //= require index/attaCtrl
 //= require index/myUpdateTaskCtrl
 //= require index/updateViewCtrl
+//= require index/updationEditCtrl

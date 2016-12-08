@@ -6,3 +6,4 @@
 //= require c_update_check/taskList
 //= require c_update_check/requestCtrl
 //= require c_update_check/myListCtrl
+//= require c_update_check/editCtrl

@@ -213,7 +213,7 @@ expertApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 			
 		}
 
-		$scope.expertViewByStage=function(item){			
+		$scope.expertViewByStage=function(item){	
 			$http({
 				 method:'GET',
 					url:"/tms/QemExpertCheck/getReviewByStage"	,
@@ -223,20 +223,23 @@ expertApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 			 }).success(function(data) {
 				 if(data!=null && data.expertReview!=null ){
 					 $scope.review=data.expertReview;
-					 if($scope.review.scoreList){
-						 var tempscore=$scope.review.scoreList.split(";");
-						 angular.forEach(tempscore,function(data){
-							 	if(data!="")
-							 		$scope.score.push(parseInt(data));
-							});
-						 console.info("review",$scope.review)
-					 }
+//					 if($scope.review.scoreList){
+//						 var tempscore=$scope.review.scoreList.split(";");
+//						 angular.forEach(tempscore,function(data){
+//							 	if(data!="")
+//							 		$scope.score.push(parseInt(data));
+//							});
+//						 console.info("review",$scope.review)
+//					 }
 					 
 				 }else{
 					 $scope.review={};
+					 $scope.collegeAudit = data.collegeAudit;
 				 }
+				 $scope.projectName = item.projectName;
 				 $scope.review.projectId=item.id;
 				 $scope.review.stageId=item.stageId;
+				 console.log($scope.review);
 			 }); 
 			$location.url('/stageReviewed');
 		}

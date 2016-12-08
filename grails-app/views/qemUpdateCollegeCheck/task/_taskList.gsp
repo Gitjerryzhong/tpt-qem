@@ -18,7 +18,7 @@
 	<tbody id="listBody">
 		<tr ng-repeat="item in taskList | orderBy:order" class='repeat-animation'>
 		<td>{{$index+1}}</td>				
-		<td><a href="#" ng-click="taskDetail(item.id)">{{item.projectName}}</a></td>
+		<td>{{item.projectName}}</td>
 		<td>{{item.sn}}</td>
 		<td>{{levelText(item.projectLevel)}}</td>
 		<td>{{item.type}}</td>

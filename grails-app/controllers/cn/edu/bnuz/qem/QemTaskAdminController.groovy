@@ -22,6 +22,7 @@ class QemTaskAdminController {
 	DepartmentService departmentService
 	SecurityService securityService
 	TaskAdminService taskAdminService
+	UpdateAdminService	updateAdminService
 	ExportService exportService
 	ReportService reportService
 	CollegeExportService	collegeExportService
@@ -99,10 +100,12 @@ class QemTaskAdminController {
 		if(task){
 			def nextId= taskAdminService.checkingNext(form_id,task.status)
 			def prevId= taskAdminService.checkingPrev(form_id,task.status)
+			def audit = updateAdminService.findUpdateAdminAudit(task.id)
 			render([task:task,
 				taskType:task.qemType.name,
 				userName:task.teacher.name,
 				pager: [nextId:nextId,prevId:prevId],
+				audit:audit,
 				fileList:getFileNames(task)] as JSON)
 		}else{
 			render status: HttpStatus.BAD_REQUEST
@@ -164,7 +167,11 @@ class QemTaskAdminController {
 	 * @return
 	 */
 	def stageDetail(){
-		def task = QemTask.get(params.id)
+		def id=params.long("id")
+		stageDetail1(id)
+	}
+	def stageDetail1(long id){
+		def task = QemTask.get(id)
 		if(task){
 			def nextId= taskAdminService.checkingStageNext(task.id,task.runStatus)
 			def prevId= taskAdminService.checkingStageNext(task.id,task.runStatus)
@@ -201,7 +208,7 @@ class QemTaskAdminController {
 		else if(task instanceof QemProject){
 			filePath= grailsApplication.config.tms.qem.uploadPath+"/"+task.teacher.id+"/"+task.id
 		}
-
+		println filePath
 		List<String> fileNames=new ArrayList<String>()
 		File dir= new File(filePath)
 		if(dir.isDirectory()){
@@ -217,7 +224,8 @@ class QemTaskAdminController {
 		}
 		if(task instanceof QemTask && task.projectId){
 			def project=QemProject.get(task.projectId)
-			fileNames=fileNames+getFileNames(project)
+			if(project)
+				fileNames=fileNames+getFileNames(project)
 		}
 		return fileNames
 	}
@@ -335,6 +343,27 @@ class QemTaskAdminController {
 		}
 	}
 	/**
+	 * 下载附件
+	 * @return
+	 */
+	def downloadT(){
+		def taskId=params.taskId
+		def fileType =params.fileType
+		if(taskId){
+			def task = QemTask.get(taskId)
+			def filePath= grailsApplication.config.tms.qem.uploadPath+"/task/${task.teacher.id}/${taskId}/${fileType}"
+//			println filePath
+			response.setContentType("application/zip")
+			response.setHeader("Content-disposition",
+				 "attachment;filename=\""+
+				 java.net.URLEncoder.encode("${fileType}.zip", "UTF-8")+"\"")
+			response.outputStream << exportService.download(filePath)
+			response.outputStream.flush()
+		}else {
+			render status: HttpStatus.NOT_FOUND
+		}
+	}
+	/**
 	 * 导出excel
 	 * @return
 	 */
@@ -412,29 +441,41 @@ class QemTaskAdminController {
 	def auditTaskSave(){
 		def audit=new AuditForm(request.JSON)
 		def qemTask=QemTask.get(audit.form_id)
-//		println audit.form_id
+		println audit.content
 //		qemTask.setCollegeAudit(audit.content)
 		int check= Integer.parseInt(audit.check)
+		def auditAction
 		switch(check){
 		case 20: qemTask.setRunStatus(qemTask.passAction())
+				 qemTask.setContractAudit(audit.content)
 				 qemTask.setStatus(QemTask.STATUS_ACTIVE)
+				 auditAction = QemTaskAudit.ACTION_APPROVE_YES
 				 break;
 		case 21: qemTask.setRunStatus(qemTask.ngAction())
+				 qemTask.setContractAudit(audit.content)
 				 qemTask.setStatus(QemTask.STATUS_EXCEPTION_NG)
+				 auditAction = QemTaskAudit.ACTION_APPROVE_NO
 				 break;
 		case 26: qemTask.setRunStatus(qemTask.bkAction())
+				qemTask.setContractAudit(audit.content)
+				auditAction = QemTaskAudit.ACTION_CHECK_BACK
 				 break;
 		}
+		if(!qemTask.save(flush:true)){
+			qemTask.errors.each {
+				println it
+			}
+		}
+		
 		QemTaskAudit qemAudit=new QemTaskAudit([
 			userId:securityService.userId,
 			userName:securityService.userName,
-			action:audit.check,
+			action:auditAction,
 			content:audit.content,
 			date:new Date(),
 			objectId:qemTask.id,
 			src:qemTask.class.name])
-		qemAudit.save(flush:true)
-		
+		qemAudit.save(flush:true)		
 		if(audit.nextId!=null && !audit.nextId.equals("null")){
 			taskDetail(Long.parseLong(audit.nextId))
 		}else if(audit.prevId!=null && !audit.prevId.equals("null")){
@@ -467,15 +508,32 @@ class QemTaskAdminController {
 				 	qemTask.setStatus(QemTask.STATUS_ENDING)
 				def stage=QemStage.findByTaskAndCurrentStage(qemTask,new Integer(type))
 					stage?.setStatus(QemStage.S_REVIEW_PASS)
+					stage?.setEndAudit(audit.content)
 					stage?.save(flush:true)
 				 break;
 		case 21: qemTask.setRunStatus(qemTask.ngAction())
 				 qemTask.setStatus(QemTask.STATUS_EXCEPTION_NG)
 				 def stage=QemStage.findByTaskAndCurrentStage(qemTask,new Integer(type))
 				 stage?.setStatus(QemStage.S_REVIEW_NG)
+				 stage?.setEndAudit(audit.content)
+				 stage?.save(flush:true)
 				 break;
 		case 26: qemTask.setRunStatus(qemTask.bkAction())
+				def stage=QemStage.findByTaskAndCurrentStage(qemTask,new Integer(type))
+				stage?.setStatus(QemStage.S_REVIEW_BK)
+				stage?.setEndAudit(audit.content)
+				stage?.save(flush:true)
 				 break;
+		case 27: qemTask.setRunStatus(qemTask.dlAction())
+				 def delay=qemTask.delay?:0
+				 qemTask.setDelay(delay+1)
+				 def memo=message(code:"qem.task.trynextyear",args:[new Date().format("yyyy-MM-dd")])
+				 qemTask.setMemo("${qemTask.memo};${memo}")
+				 def stage=QemStage.findByTaskAndCurrentStage(qemTask,new Integer(type))
+				 stage?.setStatus(QemStage.S_REVIEW_PN)
+				 stage?.setEndAudit(audit.content)
+				 stage?.save(flush:true)
+				  break;
 		}
 		QemTaskAudit qemAudit=new QemTaskAudit([
 			userId:securityService.userId,
@@ -486,12 +544,11 @@ class QemTaskAdminController {
 			objectId:qemTask.id,
 			src:qemTask.class.name])
 		qemAudit.save(flush:true)
-		
-		if(audit.nextId!=null && !audit.nextId.equals("null")){
-			stageDetail(Long.parseLong(audit.nextId))
-		}else if(audit.prevId!=null && !audit.prevId.equals("null")){
-			stageDetail(Long.parseLong(audit.prevId))
-		}else{
+//		if(audit.nextId!=null && !audit.nextId.equals("null")){
+//			stageDetail1(Long.parseLong(audit.nextId))
+//		}else if(audit.prevId!=null && !audit.prevId.equals("null")){
+//			stageDetail1(Long.parseLong(audit.prevId))
+//		}else{
 //			def taskList=taskAdminService.taskList()
 //			def taskCounts=taskAdminService.taskCounts()
 			switch(type){
@@ -501,8 +558,8 @@ class QemTaskAdminController {
 					break
 			case 3: endTasks()
 					break
-		}
-		}
+			}
+//		}
 
 	}
 	/**

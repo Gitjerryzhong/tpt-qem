@@ -165,6 +165,10 @@ select 	new map(
 from QemTask qp join qp.stage st join st.review rv join rv.expertView ev 
 where ev.expert.teacher.id=:me and ev.commit=true
 ''',[me:securityService.userId]
+		result.each{
+			if (it.t1==null) it.t1=0
+			if (it.t2==null) it.t2=0
+		}
 		def result1 = QemTask.executeQuery '''
 select new map(
 		SUM(CASE WHEN  st.currentStage<3 THEN 1 ELSE 0 END) as t1,
@@ -173,9 +177,13 @@ select new map(
 from QemTask qp join qp.stage st join st.review rv 
 where rv.experts like :expert
 ''',[expert:"%;"+securityService.userId+"%"]
+		result1.each{
+			if (it.t1==null) it.t1=0
+			if (it.t2==null) it.t2=0
+		}
 	if(result1[0].t1==null)return [0,0,0,0]
 	else 
-	return ["${result1[0]?.t1-result[0]?.t1}","${result[0]?.t1}","${result1[0]?.t2-result[0]?.t2}","${result[0]?.t2}"]
+	return [result1[0].t1-result[0].t1,result[0].t1,result1[0].t2-result[0].t2,result[0].t2]
 	}
 	def relatedTaskList(long projectid){
 		println QemProject.get(projectid).teacher.id

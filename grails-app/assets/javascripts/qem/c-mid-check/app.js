@@ -18,31 +18,7 @@ cCheckApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', functio
         templateUrl: 'qem-taskDetail.html'
     });
 }]);
-//cCheckApp.filter('uniKey',function(){
-//	return function(items,key){
-//		var out = [];
-////		console.info(items);
-//		angular.forEach(items, function (item) {
-//			var exists=false;
-//            for (var i = 0; i < out.length; i++) {
-//                if (item[key] == out[i]) { 
-//                	exists=true;
-//                    break;
-//                }
-//            }
-//            if(!exists) {
-//            	out.push(item[key]);            	
-//            }
-//        })
-////        倒序排序
-//        out.sort( function(b,a){
-//				if(typeof(a)=="number") 
-//					return a>b;
-//				return a.localeCompare(b);
-//				});        
-//        return out;
-//	}
-//})
+
 cCheckApp.filter('stageStatus',function(){
 	return function(value){
 		var TITLE = {

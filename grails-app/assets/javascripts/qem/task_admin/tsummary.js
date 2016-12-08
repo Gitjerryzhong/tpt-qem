@@ -25,6 +25,7 @@
             {headerName: "已中期", field: "hasMid",width: 80, filter:TypeFilter,cellRenderer: hasMidCellRenderer},
             {headerName: "等级", field: "projectLevel", filter:TypeFilter,
             	cellRenderer: levelCellRenderer, width: 80},
+            {headerName: '延期次数', field: "delay", width:60},	
 //            {headerName: "学历", field: "currentDegree",width: 60, filter:TypeFilter},
 //            {headerName: "岗位", field: "position",width: 100, filter: 'text'},
 //            {headerName: "省级拨款", field: "fundingProvince",width: 60, filter: 'number'},
@@ -241,8 +242,12 @@
    		 method:'GET',
    			url:"/tms/qemTaskAdmin/showTasks"
    	 	}).success(function(data) {
-   	 		$scope.gridOptions.api.setRowData(data.taskList);
-   	 		vm.gridData=data.taskList;
+   	 		var tasklist=data.taskList;
+   	 		tasklist=$filter('mkIndex')(tasklist);
+   	 		tasklist=$filter('orderBy')(tasklist,'index',false);
+   	 		$scope.gridOptions.api.setRowData(tasklist);
+   	 		vm.gridData=tasklist;
+   	 		$scope.refreshTaskList(tasklist);
 //   	 		$rootScope.actived=[0,0,0,0,0,0,0,0,0];
 //   	 		$rootScope.actived[7]=1;
    	 	});

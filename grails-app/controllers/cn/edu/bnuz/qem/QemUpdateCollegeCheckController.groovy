@@ -54,6 +54,49 @@ class QemUpdateCollegeCheckController {
 		}
 		render ([updateView:updateView,task:task,fileList: fileList,declarations:declarations,taskLeader:task?.teacher.name,newLeader:newLeader] as JSON)
 	}
+	/**
+	 * 撤销申请
+	 * @return
+	 */
+	def cancel(){
+		def updateId=params.long("id")
+		def isMyUpdate = params.boolean("isMine")
+		def updateView
+		def task
+		def fileList
+		def declarations
+		def newLeader
+		if(updateId){
+			updateView = UpdateTask.get(updateId)
+			if(updateView.flow ==UpdateTask.F_UNIVERSITY && updateView.auditStatus==UpdateTask.AU_NONE){
+				updateView.setFlow(UpdateTask.F_COLLEGE)
+				updateView.save(flush:true)
+				task = QemTask.get(updateView.taskId)
+				def filePath= grailsApplication.config.tms.qem.uploadPath+"/update/${task.teacher.id}/${updateView.taskId}/${updateView.commitDate.format('yyyyMMdd')}"
+				if(isMyUpdate) filePath = grailsApplication.config.tms.qem.uploadPath+"/update/${securityService.departmentId}/${updateView.taskId}/${updateView.commitDate.format('yyyyMMdd')}"
+				fileList = attachService.getFileNames_Qem(filePath)
+				def filePath_old= grailsApplication.config.tms.qem.uploadPath+"/task/${task.teacher.id}/${updateView.taskId}"
+				declarations = attachService.getFileNames_Qem(filePath_old)
+	//			如果不是本部门的申请，认为是非法获取信息
+				if(task?.department.id != securityService.departmentId) {
+					task=null
+					updateView =null
+					fileList=null
+				}
+				if(updateView.teacherId) {
+					def teacher =Teacher.get(updateView.teacherId)
+						if(teacher.department.id == securityService.departmentId) {
+							newLeader=teacher.name
+						}
+				}
+			}
+			render ([updateView:updateView,task:task,fileList: fileList,declarations:declarations,taskLeader:task?.teacher.name,newLeader:newLeader] as JSON)
+		}
+	}
+	/**
+	 * 审核
+	 * @return
+	 */
 	def audit(){
 		def audit=new AuditForm(request.JSON)
 		def updateTask=UpdateTask.get(audit.form_id)
@@ -61,7 +104,7 @@ class QemUpdateCollegeCheckController {
 			int check= Integer.parseInt(audit.check)
 			switch(check){
 			case 20: updateTask.setFlow(UpdateTask.F_UNIVERSITY)
-					 updateTask.setAuditStatus(UpdateTask.AU_PASS)
+					 updateTask.setAuditStatus(UpdateTask.AU_NONE)
 					 break;
 			case 21: updateTask.setAuditStatus(UpdateTask.AU_NG)
 					 break;
@@ -107,14 +150,14 @@ class QemUpdateCollegeCheckController {
 	def downloadU(){
 		def updateId=params.taskId
 		def fileType =params.fileType
-		def isMine = params.isMine
+		def isMine = params.int("isMine")
 		if(updateId){
 			def updateView = UpdateTask.get(updateId)
 			def task = QemTask.get(updateView.taskId)
 			if(task?.department.id != securityService.departmentId) { return}
 			def filePath= grailsApplication.config.tms.qem.uploadPath+"/update/${task.teacher.id}/${updateView.taskId}/${updateView.commitDate.format('yyyyMMdd')}/${fileType}"
 			if(isMine)filePath= grailsApplication.config.tms.qem.uploadPath+"/update/${securityService.departmentId}/${updateView.taskId}/${updateView.commitDate.format('yyyyMMdd')}/${fileType}"
-//			println filePath
+			println filePath
 			response.setContentType("application/zip")
 			response.setHeader("Content-disposition",
 				 "attachment;filename=\""+
