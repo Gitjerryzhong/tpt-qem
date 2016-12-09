@@ -24,7 +24,7 @@
 		<td>{{item.expectedEnd}}</td>
 		<td>{{currentTask(item.status)}}</td>		
 		<td>{{statusText(item.runStatus)}}</td>
-		<td style="text-align:center;"><a href="/tms/qemTask/showTask/486?update=true" ng-if="item.status!=0 && item.status!=20 && item.status!=32"><span class="glyphicon glyphicon-send" toolTip="变更申请"></span></a></td>
+		<td style="text-align:center;"><a href="/tms/qemTask/showTask/{{item.id}}?update=true" ng-if="item.status!=0 && item.status!=20 && item.status!=32"><span class="glyphicon glyphicon-send" toolTip="变更申请"></span></a></td>
 		</tr>
 	</tbody>
 

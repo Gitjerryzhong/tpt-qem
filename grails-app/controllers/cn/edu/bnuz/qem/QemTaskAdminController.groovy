@@ -98,6 +98,11 @@ class QemTaskAdminController {
 		def form_id=params.int('id')?:0
 		def task = QemTask.get(form_id)
 		if(task){
+			def project =QemProject.get(task.projectId)
+			def auditContent
+			if(project){
+				auditContent=project?.review?.detail
+			}
 			def nextId= taskAdminService.checkingNext(form_id,task.status)
 			def prevId= taskAdminService.checkingPrev(form_id,task.status)
 			def audit = updateAdminService.findUpdateAdminAudit(task.id)
@@ -106,6 +111,7 @@ class QemTaskAdminController {
 				userName:task.teacher.name,
 				pager: [nextId:nextId,prevId:prevId],
 				audit:audit,
+				auditContent:auditContent,
 				fileList:getFileNames(task)] as JSON)
 		}else{
 			render status: HttpStatus.BAD_REQUEST

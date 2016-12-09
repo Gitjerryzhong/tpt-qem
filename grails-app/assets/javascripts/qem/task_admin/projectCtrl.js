@@ -164,6 +164,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
       			 $scope.task= data.task;
       			 $scope.task.typeName=data.taskType;
       			 $scope.task.userName=data.userName;
+      			$scope.task.auditContent = data.auditContent;
 //     			 处理pre 和next按钮
      			 var item=$filter('filter')($scope.taskList,{'id':id},true)[0];
      			 if(item.index>1) {

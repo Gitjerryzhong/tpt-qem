@@ -231,6 +231,15 @@ class QemCollegeCheckController {
 //		def taskCounts=collegeService.taskCounts()
 		render ([taskList:taskList] as JSON)
 	}
+	def taskList(){
+		def taskList=collegeService.allTaskList([QemTask.S_NEW,
+			QemTask.STATUS_ACTIVE,
+			QemTask.STATUS_ENDING,
+			QemTask.STATUS_EXCEPTION_NG,
+			QemTask.STATUS_EXCEPTION_PAUSE])
+//		def taskCounts=collegeService.taskCounts()
+		render ([taskList:taskList] as JSON)
+	}
 	def taskDetail(long id){
 		def form_id=id
 		println form_id

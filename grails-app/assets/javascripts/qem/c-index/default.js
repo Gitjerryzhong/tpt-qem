@@ -1,4 +1,4 @@
-cIndexApp.controller('defaultCtrl',['$scope','$http','$filter','config','$modal','$state','$location',function($scope,$http,$filter,config,$modal,$state,$location){ //项目信息	
+cIndexApp.controller('defaultCtrl',['$scope','$http','$filter','config','$modal','$state','$location','runStatusText',function($scope,$http,$filter,config,$modal,$state,$location,runStatusText){ //项目信息	
 	$scope.notices=config.notices
 	$scope.tabs =[{title:'校发通知',active:false,link:'tab1'},{title:'已立项项目汇总',active:false,link:'tab2'},{title:'合同审核',active:false,link:'tab3'}]
 	$scope.trial={};
@@ -34,7 +34,7 @@ cIndexApp.controller('defaultCtrl',['$scope','$http','$filter','config','$modal'
 		$scope.detailShow=false;
 		$http({
 	   		 method:'GET',
-	   			url:"/tms/qemCollegeCheck/contractList"
+	   			url:"/tms/qemCollegeCheck/taskList"
 	   	 	}).success(function(data) {
 	   		 if(data!=null){			 
 	   			 $scope.taskList= data.taskList;
@@ -188,4 +188,8 @@ cIndexApp.controller('defaultCtrl',['$scope','$http','$filter','config','$modal'
 	$scope.getFileName1 = function(item){
 		return item.slice(item.lastIndexOf('___') + 3);
 	}
+	$scope.statusText = function(status){
+ 		var STATUS = runStatusText;
+     	return STATUS[status];
+     }
 }]);

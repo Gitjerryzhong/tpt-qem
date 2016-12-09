@@ -51,6 +51,18 @@
     	<pre>{{task.expectedGain}}</pre>
     </div>    
 </div>
+<div class="form-group" ng-if="task.collegeAudit">
+    <label for="expectedGain" class="col-sm-2 control-label">学院意见</label>
+    <div class="col-sm-10">
+    	<pre>{{task.collegeAudit}}</pre>
+    </div>    
+</div>
+<div class="form-group" ng-if="task.contractAudit">
+    <label for="expectedGain" class="col-sm-2 control-label">学校意见</label>
+    <div class="col-sm-10">
+    	<pre>{{task.contractAudit}}</pre>
+    </div>    
+</div>
 </div>
 <div class="panel panel-default"  id="attchInfo" >
 <div class="panel-heading title">附  件<a href="/tms/qemCollegeCheck/downloadAttch_T/{{task.id}}">（下载全部<span class="glyphicon glyphicon-download-alt"></span>）</a></div>

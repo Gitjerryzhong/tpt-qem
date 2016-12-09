@@ -59,10 +59,22 @@
 	    	<pre>{{task.expectedGain}}</pre>
 	    </div>    
 	</div>
+	<div class="form-group" ng-if="task.auditContent">
+	    <label for="expectedGain" class="col-sm-2 control-label">立项审核意见</label>
+	    <div class="col-sm-10">
+	    	<pre>{{task.auditContent}}</pre>
+	    </div>    
+	</div>
 	<div class="form-group" ng-if="task.collegeAudit">
 	    <label for="expectedGain" class="col-sm-2 control-label">学院意见</label>
 	    <div class="col-sm-10">
 	    	<pre>{{task.collegeAudit}}</pre>
+	    </div>    
+	</div>
+	<div class="form-group" ng-if="task.contractAudit">
+	    <label for="expectedGain" class="col-sm-2 control-label">学校意见</label>
+	    <div class="col-sm-10">
+	    	<pre>{{task.contractAudit}}</pre>
 	    </div>    
 	</div>
 </div>

@@ -34,7 +34,6 @@ class QemTaskController {
 		def isUpdateRequest=params.boolean("update")?:false
 		println isUpdateRequest
 		def task = QemTask.get(id)
-//		println task?.teacher
 		def stages = task?.stage
 		def havingStage = []
 		stages?.each {item->

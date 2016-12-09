@@ -1,4 +1,4 @@
-var cIndexApp = angular.module('cIndexApp', ['ui.router','ui.bootstrap','mine.filter']);
+var cIndexApp = angular.module('cIndexApp', ['ui.router','ui.bootstrap','mine.filter','mine.constant']);
 cIndexApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function($stateProvider, $urlRouterProvider,$httpProvider) {
 //	禁止IE11缓存数据
 	if (!$httpProvider.defaults.headers.get) {
@@ -33,7 +33,7 @@ cIndexApp.filter("groups", function () {
     	var index2=1;
     	var index3=1;
     	var groups={"0":"未提交或其他","1":"未审","2":"已审","3":"已审","4":"未审","5":"已审",
-    				"201":"已审","202":"已审","203":"已审"}
+    				"201":"已审","202":"已审","203":"未提交或其他"}
     	angular.forEach(items, function (item) {
     		if(groups[item.runStatus]==undefined)item.groups="未提交或其他";
     		else item.groups=groups[item.runStatus];
