@@ -309,6 +309,7 @@ select new map(
 	dp.name			as departmentName,
 	qp.major		as majorName,
 	qt.name			as qemTypeName,
+	pt.parentTypeName as parentType,
 	qp.projectName	as projectName,
 	qp.expectedGain as expectedGain,
 	qp.projectLevel	as projectLevel,
@@ -321,7 +322,7 @@ select new map(
 	qp.collegeAudit as collegeAudit,
 	rv.status		as reviewStatus
 )
-from QemProject qp join qp.qemType qt join qp.department dp join qp.teacher tc join qp.review rv
+from QemProject qp join qp.qemType qt join qt.parentType pt join qp.department dp join qp.teacher tc join qp.review rv 
 where qp.collegeStatus=1 and qp.bn=:bn
 ''',[bn:getCurrentBn()]
 		return [

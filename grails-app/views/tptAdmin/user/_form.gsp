@@ -20,10 +20,11 @@
 		</div>
 		<div class="col-sm-6 ">
 		<ul class="pre-scrollable">
-			<li class="text-danger" ng-if="errors">导入错误提示：</li>
-			<li class="text-danger" ng-repeat="item in errors">{{item}} </li>
-			<li class="text-info" ng-if="results">以下是成绩自助打印系统反馈的消息：</li>
-			<li class="text-info" ng-if="results">成功添加 {{results.successCount}} 名学生！</li>
+			<li class="text-info" ng-if="!error && results.successCount">成功添加 {{results.successCount}} 名学生！</li>
+			<li class="text-danger" ng-if="error">导入失败！请纠正后重新导入：</li>
+<%--			<li class="text-danger" ng-repeat="item in errors">{{item}} </li>--%>
+<%--			<li class="text-info" ng-if="results">以下是成绩自助打印系统反馈的消息：</li>--%>
+<%--			<li class="text-info" ng-if="results">成功添加 {{results.successCount}} 名学生！</li>--%>
 			<li class="text-danger" ng-if="results.duplicateList">重复录入名单：</li>
 			<li class="text-danger" ng-repeat="item in results.duplicateList">
 				{{item.ID}}：{{item.NAME}}

@@ -321,14 +321,14 @@ class QemTaskController {
 					}
 				}
 //			设置流程状态为新阶段的开始
-				switch(currentStage){
-					case QemStage.STAGE_ANNUAL: task.setRunStatus(QemTask.S_ANNUAL_START)
-												break;
-					case QemStage.STAGE_MIDDLE: task.setRunStatus(QemTask.S_MID_START)
-												break;
-					case QemStage.STAGE_ENDING: task.setRunStatus(QemTask.S_END_START)
-												break;
-				}
+//				switch(currentStage){
+//					case QemStage.STAGE_ANNUAL: task.setRunStatus(QemTask.S_ANNUAL_START)
+//												break;
+//					case QemStage.STAGE_MIDDLE: task.setRunStatus(QemTask.S_MID_START)
+//												break;
+//					case QemStage.STAGE_ENDING: task.setRunStatus(QemTask.S_END_START)
+//												break;
+//				}
 				task?.save(flush:true)
 			}
 
@@ -600,6 +600,8 @@ class QemTaskController {
 			default :
 					if(qemTask.beginYear<currentYear && qemTask.expectedMid>currentYear){
 						currentStage=QemStage.STAGE_ANNUAL
+					}else if(qemTask.expectedEnd<currentYear){
+						currentStage=QemStage.STAGE_ENDING
 					}else{
 						return -1
 					}

@@ -95,7 +95,7 @@
 <div class="form-group" ng-if="fileList">
 <label  class="col-md-2 control-label">已上传附件</label>
 <ul class="col-md-10 form-control-static">
-	<li ng-repeat="filename in fileList" ><a href="#" ng-click="selectItem1($index)">{{filename}}</a><span ng-show="attSelected==$index && !(project.commit)" class="glyphicon glyphicon-remove hand" style="margin-left:100px" ng-click="remove(filename)"></span></li>
+	<li ng-repeat="filename in fileList" ><a href="#" ng-click="selectItem1($index)">{{filename}}</a><span ng-show="attSelected==$index && (!(project.commit) || project.collegeStatus == 2 )" class="glyphicon glyphicon-remove hand" style="margin-left:100px" ng-click="remove(filename)"></span></li>
 </ul>
 </div>
 <div class="form-group" ng-if="project.otherLinks">

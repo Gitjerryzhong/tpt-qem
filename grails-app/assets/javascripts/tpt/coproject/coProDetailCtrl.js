@@ -4,7 +4,10 @@ coProjectApp.controller('CoProDetailCtrl',['$rootScope','$scope','$http','$filte
 	$scope.projectItem={}
 	$scope.yearList=[]
 	$scope.effetiveYears=[]
-	var now = $scope.projectItem.beginYear = new Date().getFullYear();
+	
+	var now =  new Date().getFullYear();
+	if(new Date().getMonth()<8) now --; //每年8月后才会录入新的年级专业,所以时间节点从8月1日开始变
+	$scope.projectItem.beginYear =now;
 	var start =2002;
 	var foreach=angular.forEach;
 	var inputId="none";

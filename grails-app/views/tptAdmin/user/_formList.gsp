@@ -18,22 +18,27 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
+					<th>序号</th>
 					<th>学号</th>
 					<th>姓名</th>
 					<th>性别</th>	
 					<th>班级</th>
 					<th>专业</th>
 					<th>项目</th>
+					<th style="width:3em">操作</th>
 				</tr>
 			</thead>
 			<tbody id="listBody">
 				<tr ng-repeat="item in studentList">				
+				<td>{{$index+1}}</td>
 				<td>{{item.id}}</td>
 				<td>{{item.name}}</td>
 				<td>{{item.sex}}</td>
 				<td>{{item.adminClassName}}</td>
-				<td>{{item.majorName}}</td>
-				<td>{{item.projectName}}</td>
+				<td>{{item.majorName}}</td>				
+				<td><span class="kind" ng-click="span_click(item)" ng-show="!item.clicked">{{item.projectName}}</span>
+				<select ng-show="item.clicked" ng-model="kind" class="myselect" ng-options="y.NAME for y in proList" ng-change="kindChange(item,kind.NAME)"></select></span></td>
+				<td><span class="glyphicon glyphicon-remove" ng-click="delItem(item)" ng-if="!item.DELAUTHOR"></span></td>
 				</tr>
 			</tbody>
 		</table>

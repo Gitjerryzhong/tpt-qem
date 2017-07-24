@@ -14,6 +14,16 @@
         <div class="modal-body">
 			<div class="form-horizontal" >				
 				<div class="row">
+					<div  class="form-group" ng-if="audits">
+					    <label for="" class="col-sm-2 control-label">审核意见</label>
+					    <div class="col-sm-9" >
+					    <ul class="form-control-static list-unstyled">
+							<li ng-repeat="item in audits | orderBy:'id'">				
+					    			{{dateFormat(item.date) | date : 'yyyy-MM-dd'}} {{item.userName}} {{actionText(item.action)}} {{item.content}}
+							</li>			
+						</ul>
+					    </div>
+					</div>	
 					<div class="form-group">
 		   				 <label for="content" class="col-sm-2 control-label">审核意见</label>
 		    			 <div class="col-sm-9">

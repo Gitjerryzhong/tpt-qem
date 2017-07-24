@@ -27,9 +27,9 @@
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th style="width:3em"><input type="checkbox" ng-model="action.selectAll" ng-change="doselectAllTask()">序号</th>
-			<th class="hand" ng-click="orderBy('projectName')" >项目名称</th>
-			<th class="hand" ng-click="orderBy('sn')">项目编号</th>
+			<th style="width:4em"><input type="checkbox" ng-model="action.selectAll" ng-change="doselectAllTask()">序号</th>
+			<th class="hand" style="width:12em" ng-click="orderBy('projectName')" >项目名称</th>
+			<th class="hand" style="width:6em" ng-click="orderBy('sn')">项目编号</th>
 			<th class="hand" style="width:9em" ng-click="orderBy('type')">类别</th>
 			<th class="hand" style="width:5em" ng-click="orderBy('userName')">姓名</th>	
 			<th class="hand" style="width:5em" ng-click="orderBy('status')">建设情况</th>	
@@ -39,6 +39,7 @@
 			<th class="hand" style="width:4em" ng-click="orderBy('hasMid')">已中期</th>
 			<th class="hand" style="width:5em" ng-click="orderBy('expectedEnd')">拟结项年</th>	
 			<th class="hand" style="width:5em" ng-click="orderBy('projectLevel')">等级</th>	
+			<th class="hand" style="width:3em" ng-click="orderBy('projectLevel')">延期次数</th>	
 		</tr>
 	</thead>
 	<tbody id="listBody">
@@ -55,6 +56,7 @@
 		<td>{{item.hasMid?'是':'否'}}</td>
 		<td>{{item.expectedEnd}}</td>
 		<td>{{levelText(item.projectLevel)}}</td>
+		<td>{{item.delay}}</td>
 		</tr>
 	</tbody>
 

@@ -47,7 +47,7 @@ class QemTask {
 	public static final int	S_END_PASS=34							//结题书评审通过
 	public static final int	S_END_NG=35								//结题不通过
 	public static final int	S_END_BK=36								//结题退回学院
-	public static final int	S_END_DL=36								//结题暂缓通过
+	public static final int	S_END_DL=37								//结题暂缓通过
 	public static final int	STATUS_ACTIVE=10						//在研
 	public static final int	STATUS_ENDING=20						//结题
 	public static final int	STATUS_EXCEPTION_OK=31					//免结题终止：已弃用
@@ -243,8 +243,8 @@ class QemTask {
 			case S_MID_PASS_C:
 			case S_MID_NG_C:
 				return S_MID_DL
-			case S_END_SUBMIT:
-			case S_END_BK:
+			case S_END_PASS_C:
+			case S_END_NG_C:
 				return S_END_DL
 			default:
 				return runStatus

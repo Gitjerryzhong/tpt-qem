@@ -1,4 +1,4 @@
-var adminApp = angular.module('adminApp', ['ui.router','ui.bootstrap','angularFileUpload']);
+var adminApp = angular.module('adminApp', ['ui.router','ui.bootstrap','angularFileUpload','mine.directive']);
 adminApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function($stateProvider, $urlRouterProvider,$httpProvider){
 //	禁止IE11缓存数据
 	if (!$httpProvider.defaults.headers.get) {

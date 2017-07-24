@@ -8,9 +8,16 @@
     	<input type="text" name="projectName"  class="form-control" placeholder="新建项目名称 *" ng-model="task.projectName" required/>
     </div>
  <label class="col-sm-2 control-label">负责人</label>
-   	<div class="col-sm-4">
-   		<span class="input-group "><input type="text"  ng-model="task.teacherId"  placeholder="请输入工号后回车校验" ng-keyup="myKeyup($event)" class="form-control"  required/><span class="input-group-addon Emphasis">{{header}}</span></span> 
+   	<div class="col-sm-2">
+   		<span class="input-group "><span class="input-group-addon">姓名</span><input type="text"  ng-model="teacherName" class="form-control" ng-change="findTeacher(teacherName)" required/></span> 
     </div>   
+    <div class="col-sm-2">
+   		<span class="input-group "><span class="input-group-addon">工号</span>
+   			<select class="form-control" 
+		    ng-model="task.teacherId"
+		    ng-options="y.id as (y.id +'|'+y.name + '|'+ y.sex) for y in teachers" ></select>
+   		</span> 
+    </div> 
 </div>
 <div class="form-group">
     <label class="col-sm-2 control-label">项目编号</label>

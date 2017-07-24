@@ -8,6 +8,8 @@ class TptNotice {
 	String content
 	Date start	
 	Date end
+	Date paperEnd
+	Date paperModifyEnd
 	String bn
 	Date publishDate
 	String publisher
@@ -24,5 +26,8 @@ class TptNotice {
 		bn nullable:true	/*不再使用2015-11-20*/
 		publisher	nullable:true
 		publishDate nullable:true
+		paperEnd	nullable:true
+		paperModifyEnd nullable:true
+		
     }
 }

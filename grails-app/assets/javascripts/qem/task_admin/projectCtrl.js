@@ -163,6 +163,8 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
       		 if(data!=null){
       			 $scope.task= data.task;
       			 $scope.task.typeName=data.taskType;
+      			 $scope.stages= data.stages;
+      			 console.log($scope.stages);
       			 $scope.task.userName=data.userName;
       			$scope.task.auditContent = data.auditContent;
 //     			 处理pre 和next按钮
@@ -190,6 +192,7 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
      			});
 				
       			 $scope.fileList= data.fileList;
+      			 console.log($scope.fileList);
       		 }	
       		$location.url('/taskDetail') 
       	 });
@@ -512,7 +515,13 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 			data:JSON.stringify($scope.task),
 			headers:{ 'Content-Type': 'application/json' } 
 		  }).success(function(data) {
-			  alert("创建任务成功！");
+			  if(confirm("创建任务成功！继续创建任务吗？"))
+			  {
+				  $scope.task={};
+				  $scope.teacherName="";
+			  }else{
+				  $location.url('/taskList');
+			  }
 		  }).error(function(data){
 			  alert("创建任务失败！");
      	 });
@@ -661,9 +670,9 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
 	}
     
     $scope.delayBtnText =function(task){
-    	var currentYear=$filter('date')(new Date(),'yyyy');
-    	if(currentYear==task.expectedMid) return "限期整改";
-    	if(currentYear==task.expectedEnd) return "暂缓通过";
+//    	var currentYear=$filter('date')(new Date(),'yyyy');
+    	if($scope.action.stage=='2') return "限期整改";
+    	if($scope.action.stage=='3') return "暂缓通过";
     	return null;
     }
     $scope.auditAble=function(item){
@@ -675,5 +684,17 @@ tAdminApp.controller('defaultCtrl',['$rootScope','$scope','$http','$location','$
     }
     $scope.refreshTaskList = function(tasklist){
     	$scope.taskList= tasklist;
+    }
+    //异步查找老师
+    $scope.findTeacher=function(teacherName){
+    	$http({
+   		 method:'GET',
+   			url:"/tms/QemTaskAdmin/getTeachers",
+   			params:{
+   				teacherName:teacherName
+   			}
+   	 	}).success(function(data) {
+   	 		$scope.teachers=data.teachers;
+   	 	}); 
     }
 	}]);

@@ -389,7 +389,7 @@ class QemController {
 		def filename=params.filename
 		def projectId=params.projectId
 		def project=QemProject.get(projectId)
-		if(filename && !(project?.isSubmit)){
+		if(filename && (!(project?.isSubmit) || project.collegeStatus == 2)){
 			def filePath= grailsApplication.config.tms.qem.uploadPath+"/"+securityService.userId+"/"+projectId
 			if(filename.indexOf("___")!=-1){
 				def filenames=filename.split ("___")

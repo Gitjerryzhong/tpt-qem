@@ -240,7 +240,7 @@ class QemExpertCheckController {
 	}
 	
 	def showAttention(){
-		def attention= Attention.last()
+		def attention= expertService.attentionView()
 		List<String> fileNames=new ArrayList<String>()
 		if( attention){
 			def filePath= grailsApplication.config.tms.qem.uploadPath+"/attentionFile"

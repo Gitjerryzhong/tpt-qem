@@ -11,14 +11,14 @@ class TptMentorCheckService {
     def getCurrentBn(){
 		def results=TptNotice.executeQuery '''
 select t from TptNotice t, TptTeacherDept ttd 
-where ttd.department.id=:id
+where t.publisher= ttd.teacher.id and ttd.department.id=:id
 order by t.id desc
 ''', [id: securityService.departmentId]	
 		if(results) {
 			return results[0].bn
 		}
 	}
-	
+
 	def requestList(int offset,int max,String bn,int status){
 		def results = TptRequest.executeQuery '''
 select new map(
@@ -35,6 +35,7 @@ select new map(
 from TptRequest r left join r.mentor m left join m.teacher t,Student std join std.adminClass adc
 where r.status =:status and r.bn=:bn  and r.userId=std.id and t.id=:userId
 ''', [bn:bn,status:status,userId: securityService.userId], [max: max,offset:offset]
+println "offset:${offset};max:${max};bn:${bn};status:${status}"
 				return results
 			}
 	def requestCounts(String bn){
@@ -59,5 +60,11 @@ group by r.status
 select r.userId from TptRequest r left join r.mentor m left join m.teacher t
 where  r.id = :id and t.id=:userId
 ''', [id:id,userId: securityService.userId]				
+	}
+	def requestUsers(){
+		TptRequest.executeQuery '''
+select r.userId from TptRequest r left join r.mentor m left join m.teacher t
+where  t.id=:userId
+''', [userId: securityService.userId]				
 	}
 }

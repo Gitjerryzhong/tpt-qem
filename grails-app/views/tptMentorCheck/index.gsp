@@ -27,6 +27,11 @@
            <g:render template="trial/form"></g:render>
    	 </div>
      </script>
+     <script type="text/ng-template" id="tpt-audit-history.html">
+       <div class="form-horizontal" >				
+           <g:render template="trial/audit_history"></g:render>
+   	 </div>
+     </script>
 </div>
 </body>
 </html>

@@ -40,6 +40,11 @@ class TptAudit {
 	public static final int ACTION_APPROVE_NO = 31
 	
 	/**
+	 * …Û≈˙≥∑œ˙
+	 */
+	public static final int ACTION_APPROVE_CANCEL = 32
+	
+	/**
 	 * πÿ±’…Í«Î
 	 */
 	public static final int ACTION_CLOSE = 40
@@ -72,7 +77,7 @@ class TptAudit {
 		table 		'tpt_audit'
 		userId		length: 10
 		userName	length: 50
-		content		length: 255
+		content		length: 1000
 	}
 	
 	static constraints = {

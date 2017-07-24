@@ -120,6 +120,20 @@ checkApp.controller('TrialCtrl',['$rootScope','$scope','$http','$modal','$locati
 				
 			});
 	};
+	$scope.cancel = function(id){
+		$http({
+			 method:'GET',
+				url:"/tms/tptAdmin/cancel",
+				params:{
+					formId: id 
+				}
+		 }).success(function(data) {
+			 if(data!=null ){	
+				 $scope.audits=data.audits;
+				 $scope.contact.status=data.status;
+			 }
+		 });
+	}
     $scope.dateFormat = function(jsondate){
     	return new Date(jsondate);
     }
@@ -132,6 +146,7 @@ checkApp.controller('TrialCtrl',['$rootScope','$scope','$http','$modal','$locati
     			"21": "审核不通过",
     			"30": "论文审批通过",
     			"31": "论文审批不通过",
+    			"32": "审核撤销",
     			"40": "关闭申请",
     			"41": "回收申请",
     			"51": "论文上传",

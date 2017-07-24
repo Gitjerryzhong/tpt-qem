@@ -4,6 +4,7 @@
 		<span class="col-md-2"><input type="radio" ng-model="checkStatus" value="5" ng-click="goTrial(5)"><label >审核通过</label><span class="badge">{{pager.total[5]}}</span></span>
 		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="6" ng-click="goTrial(7)"><label >审核不通过</label><span class="badge agree">{{pager.total[7]}}</span></span>
 		<span class="col-md-2"> <input type="radio" ng-model="checkStatus" value="6" ng-click="goTrial(6)"><label >已关闭</label><span class="badge agree">{{pager.total[6]}}</span></span>
+		<span class="col-md-2 pull-right"><a href="/tms/tptMentorCheck/downloadAllPapers" class="btn btn-primary">批量下载论文</a></span>
     </div>  
 </div>
 	<div class="modal-body">		
@@ -38,6 +39,9 @@
                                      
                       <button type="button" class="btn btn-warning btn-xs"  ng-click="open(item)" ng-show="auditAble()">
                           <span class="glyphicon glyphicon-pencil"></span> 审核
+                      </button>
+                      <button type="button" class="btn btn-warning btn-xs"  ng-click="view(item)" ng-show="!auditAble()">
+                          <span class="glyphicon glyphicon-pencil"></span> 审核意见
                       </button>
                   </td>
 				</tr>

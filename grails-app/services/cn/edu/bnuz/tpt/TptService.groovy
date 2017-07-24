@@ -107,7 +107,7 @@ order by t.id desc
 		TptCollege.executeQuery '''
 select t.name from TptCollege t
 where t.department_id in
-(select ttd.department.id from  TptTeacherDept ttd where ttd.teacher.id =
+(select ttd.department.id from  TptTeacherDept ttd where ttd.teacher.id in
 (select td.teacher.id from TptTeacherDept td where td.department.id=:id))
 ''', [id: securityService.departmentId]				
 	}

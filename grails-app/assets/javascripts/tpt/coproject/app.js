@@ -42,7 +42,9 @@ coProjectApp.filter("effeCurrently",function(){
 	return function(items){
 		var out = [];
 		angular.forEach(items, function (item) {
-			var currentYear = new Date().getFullYear();
+			var date = new Date();			
+			var currentYear = date.getFullYear();
+			if(date.getMonth()<8) currentYear--; //每年8月后才会录入新的年级专业
 			var dif = currentYear-item.beginYear;
 			var effe = (item.effeYears >> dif) & 1 ;
 			if(effe) out.push(item);
@@ -55,7 +57,9 @@ coProjectApp.filter("effeCurrently",function(){
 		var out = [];
 		angular.forEach(items, function (item) {
 			item.isUneffective=false;
-			var currentYear = new Date().getFullYear();
+			var date = new Date();			
+			var currentYear = date.getFullYear();
+			if(date.getMonth()<8) currentYear--; //每年8月后才会录入新的年级专业
 			var dif = currentYear-item.beginYear;
 			var effe = (item.effeYears >> dif) & 1 ;
 			if(!effe) item.isUneffective = true;

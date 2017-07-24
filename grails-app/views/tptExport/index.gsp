@@ -23,6 +23,7 @@
 				<a class="list-group-item statis" href="#"  ui-sref="downloadALl"><span class="badge"></span>导出所有</a>
 				<a class="list-group-item statis" href="#"  ui-sref="exportRequest"><span class="badge"></span>导出申请表</a>
 				<a class="list-group-item statis" href="#"  ui-sref="exportMtlRgn"><span class="badge"></span>导出成绩互认表</a>
+				<a class="list-group-item statis" href="#"  ui-sref="exportAudit"><span class="badge"></span>导出审核结果</a>
 			</div>				
 		</div>
 		<div class="col-sm-9 content">
@@ -32,12 +33,12 @@
 	
          <script type="text/ng-template" id="download-photo.html">
  		<div class="modal-header">
-            <h3 class="modal-title">导出历年批次照片</h3>
+            <h3 class="modal-title">导出照片</h3>
         </div>
         <div class="modal-body">
 			<div class="form-horizontal" >
 				<div class="form-group">
-					<label for="bn" class="col-sm-2 control-label">请选导出年份</label>
+					<label for="bn" class="col-sm-2 control-label">请选批次</label>
     				<div class="col-sm-3">
     					<select class="form-control" name="bn" ng-model="bn" ng-options="y for y in bns"  >	</select>
     				</div>     
@@ -48,12 +49,12 @@
         </script> 
         <script type="text/ng-template" id="download-paper.html">
  		<div class="modal-header">
-            <h3 class="modal-title">导出历年批次论文</h3>
+            <h3 class="modal-title">导出论文</h3>
         </div>
         <div class="modal-body">
 			<div class="form-horizontal" >
 				<div class="form-group">
-					<label for="bn" class="col-sm-2 control-label">请选导出年份</label>
+					<label for="bn" class="col-sm-2 control-label">请选批次</label>
     				<div class="col-sm-3">
     					<select class="form-control" name="bn" ng-model="bn" ng-options="y for y in bns"  >	</select>
     				</div>     
@@ -64,12 +65,12 @@
         </script> 
         <script type="text/ng-template" id="download-all.html">
  		<div class="modal-header">
-            <h3 class="modal-title">导出历年获得学位学生所有文件</h3>
+            <h3 class="modal-title">导出学生所有上传材料</h3>
         </div>
         <div class="modal-body">
 			<div class="form-horizontal" >
 				<div class="form-group">
-					<label for="bn" class="col-sm-2 control-label">请选导出年份</label>
+					<label for="bn" class="col-sm-2 control-label">请选批次</label>
     				<div class="col-sm-3">
     					<select class="form-control" name="bn" ng-model="bn" ng-options="y for y in bns"  >	</select>
     				</div>     
@@ -80,12 +81,12 @@
         </script> 
         <script type="text/ng-template" id="export.html">
  		<div class="modal-header">
-            <h3 class="modal-title">导出历年申请表（Excel）</h3>
+            <h3 class="modal-title">导出申请表（Excel）</h3>
         </div>
         <div class="modal-body">
 			<div class="form-horizontal" >
 				<div class="form-group">
-					<label for="bn" class="col-sm-2 control-label">请选导出年份</label>
+					<label for="bn" class="col-sm-2 control-label">请选批次</label>
     				<div class="col-sm-3">
     					<select class="form-control" name="bn" ng-model="bn" ng-options="y for y in bns"  >	</select>
     				</div>     
@@ -96,16 +97,32 @@
         </script> 
         <script type="text/ng-template" id="export-mtlRgn.html">
  		<div class="modal-header">
-            <h3 class="modal-title">导出历年成绩互认表（Excel）</h3>
+            <h3 class="modal-title">导出成绩互认表（Excel）</h3>
         </div>
         <div class="modal-body">
 			<div class="form-horizontal" >
 				<div class="form-group">
-					<label for="bn" class="col-sm-2 control-label">请选导出年份</label>
+					<label for="bn" class="col-sm-2 control-label">请选批次</label>
     				<div class="col-sm-3">
     					<select class="form-control" name="bn" ng-model="bn" ng-options="y for y in bns"  >	</select>
     				</div>     
     				<a class="btn btn-primary" href="/tms/tptExport/exportPaperMtlRgn/{{bn}}">导出</a> 
+				</div>
+			</div>
+		</div>
+        </script> 
+        <script type="text/ng-template" id="export-paperAudit.html">
+ 		<div class="modal-header">
+            <h3 class="modal-title">导出论文审核结果（Excel）</h3>
+        </div>
+        <div class="modal-body">
+			<div class="form-horizontal" >
+				<div class="form-group">
+					<label for="bn" class="col-sm-2 control-label">请选批次</label>
+    				<div class="col-sm-3">
+    					<select class="form-control" name="bn" ng-model="bn" ng-options="y for y in bns"  >	</select>
+    				</div>     
+    				<a class="btn btn-primary" href="/tms/tptExport/exportMentorAudit/{{bn}}">导出</a> 
 				</div>
 			</div>
 		</div>

@@ -12,7 +12,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
 	$scope.editAble=false;
 	$scope.notice=config.notice;
 	$scope.fileList = config.fileList;
-	$scope.stage={}
+	$scope.stage={};
 	$scope.stageNum="0";
 	$scope.menuSelected=0;
 	$scope.flows=[{"id":"0","statuses":[{"title":"提交合同","runStatusCheck":{"no":["0","203"],"done":["1","2","3","4","5","201","202"]}},
@@ -70,7 +70,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
    		 else if($scope.isEnd()) id="3";
    		 else if($scope.task.runStatus>=10){
    			 var runstatus=$scope.task.runStatus.toString();
-   			 id=runstatus.left(1)
+   			 id=runstatus.substring(0,1);
    		 }
    	 }else if($scope.task.status==20){
    		 id="0";
@@ -291,7 +291,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
      }
      $scope.isEnd=function(){
     	 var currentYear=$filter('date')(new Date(),'yyyy');
-    	 if( $scope.task.expectedEnd==currentYear ){
+    	 if( $scope.task.expectedEnd<=currentYear ){
     		 return true;
     	 }
     	 return false;
@@ -316,7 +316,9 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
  			}
   		  }).success(function(data) {
   			  $scope.stage=data.stage;
-  			  $scope.stage.finishDate = new Date($scope.stage.finishDate);
+  			  if($scope.stage.finishDate)
+  				  $scope.stage.finishDate = new Date($scope.stage.finishDate);
+  			  else $scope.stage.finishDate = new Date();
   			  $scope.fileList = data.fileList;
 //  			item.file.name
   			  $scope.uploadQueue=[]
@@ -452,7 +454,7 @@ taskApp.controller('defaultCtrl',['$scope','$http','FileUploader', '$location','
     		 else if($scope.isEnd()) id="3";
     		 else if($scope.task.runStatus>=10){
     			 var runstatus=$scope.task.runStatus.toString();
-    			 id=runstatus.left(1)
+    			 id=runstatus.substring(0,1);
     		 }
     	 }else if($scope.task.status==20){
     		 id="3";

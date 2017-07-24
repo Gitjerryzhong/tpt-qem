@@ -232,7 +232,7 @@ class QemAdminController {
 	}
 	def attentionList(){
 		def attentionList = Attention.findAll ("from Attention as a order by a.id desc")
-		render ([attentions:attentionList] as JSON)
+		render ([attentions:attentionList,experts:adminService.loadExperts()] as JSON)
 	}
 	def showAttention(){
 		def id = params.id
@@ -247,7 +247,12 @@ class QemAdminController {
 		}else if(file.name.indexOf("del_")==-1){
 			fileNames.add(file.name)
 		}
-		render([attention:attention,fileList:fileNames] as JSON)
+		render([attention:[
+			id:attention.id,
+			title:attention.title,
+			content:attention.content,
+			experList:attention.experList],
+			fileList:fileNames] as JSON)
 	}
 	def uploadAttentionPack(){
 		def isDeclaration =params.dir
@@ -287,4 +292,5 @@ class MyAttention{
 	Integer id
 	String title
 	String content
+	String experList
 }

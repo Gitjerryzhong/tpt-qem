@@ -18,8 +18,8 @@
 //            {headerName: "双学位", field: "ifTowDegree",width: 60,filter:TypeFilter, pinned: true},
             {headerName: "学院", field: "departmentName",width: 60, pinned: true, filter:TypeFilter},
             {headerName: "校内专业", field: "majorName",width: 150, pinned: true, filter:TypeFilter},
-            {headerName: "起始年份", field: "beginYear",width: 80, filter:TypeFilter},
-            {headerName: "有效年份", field: "effeYearStr",width: 80, filter:TypeFilter},
+            {headerName: "起始年级", field: "beginYear",width: 80, filter:TypeFilter},
+            {headerName: "有效年级", field: "effeYearStr",width: 80, filter:TypeFilter},
             {headerName: "国外合作院校中文名", field: "collegeNameCn",width: 150, filter:TypeFilter},
             {headerName: "国外合作院校英文名", field: "collegeNameEn",width: 150, filter:TypeFilter},
             {headerName: "可衔接学位/学科/专业", field: "coDegreeOrMajor",width: 150, filter:"text"},
@@ -166,9 +166,17 @@
     	}
 //        按协议名汇总
     	$scope.nameSummary = function(){
-    		var data=$filter('uniName')(org_data);
-    		$scope.gridOptions.api.setRowData(data);
-    		vm.gridData=data;
+//    		var data=$filter('uniName')(org_data);
+//    		$scope.gridOptions.api.setRowData(data);
+//    		vm.gridData=data;
+    		$http({
+    	   		 method:'GET',
+    	   			url:"/tms/tptCoPrjAdmin/projectIntegrate"
+    	   	 	}).success(function(data) {
+    	   	 		console.log(data.projectList);
+    	   	 		$scope.gridOptions.api.setRowData(data.projectList);
+    	   	 		vm.gridData=data.projectList;
+    	   	 });
     	}
 //    	专业是否当前无效
     	$scope.ifUneffective = function(item){
@@ -182,6 +190,21 @@
     		$scope.gridOptions.api.setRowData(org_data);
     		vm.gridData=org_data;
     	}
+//    	导出当前数据----------不可行
+//    	$scope.exportData= function(){
+//    		var afterFilter=$scope.gridOptions.api.rowModel.rowsAfterFilter;
+//    		var option=[];
+//    		 angular.forEach(afterFilter, function (item) {
+//                 option.push(item.data);
+//             })
+//    		 console.log(option);
+//    		 $http({
+//    	   		 method:'POST',
+//    	   			url:"/tms/tptCoPrjAdmin/exportData",
+//    	   			data:JSON.stringify(option),
+//    				headers:{ 'Content-Type': 'application/json' } 
+//    	   	 	})
+//    	}    	
         $http({
    		 method:'GET',
    			url:"/tms/tptCoPrjAdmin/projectList"

@@ -35,7 +35,7 @@ cIndexApp.filter("groups", function () {
     	var groups={"0":"未提交或其他","1":"未审","2":"已审","3":"已审","4":"未审","5":"已审",
     				"201":"已审","202":"已审","203":"未提交或其他"}
     	angular.forEach(items, function (item) {
-    		if(groups[item.runStatus]==undefined)item.groups="未提交或其他";
+    		if(groups[item.runStatus]==undefined)item.groups="丢弃";
     		else item.groups=groups[item.runStatus];
     		switch(item.groups){
     		case "未审": item.index=index1++; break;

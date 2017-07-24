@@ -220,6 +220,7 @@ select new map(
 	dp.name			as departmentName,
 	qp.major		as majorName,
 	qt.name			as qemTypeName,
+	pt.parentTypeName as parentType,
 	qp.projectName	as projectName,
 	qp.expectedGain as expectedGain,
 	qp.projectLevel	as projectLevel,
@@ -232,7 +233,7 @@ select new map(
 	qp.phoneNum		as phoneNum,
 	rv.status		as reviewStatus
 )
-from QemProject qp join qp.qemType qt join qp.department dp join qp.teacher tc join qp.review rv
+from QemProject qp join qp.qemType qt join qt.parentType pt join qp.department dp join qp.teacher tc join qp.review rv
 where qp.department.id=:id and qp.isSubmit=true and qp.bn=:bn
 ''',[id:securityService.departmentId,bn:bn]
 		return [
@@ -279,8 +280,9 @@ select new map(
     t.name	as userName,
 	qp.projectName as projectName,
 	qp.projectLevel as projectLevel,
-	m.shortName	as departmentName,
+	m.name	as departmentName,
 	qt.name as type,
+	pt.parentTypeName as parentType,
 	qp.sn	as sn,
 	qp.fundingProvince+qp.fundingUniversity+qp.fundingCollege as budget,
 	SUBSTRING(qp.beginYear,1,7)	as beginYear,
@@ -289,21 +291,22 @@ select new map(
 	qp.projectContent	as projectContent,
 	qp.members		as memberstr,
 	qp.status		as status,
-	qp.endDate		as endDate,
+	date_format(qp.endDate,'%Y-%m')		as endDate,
 	qp.runStatus		as runStatus,
 	qp.hasMid		as hasMid,
 	''				as memo,
 	qp.collegeAudit as collegeAudit,
 	qp.contractAudit as contractAudit,
+	qp.delay		as delay,
 	qp.expectedGain	as expectedGain	
 )
-from QemTask qp join qp.teacher t join qp.qemType qt join qp.department m
+from QemTask qp join qp.teacher t join qp.qemType qt join qp.department m join qt.parentType pt
 where  qp.status in(:status) and qp.department.id=:id 
 ''',[status:statusList,id:securityService.departmentId]			
 						return results
 	}
 	def contractList(){
-		return allTaskList([0])
+		return allTaskList([0,10])
 	}
 	def taskCounts(){
 		def results = QemTask.executeQuery '''
@@ -439,7 +442,17 @@ where  qp.department.id=:id
 	}
 	
 	private String getCurrentYear(){
-		return new Date().format("yyyy")
+		def result=Notice.executeQuery '''
+select new map(
+	date_format(n.publishDate,'%Y')	as publishYear
+)
+from Notice n
+where  n.workType=:type
+order by n.id desc
+''',[type:Notice.PROJECT_CHECK],[max:1]
+		if(result?.size())
+			return result[0].publishYear
+		else return new Date().format("yyyy")
 	}
 	//项目变更统计数
 	def taskUpdateCounts(){

@@ -12,6 +12,15 @@
     	<g:textArea name="content"  rows="15" cols="40" class="form-control" placeholder="请输入注意事项内容" ng-model="attention.content"/>
     </div>
 </div>
+<div class="form-group"> 
+    <label for="doc" class="col-sm-2 control-label">专家</label>
+    <div class="col-sm-10">
+		<button class="btn btn-default btn-sm" ng-click="addExpert()">编辑</button>
+		<div class="row">
+			<span class="col-sm-2" ng-repeat="item in selectedExperts">{{item.name}}</span>
+		</div>
+	</div>	
+</div>
  <div class="form-group"> 
     <label for="doc" class="col-sm-2 control-label">上传附件</label>
     <div class="col-sm-10">

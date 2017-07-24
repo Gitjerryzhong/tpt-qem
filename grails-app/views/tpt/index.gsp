@@ -152,7 +152,7 @@
       <script type="text/ng-template" id="tpt_subStep.html">
         %{--//创建提交后视图--}%
         <div class="modal-header">
-            <h3 class="modal-title" ng-class="{Emphasis:showWarning(contact.status)}">{{statusTitle(contact.status)}}<span ng-show="contact.status==2" class="text-danger" style="color:#f00">【请于{{ending | date : 'yyyy-MM-dd'}}前上传论文】</span></h3>
+            <h3 class="modal-title" ng-class="{Emphasis:showWarning(contact.status)}">{{statusTitle(contact.status)}}</h3>
         </div>
         <div class="modal-body">
 			<div class="form-horizontal" >				
@@ -161,10 +161,10 @@
         </div>
         <div class="modal-footer">
 			 <button class="btn btn-warning" ng-click="goUpdate()" ng-show="allowUpdate()"> 修改材料</button>
-			<button class="btn btn-primary" ng-show="allowPaperUpdate()" ui-sref="paperAudit3"> 重新上传论文</button>
-			<button class="btn btn-primary" ng-show="allowPaper()" ui-sref="paperAudit2"> 课程论文互认申请</button>
-             <button class="btn btn-primary" ng-show="allowPaper()" ui-sref="paperAudit"> 本科论文互认申请</button>
-			 <button class="btn btn-primary" ng-show="allowPaper()" ui-sref="paperAudit1"> 硕士论文互认申请</button>
+			<button class="btn btn-primary" ng-show="allowPaperUpdate()" ui-sref="paperAudit3"> 仅重新上传论文</button>
+			<button class="btn btn-primary" ng-show="allowPaper() || allowPaperUpdate()" ui-sref="paperAudit2"> 课程论文互认申请</button>
+             <button class="btn btn-primary" ng-show="allowPaper() || allowPaperUpdate()" ui-sref="paperAudit"> 本科论文互认申请</button>
+			 <button class="btn btn-primary" ng-show="allowPaper() || allowPaperUpdate()" ui-sref="paperAudit1"> 硕士论文互认申请</button>
         </div>
         </script> 
         <script type="text/ng-template" id="tpt_finally.html">

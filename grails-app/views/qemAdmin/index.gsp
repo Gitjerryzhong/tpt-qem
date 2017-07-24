@@ -51,15 +51,16 @@
 	</script>
 	<script type="text/ng-template" id="qem-attention.html">
 	<div ng-controller="AttentionCtrl">
-		<div class="btn-toolbar">
-			<button  class="btn btn-default" ng-click="goback()" ng-show="editAble || showDetail">返回</button>
-			<button  class="btn btn-default" ng-click="newAttention()">新注意事项</button>
-			<button  class="btn btn-default" ng-click="saveAttention()"  ng-show="editAble">保存</button>
-		</div>
-		<div class="modal-header">           
-            <h3 class="modal-title">专家注意事项</h3>
-        </div>
-        <div class="modal-body">
+			<div class="btn-toolbar" role="toolbar">
+				 <div class="btn-group" role="group" aria-label="title"><h3 class="title">专家注意事项</h3></div>
+				<div class="btn-group pull-right" style="margin-top:15px" role="group" aria-label="buttons">
+					<button  class="btn btn-default" ng-click="goback()" ng-if="editAble || showDetail">返回</button>
+					<button  class="btn btn-default" ng-click="newAttention()">新增</button>
+					<button  class="btn btn-default" ng-click="saveAttention()"  ng-show="editAble">保存</button>
+				</div>
+        	</div>	
+			<hr>
+        <div class="row">
 			<div class="form-horizontal" >				
             	<g:render template="attention/form"></g:render>
 				<g:render template="attention/formList"></g:render>
@@ -166,6 +167,25 @@
 	<div id="expertList">
 		<g:render template="experts/expertList"></g:render>
 	</div>
+	</script>	
+	<script type="text/ng-template" id="expert_attention.html">
+		<div class="modal-header" >
+			<div class="btn-group pull-right"  >
+	<button ng-confirm-select class="btn btn-default btn-sm"  data="expertList" ng-value="all" ng-click="" >全选</button>
+	<button ng-confirm-select class="btn btn-default btn-sm"  data="expertList" ng-value="none" ng-click="">全不选</button>
+	<button ng-confirm-select class="btn btn-default btn-sm"  data="expertList" ng-value="invert" ng-click="" >反选</button>
+</div>
+			<div class="form-group" style="margin-bottom:30px;">
+   				<label for="expertName" class="col-sm-2 control-label">搜索 姓名</label>
+				<div class="col-sm-4"><input type="text" name="expertName" ng-model="condition.expertName1" class="form-control"></div>
+   			</div>
+		</div>
+		<div class="modal-body">
+		<g:render template="experts/expertsForAttention"></g:render>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok()">确定</button>
+		</div>
 	</script>
 	</div>
 </body>

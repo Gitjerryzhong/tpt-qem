@@ -36,6 +36,12 @@
 	    	<p class="form-control-static">{{statusText(contact.status)}}</p>
 	    </div>    
 	</div>
+	<div class="form-group" ng-if="contact.mentor">
+	    <label for="email" class="col-sm-2 control-label">导师信息</label>
+	    <div class="col-sm-10">
+	    	<p class="form-control-static">{{contact.mentor.name}} -Email：{{contact.mentor.email}}</p>
+	    </div>    
+	</div>
 	<div class="form-group">
 	    <label for="" class="col-sm-2 control-label">操作日志</label>
 	    <div class="col-sm-10" >

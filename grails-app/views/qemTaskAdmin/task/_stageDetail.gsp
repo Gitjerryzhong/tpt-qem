@@ -86,7 +86,19 @@
     <div class="col-sm-10">
     	<pre>{{item.progressText}}</pre>
     </div>
-</div>
+	</div>
+	<div class="form-group" ng-if="item.collegeAudit">
+    <label for="projectContent" class="col-sm-2 control-label">学院意见</label>
+    <div class="col-sm-10">
+    	<pre>{{item.collegeAudit}}</pre>
+    </div>
+	</div>
+	<div class="form-group" ng-if="item.endAudit">
+    <label for="projectContent" class="col-sm-2 control-label">学校意见</label>
+    <div class="col-sm-10">
+    	<pre>{{item.endAudit}}</pre>
+    </div>
+	</div>
 </div>
 </div>
 <div class="panel panel-default"  id="attchInfo" >

@@ -21,13 +21,16 @@ class TptAdminService {
     def studentSave(UserForm userForm) {
 		def error=new ArrayList<String>()	
 		def users=userForm?.users?.split("\n") 			
-			
-		for(int i=0;i<users?.length;i++){
-			def errorItem=add2List(users[i],i,userForm.projectId)
-			if(errorItem) error.push(errorItem)
-		}
-//		往自助打印系统推送名单
+		//		往自助打印系统推送名单
 		def result=tptCoProjectService.studentSave(userForm)
+		if(!(result?.duplicateList || result?.unmatchList || result?.prjMatchList)){
+//			
+			for(int i=0;i<users?.length;i++){
+				def errorItem=add2List(users[i],i,userForm.projectId)
+				if(errorItem) error.push(errorItem)
+			}
+		}
+
 		return [error:error,results:result]
 
     }
@@ -65,6 +68,13 @@ where s.id=t.id and t.department.id=ttd.department.id and ttd.teacher.id=:id
 		return students
 		
 	}
+	/**
+	 * 以后校验只参考在oracle中校验的结果2017-3-8
+	 * @param userStr
+	 * @param i
+	 * @param projectId
+	 * @return
+	 */
 	private add2List(String userStr,int i , long projectId){
 		if(userStr==null) return
 		String item
@@ -75,19 +85,17 @@ where s.id=t.id and t.department.id=ttd.department.id and ttd.teacher.id=:id
 				name: userInfo[1],
 				projectId: projectId
 			])
-			def std= TptStudent.get(userInfo[0])
-			if(std){ //如果已经存在，则不再重复加入，并报错
-//				item=new ErrorItem("tpt.duplicated",[i,user.id,user.name])
-				item=messageSource.getMessage("tpt.duplicated", ["${i+1}","${user.id}","${user.name}"].toArray(), Locale.CHINA)
-				return item
-			}
+//			def std= TptStudent.get(userInfo[0])
+//			if(std){ //如果已经存在，则不再重复加入，并报错
+//				item=messageSource.getMessage("tpt.duplicated", ["${i+1}","${user.id}","${user.name}"].toArray(), Locale.CHINA)
+//				return item
+//			}
 			Student student=checkUser(user)
 			
 			/*分析查询结果，将结果分别保存在error对象和userList对象中*/
-			if(student==null){
-//				item=new ErrorItem("tpt.userNotFound",[i,user.id,user.name])
-				item=messageSource.getMessage("tpt.userNotFound", ["${i+1}","${user.id}","${user.name}"].toArray(), Locale.CHINA)
-			}else{
+//			if(student==null){
+//				item=messageSource.getMessage("tpt.userNotFound", ["${i+1}","${user.id}","${user.name}"].toArray(), Locale.CHINA)
+//			}else{
 				/*如果学生信息正确：添加到userList中；允许该学生登录；保存到tptStudent中*/
 				user.setPassword(student.password)
 				student.setEnabled(true)
@@ -100,7 +108,7 @@ where s.id=t.id and t.department.id=ttd.department.id and ttd.teacher.id=:id
 				tptStudent.setDepartment(student.adminClass.department)
 				tptStudent.save()
 				
-			}
+//			}
 		}
 		return item
 	}
@@ -225,8 +233,11 @@ group by r.status
 	
 	def checkingNext(long id,int status){
 		def results = TptRequest.executeQuery '''
-select r.id from TptRequest r where r.status=:status and r.id> :id
-''', [id: id,status:status], [max: 1]
+select r.id from TptRequest r ,TptStudent s, TptTeacherDept ttd
+where r.status=:status and 
+ r.userId = s.id and s.department.id=ttd.department.id and ttd.teacher.id=:teacherId 
+and r.id> :id
+''', [id: id,status:status,teacherId:securityService.userId], [max: 1]
 		if(results) {
 			return results[0]
 		} else {
@@ -235,8 +246,11 @@ select r.id from TptRequest r where r.status=:status and r.id> :id
 	}
 	def checkingPrev(long id,int status){
 		def results = TptRequest.executeQuery '''
-select r.id from TptRequest r where r.status=:status and r.id< :id order by id desc
-''', [id: id,status:status], [max: 1]
+select r.id from TptRequest r ,TptStudent s, TptTeacherDept ttd
+where r.status=:status and 
+ r.userId = s.id and s.department.id=ttd.department.id and ttd.teacher.id=:teacherId 
+ and r.id< :id order by r.id desc
+''', [id: id,status:status,teacherId:securityService.userId], [max: 1]
 		if(results) {
 			return results[0]
 		} else {
@@ -517,5 +531,22 @@ where tr.id=:id and tr.userId=tp.studentID and tr.bn=tp.bn and tp.studentID = s.
 			}
 		}
 		return true
+	}
+	def mentorOpinion(String bn){
+		def results = TptAudit.executeQuery '''
+select new map(
+	r.id	as id,
+	r.userId	as userId,
+	r.userName as userName,
+	r.status	as status,
+	t.id		as mentorId,
+	t.name		as mentorName,
+	t.email		as mentorEmail,
+	v.maxdate	as maxdate,
+	a.content 	as auditContent
+)
+from TptAudit a join a.form r join r.mentor m join m.teacher t ,VLastAudit v 
+where r.id=v.formId and a.date=v.maxdate and r.bn=:bn and r.status>4
+''',[bn:bn]
 	}
 }

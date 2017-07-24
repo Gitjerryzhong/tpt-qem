@@ -1,4 +1,4 @@
-adminApp.controller('AttentionCtrl',['$rootScope','$scope','$http','$filter','$location','FileUploader',function($rootScope,$scope,$http,$filter,$location,FileUploader){ //通知管理
+adminApp.controller('AttentionCtrl',['$rootScope','$scope','$http','$filter','$location','$modal','FileUploader',function($rootScope,$scope,$http,$filter,$location,$modal,FileUploader){ //通知管理
 	$scope.attentions={};
 	var fileList=$scope.fileList=[];
 	$scope.newAttention = function(){
@@ -9,6 +9,11 @@ adminApp.controller('AttentionCtrl',['$rootScope','$scope','$http','$filter','$l
 	$scope.saveAttention = function(){
 		$scope.editAble=false;
 		$scope.showDetail=false;
+		var experList="";
+		angular.forEach($scope.selectedExperts,function(data){
+			if(data.selected) experList+=data.id+";";
+		});
+		$scope.attention.experList=experList;
 		$http({
 			method:'POST',
 			url:"/tms/qemAdmin/saveAttention",
@@ -45,7 +50,17 @@ adminApp.controller('AttentionCtrl',['$rootScope','$scope','$http','$filter','$l
     	$scope.attention.id = item.id;
     	$scope.attention.title = item.title;
     	$scope.attention.content = item.content;
-    	$scope.attention.publishDate = item.publishDate;
+    	$scope.selectedExperts=[];
+		 if(item.experList){
+			 var experts=item.experList.split(";");							 
+			angular.forEach(experts,function(data){
+				if(data!=''){
+				var myjson=$filter('filter')($scope.allexperts,{'id':data})[0];
+				$scope.selectedExperts.push(myjson);
+				}
+			});
+		 }
+//    	$scope.attention.publishDate = item.publishDate;
     	console.log($scope.attention);
     	$scope.editAble=true;
     }
@@ -59,10 +74,29 @@ adminApp.controller('AttentionCtrl',['$rootScope','$scope','$http','$filter','$l
 		 }).success(function(data) {
 			 if(data!=null && data.attentions!=null){
 				 $scope.attentions=data.attentions;	
+				 $scope.allexperts= data.experts;
+				 console.log($scope.allexperts);
 			 }else {				
 				 $scope.attentions={}
 			 }
 		 });
+    }
+    $scope.addExpert=function(){
+    	var modalInstance=$modal.open({
+            templateUrl : 'expert_attention.html',  //创建文件上传视图
+            controller : 'addExpertCtrl',
+            backdrop : "static",
+            resolve : {
+            	selectedExperts: function(){
+                    return $scope.selectedExperts;
+                }
+            }
+        });
+    	modalInstance.result.then(function(selectedExperts){  
+            $scope.selectedExperts = selectedExperts;
+        },function(){
+            console.log('Modal dismissed at: ' + new Date())
+        })
     }
     $scope.dateFormat = function(jsondate){
     	return new Date(jsondate);
@@ -86,4 +120,29 @@ adminApp.controller('AttentionCtrl',['$rootScope','$scope','$http','$filter','$l
         $scope.fileList.push(response.filename);        
     };
     $scope.attentionList();
+}]);
+
+adminApp.controller('addExpertCtrl',['$scope','$http','$modalInstance','$filter','selectedExperts',function($scope,$http,$modalInstance,$filter,selectedExperts){ //依赖于modalInstance
+	$http({
+		 method:'GET',
+			url:"/tms/qemAdmin/listExperts"
+	 }).success(function(data) {
+		 if(data!=null){
+			 $scope.expertList=data.experts;
+			 angular.forEach(selectedExperts,function(data){
+					var item=$filter('filter')($scope.expertList,{'id':data.id},true)[0];
+					if(item) item.selected=true;
+				});
+		 }			
+	 });
+    $scope.ok = function(){
+    	var options=[]
+		angular.forEach($scope.expertList,function(data){
+			if(data.selected) options.push(data);
+		});
+    	$modalInstance.close(options)
+    };
+    $scope.cancel = function(){
+        $modalInstance.dismiss('cancel'); // 退出
+    }
 }]);

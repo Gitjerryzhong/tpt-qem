@@ -159,4 +159,16 @@ class TptExportController {
 		response.outputStream << tptReportService.exportPhotos(users,basePath,"*")
 		response.outputStream.flush()
 	}
+	def exportMentorAudit(Long id){
+		def report=tptAdminService.mentorOpinion(id.toString())
+		if(report) {
+			def template = grailsApplication.mainContext.getResource("excel/tpt-paperAudit.xls").getFile()
+			def workbook = tptReportService.exportPaperAudit(template, report)
+			response.setContentType("application/excel")
+			response.setHeader("Content-disposition", "attachment;filename=\"paperAudit.xls\"")
+			workbook.write(response.outputStream)
+		} else {
+			render status: HttpStatus.NOT_FOUND
+		}
+	}
 }

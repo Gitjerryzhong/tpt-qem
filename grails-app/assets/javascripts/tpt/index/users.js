@@ -14,8 +14,10 @@ adminApp.controller('UsersCtrl',['$rootScope','$scope','$http','$modalInstance',
 		  }).success(function(data) {
 //			  $rootScope.userList = data.userList;
 			  if(data !=null && data.errors)
-			  $scope.errors = data.errors.error;
-			  $scope.results = data.errors.results;
+//			  $scope.errors = data.errors.error;
+			  var res=$scope.results = data.errors.results;
+			  $scope.error =res.duplicateList.length || res.unmatchList.length || res.prjUnMatchList.length || res.notDualList.length
+			  console.log($scope.results);
 			});
 //		$modalInstance.close(); //关闭并返回当前选项
 		this.users="";

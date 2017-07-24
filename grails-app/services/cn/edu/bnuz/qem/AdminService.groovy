@@ -71,6 +71,7 @@ from Experts ex join ex.teacher tc join tc.department dp
 		Attention attention=new Attention([
 			title:attentionForm.title,
 			content:attentionForm.content,
+			experList:attentionForm.experList,
 			publishDate:new Date(),
 			author:securityService.userName])
 		if(!attention.save(flush:true)){
@@ -83,6 +84,7 @@ from Experts ex join ex.teacher tc join tc.department dp
 		Attention attention=Attention.get(attentionForm.id)
 		attention.setTitle(attentionForm.title)
 		attention.setContent(attentionForm.content)
+		attention.setExperList(attentionForm.experList)
 		if(!attention.save(flush:true)){
 			attention.errors.each{
 				println it

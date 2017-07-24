@@ -171,7 +171,11 @@ class QemCollegeCheckController {
 		}
 	}
 	def exportTask(){
-		def report=collegeService.taskList()
+		def report=collegeService.allTaskList([QemTask.S_NEW,
+			QemTask.STATUS_ACTIVE,
+			QemTask.STATUS_ENDING,
+			QemTask.STATUS_EXCEPTION_NG,
+			QemTask.STATUS_EXCEPTION_PAUSE])
 		if(report) {
 			def template = grailsApplication.mainContext.getResource("excel/project-summary.xls").getFile()
 			def workbook = collegeExportService.exportReport_T(template, report)

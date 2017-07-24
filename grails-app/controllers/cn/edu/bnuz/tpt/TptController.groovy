@@ -105,7 +105,8 @@ class TptController {
 		TptRequest tptRequest=TptRequest.findByUserIdAndBn(securityService.userId,bn)
 		TptNotice tptNotice= tptService.findNoticeByBn(bn)
 		def today =new Date()
-		def ending = tptNotice?.end+15
+		def ending = tptNotice?.paperEnd
+		def modifyEnding = tptNotice?.paperModifyEnd
 		if((tptRequest==null || tptRequest.status<1) &&( today.before(tptNotice.start) || today.after(ending))){
 			render([form:[status:-1]] as JSON)
 			return
@@ -134,6 +135,7 @@ class TptController {
 				certificateUrl:tptRequest?.certificateUrl,
 				paperUrl:tptRequest?.paperUrl,
 				status:tptRequest?.status,
+				mentor:tptRequest?.mentor?.teacher,
 				allIn:tptRequest?.allIn],
 			imgSrc:[
 				photo:getFileName(fileNames,"photo_"),
@@ -142,7 +144,9 @@ class TptController {
 				trans2:pdfFilter(getFileName(fileNames,"trans_2")),
 				trans3:pdfFilter(getFileName(fileNames,"trans_3"))],
 			colleges:colleges,
-			end:ending,
+			end: tptNotice?.end,
+			paperEnd: ending,
+			paperModifyEnd: modifyEnding,
 			audits:tptRequest?.audits,
 			username:securityService.userName,
 			paperFile:checkPaperFile(fileNames,"paper_"),
@@ -253,9 +257,13 @@ class TptController {
 	def uploadPaper(){
 //		TptNotice tptNotice= TptNotice.first()
 		TptNotice tptNotice= tptService.getCurrentNotice()
-		def ending = tptNotice?.end+15		
-		if(ending.after(new Date())){//超期不允许上传
-			def TptRequest tptRequest= TptRequest.findByUserId(securityService.userId)			
+		def ending = tptNotice?.paperEnd	
+		def modifyEnding = 	tptNotice?.paperModifyEnd
+		def now = new Date()
+		def TptRequest tptRequest= TptRequest.findByUserId(securityService.userId)
+		if(ending?.after(now) || 
+			(tptRequest.status==TptRequest.STATUS_PAPERREJECTED && modifyEnding?.after(now))){//超期不允许上传
+						
 			if(tptRequest?.allowStatus(TptRequest.STATUS_PAPERUPLOAD)){ //检查当前状态是否允许上传论文				
 				def f = request.getFile('file')
 				if(!f.empty) {
@@ -267,14 +275,18 @@ class TptController {
 					def imgPath=bn+"/"+securityService.userId+"/"
 					def filename=f.originalFilename
 					def type=filename.substring(filename.lastIndexOf(".")).toLowerCase()			
-					filename="/paper_"+securityService.userId+"_"+securityService.userName+type	
-					File file= new File(filePath+"/"+filename)
-					if(file?.isFile()){
-//						file.delete()
-						println file.name
-						file?.renameTo(filePath+"/bak_"+Math.round(Math.random()*100)+filename)
+					filename="paper_"+securityService.userId+"_"+securityService.userName	
+					File dir= new File(filePath)
+					if(dir.isDirectory()){
+						for(File file: dir.listFiles()){
+							if(file.name.indexOf(filename)==0){
+								def date = new Date()
+								file?.renameTo(filePath+"/bak_${file.name}.${date.time}")
+							}
+						}
 					}
-					f.transferTo( new File(filePath+"/"+filename) )
+					
+					f.transferTo( new File(filePath+"/"+filename+type) )
 //					tptRequest.setStatus(TptRequest.STATUS_PAPERUPLOAD)
 //					TptAudit tptAudit=new TptAudit([
 //						userId:securityService.userId,
@@ -409,13 +421,15 @@ class TptController {
 		TptNotice tptNotice=tptService.getCurrentNotice()
 		def ending = tptNotice?.end+15
 		def today =new Date()
-		if(today.after(ending)){//超期不允许上传
+		def bn = tptService.getCurrentBn()
+		TptRequest tptRequest=TptRequest.findByUserIdAndBn(securityService.userId,bn)
+		if(!(ending.after(today) || tptRequest.status==TptRequest.STATUS_PAPERREJECTED)){//超期不允许上传
 			render (status: HttpStatus.BAD_REQUEST ,text:[error: message(code: "tpt.error.expire")] as JSON)
 			return
 		}
 		PaperExchForm paperExchForm=new PaperExchForm(request.JSON)
 		
-		def TptRequest tptRequest= TptRequest.findByUserId(securityService.userId)
+		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("studentID", securityService.userId)
 		map.put("name", securityService.userName)
@@ -454,7 +468,7 @@ class TptController {
 			return
 		}
 //		如果数据保存成功，生成word文档，保存到指定位置
-		def bn = tptService.getCurrentBn()
+//		def bn = tptService.getCurrentBn()
 		def templateFile =grailsAttributes.getApplicationContext().getResource("/template/").getFile().toString()
 //		def filePath= grailsAttributes.getApplicationContext().getResource("/tptUpload/").getFile().toString()+"/"+bn+"/"+securityService.userId
 		def filePath= grailsApplication.config.tms.tpt.uploadPath+"/"+bn+"/"+securityService.userId
@@ -465,7 +479,9 @@ class TptController {
 		else if("3".equals(paperExchForm.type))
 			templateFile= templateFile+"/course.doc"
 		def destFile= filePath+"/paper_exch"+securityService.userId+".doc"
-//		System.out.println(securityService.currentUser.major.name)
+//		将原文件备份
+		File file=new File(destFile)
+		file?.renameTo(filePath+"/bak_paper_exch"+securityService.userId+".doc")
 		WriteTable wt=new WriteTable()
 		try{
 			wt.write(templateFile, destFile, map)
@@ -478,7 +494,13 @@ class TptController {
 	def help(){}
 	def finishPaper(){
 		def TptRequest tptRequest= TptRequest.findByUserId(securityService.userId)
-		if(tptRequest?.allowStatus(TptRequest.STATUS_PAPERUPLOAD)){
+		TptNotice tptNotice= tptService.getCurrentNotice()
+		def ending = tptNotice?.paperEnd
+		def modifyEnding = 	tptNotice?.paperModifyEnd
+		println tptRequest.status
+		def now = new Date()
+		if(tptRequest?.allowStatus(TptRequest.STATUS_PAPERUPLOAD) &&(ending?.after(now) ||
+			(tptRequest.status==TptRequest.STATUS_PAPERREJECTED && modifyEnding?.after(now)))){//超期不允许		
 			tptRequest.setStatus(TptRequest.STATUS_PAPERUPLOAD)
 			TptAudit tptAudit=new TptAudit([
 				userId:securityService.userId,

@@ -109,15 +109,18 @@
         </div>
         </script>   
         <script type="text/ng-template" id="tpt-search.html">
-        %{--//创建详情视图--}%
-        <div class="modal-header">
-			<h3 class="title">{{contact.userName}}({{contact.userId}})</h3>
-        </div>		
-        <div class="modal-body">
+		<div class="btn-toolbar" role="toolbar">
+				 <div class="btn-group" role="group" aria-label="title"><h3 class="title">{{contact.userName}}({{contact.userId}})</h3></div>
+				<div class="btn-group pull-right" style="margin-top:15px" role="group" aria-label="buttons">
+					<button class="btn btn-default" ng-click="cancel(contact.formId)" ng-if="contact.status ==2 || contact.status ==3 || contact.status ==7 || contact.status ==5">
+						撤销
+					</button>
+				</div>
+        	</div>	
+			<hr>
 			<div class="form-horizontal" >				
             	<g:render template="details/form"></g:render>
         	</div>
-        </div>       
         </script> 
          <script type="text/ng-template" id="download-photo.html">
            <div ng-show="downloadUrl!=null"><a ng-href="{{downloadUrl}}">点击下载初审通过学生照片<span class="glyphicon glyphicon-download-alt"></span></a></div>

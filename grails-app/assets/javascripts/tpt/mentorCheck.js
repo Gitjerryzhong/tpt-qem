@@ -137,10 +137,54 @@ checkApp.controller('TrialCtrl',['$rootScope','$scope','$http','$modal','$locati
         },function(){      });
 	        
 	 }
+    $scope.view = function(item){
+		 var modalInstance=$modal.open({
+	            templateUrl : 'tpt-audit-history.html', 
+	            controller : 'auditViewCtrl',
+	            backdrop : "static",
+	            resolve : {
+	            	myRequest : function(){
+                        		return item;
+	            			}
+                }
+	        }) ;
+	 }
 }]);
 checkApp.controller('auditCtrl',['$scope','$http','$modalInstance','$filter','myRequest','paper',function($scope,$http,$modalInstance,$filter,myRequest,paper){
 	$scope.contact=myRequest;
 	$scope.trial={}
+	$scope.audits=[];
+	$http({
+		 method:'GET',
+			url:"/tms/tptMentorCheck/getAudits",
+			params:{
+				formId : myRequest.id
+			}
+	 }).success(function(data) {
+		 if(data!=null ){		
+			 $scope.audits=data.audits;	
+		 }
+	 });  
+	$scope.dateFormat = function(jsondate){
+    	return new Date(jsondate);
+    }
+    $scope.actionText = function(action){
+    	var ACTIONS = {
+    			"10": "提交申请",
+    			"11": "撤销申请",
+    			"12": "修改申请",
+    			"20": "审核通过",
+    			"21": "审核不通过",
+    			"30": "论文审批通过",
+    			"31": "论文审批不通过",
+    			"32": "审核撤销",
+    			"40": "关闭申请",
+    			"41": "回收申请",
+    			"51": "论文上传",
+    			"52": "更正原论文成绩",
+    		};
+    	return ACTIONS[action];
+    }
 	$scope.ok = function(act){ 
 		$scope.trial.form_id=myRequest.id;
 		$scope.trial.nextId=paper.offset;
@@ -158,5 +202,43 @@ checkApp.controller('auditCtrl',['$scope','$http','$modalInstance','$filter','my
     };
     $scope.cancel = function(){    	
     	$modalInstance.dismiss('cancel'); // 退出
+    }
+}]);
+checkApp.controller('auditViewCtrl',['$scope','$http','$modalInstance','$filter','myRequest',function($scope,$http,$modalInstance,$filter,myRequest){
+	$scope.contact=myRequest;
+	$scope.audits=[];
+	$http({
+		 method:'GET',
+			url:"/tms/tptMentorCheck/getAudits",
+			params:{
+				formId : myRequest.id
+			}
+	 }).success(function(data) {
+		 if(data!=null ){		
+			 $scope.audits=data.audits;	
+		 }
+	 });  
+    $scope.cancel = function(){    	
+    	$modalInstance.dismiss('cancel'); // 退出
+    }
+    $scope.dateFormat = function(jsondate){
+    	return new Date(jsondate);
+    }
+    $scope.actionText = function(action){
+    	var ACTIONS = {
+    			"10": "提交申请",
+    			"11": "撤销申请",
+    			"12": "修改申请",
+    			"20": "审核通过",
+    			"21": "审核不通过",
+    			"30": "论文审批通过",
+    			"31": "论文审批不通过",
+    			"32": "审核撤销",
+    			"40": "关闭申请",
+    			"41": "回收申请",
+    			"51": "论文上传",
+    			"52": "更正原论文成绩",
+    		};
+    	return ACTIONS[action];
     }
 }]);

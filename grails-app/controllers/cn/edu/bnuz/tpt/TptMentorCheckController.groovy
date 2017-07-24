@@ -22,6 +22,16 @@ class TptMentorCheckController {
 
 
 	}
+	def getAudits(){
+		def formId=params.int("formId")?:0
+		if(formId){
+			def tptRequest= TptRequest.get(formId)
+			def audits=tptRequest?.audits.grep(){
+				it.userId==securityService.userId
+			}			
+			render([audits:audits] as JSON)
+		}else render status: HttpStatus.NOT_FOUND
+	}
 	def downloadPapers(Long id){
 		def user= tptMentorCheckService.requestUser(id)
 		if(!user) {
@@ -32,6 +42,18 @@ class TptMentorCheckController {
 			response.setHeader("Content-disposition", "filename=\"${filename}.zip\"")
 			response.contentType = "application/zip"
 			response.outputStream << tptReportService.exportPhotos(user,basePath,"paper")
+			response.outputStream.flush()
+		}
+	}
+	def downloadAllPapers(){
+		def users= tptMentorCheckService.requestUsers()
+		if(!users) {
+			render status: HttpStatus.NOT_FOUND
+		}else{
+			def basePath= grailsApplication.config.tms.tpt.uploadPath+"/"+tptMentorCheckService.currentBn
+			response.setHeader("Content-disposition", "filename=\""+ java.net.URLEncoder.encode("${securityService.userName}.zip", "UTF-8")+"\"")
+			response.contentType = "application/zip"
+			response.outputStream << tptReportService.exportPhotos(users,basePath,"paper")
 			response.outputStream.flush()
 		}
 	}

@@ -1,8 +1,6 @@
 package cn.edu.bnuz.qem
 
-import cn.edu.bnuz.qem.project.QemProject
-import cn.edu.bnuz.qem.project.QemTask
-import cn.edu.bnuz.qem.project.QemStage
+import cn.edu.bnuz.qem.project.*
 import cn.edu.bnuz.qem.organization.Experts
 import cn.edu.bnuz.qem.project.Notice
 import cn.edu.bnuz.tms.security.SecurityService;
@@ -214,5 +212,21 @@ from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt
 where t.id=:teacherId
 ''',[teacherId:QemProject.get(projectid).teacher.id]
 				return results
+	}
+	def attentionView(){
+		def results = Attention.executeQuery '''
+select new map(
+	a.id as id,
+    a.title	as title,
+	a.content as content,
+	a.publishDate as publishDate
+)
+from Attention a
+where  a.experList like :userId
+order by id desc
+''', [userId:"%"+securityService.userId+";%"]
+				
+		if(results) return results[0]
+		else return null
 	}
 }

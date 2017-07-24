@@ -95,7 +95,7 @@ LEFT JOIN arr.room room
 WHERE teacher.id = :teacherId 
   AND courseClass.term = :term
 GROUP BY arr
-ORDER BY courseClass.name, arr.id
+ORDER BY arr.id
 ''', [teacherId:teacherId, term:term]
 	}
 	

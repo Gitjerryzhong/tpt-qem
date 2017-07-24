@@ -63,7 +63,8 @@ class CollegeExportService {
 
 				[
 					index + 1,
-					item.departmentName,					
+					item.departmentName,
+					item.parentType,					
 					item.qemTypeName,
 					item.projectName,
 					item.userName, 
@@ -122,12 +123,13 @@ class CollegeExportService {
 		// 设置第1页的名称
 		sheet0 = workbook.getSheetAt(0)
 		workbook.setSheetName(0, messageSource.getMessage("qem.task.union", null, Locale.CHINA))
-		entries.eachWithIndex { item, i ->
-			 // 复制第1页到其它页
-				def sheet = workbook.createSheet( item.key)
-				ExcelUtils.copySheets(sheet, sheet0)
-				ExcelUtils.copySheetSettings(sheet, sheet0)
-		}
+		if (entries.size()>1) //学院只需一个表
+			entries.eachWithIndex { item, i ->
+				 // 复制第1页到其它页
+					def sheet = workbook.createSheet( item.key)
+					ExcelUtils.copySheets(sheet, sheet0)
+					ExcelUtils.copySheetSettings(sheet, sheet0)
+			}
 		def endIndex=1
 		def startIndex = 2
 		entry.eachWithIndex { item, index ->
@@ -152,6 +154,7 @@ class CollegeExportService {
 				item.expectedEnd,
 				messageSource.getMessage("qem.status.${item.status}", null, Locale.CHINA),
 				(item.status==20)?item.endDate:"",
+				item.delay,
 				memo,
 			].eachWithIndex { value, col ->
 				Cell cell = row.createCell(col)
@@ -188,6 +191,7 @@ class CollegeExportService {
 						item.expectedEnd,
 						messageSource.getMessage("qem.status.${item.status}", null, Locale.CHINA),
 						(item.status==20)?item.endDate:"",
+						item.delay,
 						memo,
 					].eachWithIndex { value, col ->
 						Cell cell = row.createCell(col)

@@ -3,6 +3,7 @@ import grails.converters.JSON
 import org.springframework.http.HttpStatus
 import cn.edu.bnuz.qem.project.MajorType
 import org.springframework.http.HttpStatus
+import cn.edu.bnuz.tpt.util.Excel
 class TptCoPrjAdminController {
 	TptCoProjectService tptCoProjectService
     def index() { }
@@ -160,4 +161,58 @@ class TptCoPrjAdminController {
 	def getProjects(){
 		render ([proList:tptCoProjectService.getProjects(params.studentId)] as JSON)
 	}
+	/**
+	 * 按协议名称聚合
+	 * @return
+	 */
+	def projectIntegrate(){
+		def projectList = tptCoProjectService.projectIntegrate()
+		render ([projectList:projectList] as JSON)
+	}
+	/**
+	 * 导出excel
+	 */
+	def export(long id){
+		def report
+		switch(id){
+			case 0: report=tptCoProjectService.projectIntegrate()
+					break;
+			case 1: report=tptCoProjectService.getProjectList()
+					def currentYear=new Date().format("yyyy") as int
+					report=report.grep{
+						((it.effeYears >> (currentYear-it.beginYear)) & 1 )==1
+					}
+					break;
+			case 2: report=tptCoProjectService.getProjectList()
+					break;
+		}
+		if(report) {
+			//转化为中文文件名
+			def filename=message(code:"tpt.fileType.${id}",args:[])
+			def template = grailsApplication.mainContext.getResource("excel/tpt-coprj-summary.xls").getFile()
+			def excel = new Excel()
+			excel.title=filename
+			def workbook = excel.exportReport(template, report, id)
+			response.setContentType("application/excel")
+			
+			response.setHeader("Content-disposition", "attachment;filename=\""+ java.net.URLEncoder.encode("${filename}.xls", "UTF-8")+"\"")
+			workbook.write(response.outputStream)
+		} else {
+			render status: HttpStatus.NOT_FOUND
+		}
+	}
+//	def exportData(){
+//		def data=request.JSON
+//		//转化为中文文件名
+//			def filename=message(code:"tpt.fileType.3",args:[])
+//			def template = grailsApplication.mainContext.getResource("excel/tpt-coprj-summary.xls").getFile()
+//			def excel = new Excel()
+//			excel.title=filename
+//			def workbook = excel.exportReport(template, data, 3)
+//			response.setContentType("application/excel")
+//			
+//			response.setHeader("Content-disposition", "attachment;filename=\""+ java.net.URLEncoder.encode("${filename}.xls", "UTF-8")+"\"")
+//			workbook.write(response.outputStream)
+//		render status: HttpStatus.OK
+//	}
 }

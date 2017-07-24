@@ -2,6 +2,7 @@ package cn.edu.bnuz.tpt
 import java.util.List;
 
 import org.springframework.web.context.request.RequestScope;
+
 import cn.edu.bnuz.tms.organization.*
 import cn.edu.bnuz.tms.security.SecurityService;
 import cn.edu.bnuz.tpt.UserForm
@@ -14,6 +15,7 @@ class TptAdminController {
 	TptAdminService tptAdminService
 	SecurityService securityService
 	TptReportService tptReportService
+	TptCoProjectService tptCoProjectService
     def index() { 	
 		tptAdminService.checkAndInitRole()
 	}
@@ -201,6 +203,30 @@ class TptAdminController {
 			paperFile:checkPaperFile(fileNames,"paper_"),
 			paperExchFile:checkPaperFile(fileNames,"paper_exch"),
 			audits:tptRequest?.audits] as JSON)
+	}
+	def cancel(){
+		def form_id= params.int("formId")
+		def tptRequest = TptRequest.get(form_id)
+		if(tptRequest){
+			if(tptRequest?.status in[TptRequest.STATUS_CHECKED,
+									TptRequest.STATUS_REJECTED]){
+				tptRequest.setStatus(TptRequest.STATUS_APPLYING)
+			}else if(tptRequest?.status in[TptRequest.STATUS_PAPERCHECKED,
+									TptRequest.STATUS_PAPERREJECTED]){
+				tptRequest.setStatus(TptRequest.STATUS_PAPERUPLOAD)
+			}
+			tptRequest.save(flush:true)
+			def tptAudit = new TptAudit([
+				userId:securityService.userId,
+				userName:securityService.userName,
+				action:TptAudit.ACTION_APPROVE_CANCEL,
+				content:null,
+				date: new Date(),
+				form:tptRequest])
+			tptAudit.save(flush:true)
+			render([status:tptRequest.status,
+					audits:tptRequest?.audits] as JSON)
+		}else render status:HttpStatus.BAD_REQUEST
 	}
 	private List<String> getFileNames(String filePath){
 		
@@ -468,5 +494,29 @@ class TptAdminController {
 		}else render status:HttpStatus.BAD_REQUEST
 		
 	}
+
+
+	def deleteStudent(){
+		if(params.xh){
+			T_ZZ_XSMD item=new T_ZZ_XSMD(
+				xh:params.xh)
+			tptCoProjectService.deleteStudent(item)
+		}
+		show()
+	}
+	def editStudent(){
+		def student= new T_ZZ_XSMD(request.JSON)
+				tptCoProjectService.editStudent(student)
+		render status:HttpStatus.OK
+	}
+	def getProjects(){
+		render ([proList:tptCoProjectService.getProjects(params.studentId)] as JSON)
+	}
+//	def getMentorOpinion(){
+//		def result = tptAdminService.mentorOpinion("2016")
+//		result.each {item->
+//			println "studentId:${item.userId}, studentName:${item.userName}, status:${item.status}, mentorId:${item.mentorId}, maxdate:${item.maxdate}, content:${item.auditContent}"
+//		}
+//	}
 }
 

@@ -78,6 +78,53 @@
 	    </div>    
 	</div>
 </div>
+<div class="panel panel-default"  id="mainInfo" ng-if="stages">
+<div class="panel-heading title">阶段检查信息</div>
+<div ng-repeat="item in stages | orderBy:'currentStage'">
+	<div class="form-group">	    
+	    <label for="projectContent" class="col-sm-2 control-label">检查年份</label>
+	     <div class="col-sm-2 form-control-static"><span >{{item.submitYear}}</span></div>
+	     <label for="projectContent" class="col-sm-2 control-label">完成时间</label>
+	    <div class="col-sm-2  form-control-static">
+	    	<span>{{dateFormat(item.finishDate) | date:'yyyy-MM-dd'}}</span>
+	    </div>
+	    <label for="projectContent" class="col-sm-2 control-label">评审状态</label>
+	    <div class="col-sm-2  form-control-static">
+	    	<span>{{item.status | stageStatus}}</span>
+	    </div>
+    </div>
+    <div class="form-group" ng-if="task.fundingUniversity">	    
+	    <label for="projectContent" class="col-sm-2 control-label">省级划拨</label>
+	     <div class="col-sm-2 form-control-static"><span >{{item.fundingProvince}}</span></div>
+	     <label for="projectContent" class="col-sm-2 control-label">学校划拨</label>
+	    <div class="col-sm-2  form-control-static">
+	    	<span>{{item.fundingUniversity}}</span>
+	    </div>
+	    <label for="projectContent" class="col-sm-2 control-label">院级划拨</label>
+	    <div class="col-sm-2  form-control-static">
+	    	<span>{{item.fundingCollege}}</span>
+	    </div>
+    </div>
+	<div class="form-group">
+    <label for="projectContent" class="col-sm-2 control-label">进展正文</label>
+    <div class="col-sm-10">
+    	<pre>{{item.progressText}}</pre>
+    </div>
+	</div>
+	<div class="form-group" ng-if="item.collegeAudit">
+    <label for="projectContent" class="col-sm-2 control-label">学院意见</label>
+    <div class="col-sm-10">
+    	<pre>{{item.collegeAudit}}</pre>
+    </div>
+	</div>
+	<div class="form-group" ng-if="item.endAudit">
+    <label for="projectContent" class="col-sm-2 control-label">学校意见</label>
+    <div class="col-sm-10">
+    	<pre>{{item.endAudit}}</pre>
+    </div>
+	</div>
+</div>
+</div>
 <div class="panel panel-warning" ng-if="auditList">
 			<div class="panel-heading">
 		    <h4 class="panel-title">变更溯源</h4>
@@ -151,57 +198,66 @@
 	</div>
 <div class="panel panel-default"  id="attchInfo" >
 	<div class="panel-heading title">附  件<a href="/tms/qemTaskAdmin/downloadAttch_T/{{task.id}}">（下载全部<span class="glyphicon glyphicon-download-alt"></span>）</a></div>
-	<div class="form-group" ng-if="(fileList | filter:'申报书').length">
+	<div class="form-group" ng-if="(fileList | filter:'申报书___').length">
 	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=申报书"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>申报书</label>
 	<div class="col-md-10 form-control-static">
 	<ul>
-		<li ng-repeat="filename in fileList | filter:'申报书'" >
+		<li ng-repeat="filename in fileList | filter:'申报书___'" >
 				<span>{{getFileName(filename)}}</span>
 		</li>
 	</ul>
 	</div>
 	</div>
-	<div class="form-group" ng-if="(fileList | filter:'合同').length">
+	<div class="form-group" ng-if="(fileList | filter:'合同___').length">
 	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=合同"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>合同</label>
 	<div class="col-md-10 form-control-static">
 	<ul>
-		<li ng-repeat="filename in fileList | filter:'合同'" >
+		<li ng-repeat="filename in fileList | filter:'合同___'" >
 				<span>{{getFileName(filename)}}</span>
 		</li>
 	</ul>
 	</div>
 	</div>
-	<div class="form-group" ng-if="(fileList | filter:'年度').length">
+	<div class="form-group" ng-if="(fileList | filter:'年度___').length">
 	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=年度"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>年度</label>
 	<div class="col-md-10 form-control-static">
 	<ul>
-		<li ng-repeat="filename in fileList | filter:'年度'" >
+		<li ng-repeat="filename in fileList | filter:'年度___'" >
 				<span>{{getFileName(filename)}}</span>
 		</li>
 	</ul>
 	</div>
 	</div>
-	<div class="form-group" ng-if="(fileList | filter:'中期').length">
+	<div class="form-group" ng-if="(fileList | filter:'中期___').length">
 	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=中期"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>中期</label>
 	<div class="col-md-10 form-control-static">
 	<ul>
-		<li ng-repeat="filename in fileList | filter:'中期'" >
+		<li ng-repeat="filename in fileList | filter:'中期___'" >
 				<span>{{getFileName(filename)}}</span>
 		</li>
 	</ul>
 	</div>
 	</div>
-	<div class="form-group" ng-if="(fileList | filter:'结题').length">
+	<div class="form-group" ng-if="(fileList | filter:'结题___').length">
 	<label for="doc" class="col-md-2 control-label"><a href="/tms/qemTaskAdmin/downloadT?taskId={{task.id}}&fileType=结题"><span class="glyphicon glyphicon-download-alt" Tooltip="点击下载"></span></a>结题</label>
 	<div class="col-md-10 form-control-static">
 	<ul>
-		<li ng-repeat="filename in fileList | filter:'结题'" >
+		<li ng-repeat="filename in fileList | filter:'结题___'" >
 				<span>{{getFileName(filename)}}</span>
 		</li>
 	</ul>
 	</div>
 	</div>
-
+	<div class="form-group" ng-if="(fileList | filter:'!___').length">
+	<label for="doc" class="col-md-2 control-label">其他</label>
+	<div class="col-md-10 form-control-static">
+	<ul>
+		<li ng-repeat="filename in fileList | filter:'!___'" >
+				<span>{{filename}}</span>
+		</li>
+	</ul>
+	</div>
+	</div>
 </div>
 </div>
 <div class="col-sm-3" class="bs-docs-sidebar affix">

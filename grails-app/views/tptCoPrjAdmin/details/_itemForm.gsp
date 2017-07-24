@@ -1,5 +1,5 @@
 <div class="form-group">
-	<label  class="col-sm-3 control-label">起始年份<span class="Emphasis">*</span></label>
+	<label  class="col-sm-3 control-label">起始年级<span class="Emphasis">*</span></label>
     <div class="col-sm-3" id="beginYear">
     <div class="input-group">
 	<input class="form-control" ng-model="projectItem.beginYear" ng-readonly="true" required><span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="editYear('beginYear')"><span class="glyphicon glyphicon-calendar"></span></button></span>
@@ -22,7 +22,7 @@
     ng-options="y.id as y.majorName for y in majors  |filter:{'grade':projectItem.beginYear,'departmentName': projectItem.departmentName}" >
 	</select>
 	</div>
-	<label  class="col-sm-3 control-label">有效年份<span class="Emphasis">*</span></label>
+	<label  class="col-sm-3 control-label">有效年级<span class="Emphasis">*</span></label>
     <div class="col-sm-3 form-control-static"  id="editYear">
     <span >{{projectItem.effeYearStr}}</span><a href="#" ng-click="editYear('editYear')" style="margin-left:20px" ng-show="projectItem.majorsId">编辑</a>
 	</div>	

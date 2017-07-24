@@ -28,6 +28,10 @@ checkApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function
     .state('exportMtlRgn', {
         url: '/exportMtlRgn',
         templateUrl: 'export-mtlRgn.html'
+    })
+    .state('exportAudit', {
+        url: '/exportAudit',
+        templateUrl: 'export-paperAudit.html'
     });
 }]);
 checkApp.controller('TrialCtrl',['$scope','$http','$location',function($scope,$http,$location){ 

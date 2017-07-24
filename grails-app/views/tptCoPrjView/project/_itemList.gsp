@@ -4,8 +4,8 @@
 			<th style="width:3em">序号</th>
 			<th class="hand" ng-click="orderBy('majorName')" >校内专业</th>
 			<th class="hand" style="width:5em" ng-click="orderBy('departmentName')">学院</th>
-			<th class="hand" style="width:5em" ng-click="orderBy('beginYear')">起始年份</th>	
-			<th class="hand" style="width:8em" ng-click="orderBy('effeYearStr')">有效年份</th>	
+			<th class="hand" style="width:5em" ng-click="orderBy('beginYear')">起始年级</th>	
+			<th class="hand" style="width:8em" ng-click="orderBy('effeYearStr')">有效年级</th>	
 			<th class="hand" ng-click="orderBy('collegeNameCn')">国外合作院校中文名</th>	
 			<th class="hand" ng-click="orderBy('collegeNameEn')">国外合作院校英文名</th>	
 			<th class="hand" style="width:10em">可衔接学位/学科/专业</th>	

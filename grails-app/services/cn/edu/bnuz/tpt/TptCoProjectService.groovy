@@ -174,6 +174,26 @@ select new map(
 from TptCoProject p join p.tptCoType t join p.tptCoCountry c left join p.tptCoPrjItem i left join i.major m left join m.department d
 '''
 	}
+	def projectIntegrate(){
+		def result = TptCoProject.executeQuery'''
+select new map(
+		p.name	as projectName,
+		t.name	as coTypeName,
+		c.name	as coProTypeName,
+		CASE p.effective WHEN 1 THEN 'Yes' ELSE 'No' END	as effective,
+		CASE p.ifTowDegree WHEN 1 THEN 'Yes' ELSE 'No' END	as ifTowDegree,
+		MIN(i.beginYear)	as beginYear,
+		GROUP_CONCAT(m.name,i.effeYearStr,';') as majorName,
+		d.name	as departmentName,
+		i.collegeNameEn	as collegeNameEn,
+		i.collegeNameCn	as collegeNameCn,
+		i.coDegreeOrMajor	as coDegreeOrMajor,
+		p.memo
+)
+from TptCoProject p join p.tptCoType t join p.tptCoCountry c left join p.tptCoPrjItem i left join i.major m left join m.department d
+group by p,d
+'''
+	}
 	def getProjectDetail(def id){
 		def result = TptCoProject.executeQuery'''
 select new map(
@@ -198,7 +218,7 @@ where p.id=:id
 	def listStudent(def id,def co_project){
 		Sql sql = new Sql(dataSource_es)
 		def students = sql.rows"""
-select * from T_TMS_XSMD 
+select * from T_ZZ_XSMD 
 where (:id is null or xh like :xh )and(:co_project is null or kind = :co_project)
 """,[id:id,xh:id+'%',co_project:co_project]
 		return students
@@ -237,7 +257,7 @@ select JXJHH,LBMC,count(*) as c from zfxfzb.cgxmkcdmb group by JXJHH,LBMC
 		}
 //		查询是否有重复
 		def duplicateList= sql.rows """
-select t.* from T_TMS_XSMD_TEMP t JOIN T_TMS_XSMD x on t.ID=x.XH
+select t.* from T_TMS_XSMD_TEMP t JOIN T_ZZ_XSMD x on t.ID=x.XH
 """
 //		查询是否有姓名和学号不相符
 		def unmatchList= sql.rows """
@@ -257,44 +277,80 @@ left join T_TMS_PROJECT prj on prj.id=concat(xsb.DQSZJ,xsb.ZYDM) and  tmp.PROJEC
 			it.SFCG =='0'
 		}
 //		将有问题名单删除
-//		if(duplicateList || unmatchList || prjMatchList)
-		sql.execute """
-delete from T_TMS_XSMD_TEMP t where t.ID in
-(select t.ID from T_TMS_XSMD_TEMP t JOIN T_TMS_XSMD x on t.ID=x.XH union
-select t.ID from T_TMS_XSMD_TEMP t JOIN zfxfzb.xsjbxxb x on t.id=x.XH where t.name<>x.XM union 
- select tmp.ID from T_TMS_XSMD_TEMP tmp join zfxfzb.xsjbxxb xsb on tmp.id=xsb.XH 
-        JOIN zfxfzb.zydmb on xsb.ZYDM =zydmb.ZYDM 
-        left join T_TMS_PROJECT prj on prj.id=concat(xsb.DQSZJ,xsb.ZYDM) and  tmp.PROJECT=prj.name 
-        where zydmb.sfcg=0 or prj.name is null
-)
-"""
+//		if(duplicateList || unmatchList || prjUnMatchList)
+//		sql.execute """
+//delete from T_TMS_XSMD_TEMP t where t.ID in
+//(select t.ID from T_TMS_XSMD_TEMP t JOIN T_ZZ_XSMD x on t.ID=x.XH union
+//select t.ID from T_TMS_XSMD_TEMP t JOIN zfxfzb.xsjbxxb x on t.id=x.XH where t.name<>x.XM union 
+// select tmp.ID from T_TMS_XSMD_TEMP tmp join zfxfzb.xsjbxxb xsb on tmp.id=xsb.XH 
+//        JOIN zfxfzb.zydmb on xsb.ZYDM =zydmb.ZYDM 
+//        left join T_TMS_PROJECT prj on prj.id=concat(xsb.DQSZJ,xsb.ZYDM) and  tmp.PROJECT=prj.name 
+//        where zydmb.sfcg=0 or prj.name is null
+//)
+//"""
 		def succesList = sql.rows """
 select t.* from T_TMS_XSMD_TEMP t 
 """
 //		将名单导入T_TMS_XSMD表
+//		sql.execute """
+//insert into T_TMS_XSMD (MDID,XH,XM,ADDAUTHOR,ADDDATE,INPROJECT,KIND)
+//select T_TMS_XSMD_ID_SEQ.nextval,t.ID,t.NAME,${securityService.userId},sysdate,1,${userForm.projectName} from T_TMS_XSMD_TEMP t
+//"""
+//		将名单导入T_ZZ_XSMD表
+//		println "${duplicateList?.size()}-${ unmatchList?.size()}-${prjUnMatchList?.size()}"
+		if(!(duplicateList?.size() || unmatchList?.size() || prjUnMatchList?.size())){			
 		sql.execute """
-insert into T_TMS_XSMD (MDID,XH,XM,ADDAUTHOR,ADDDATE,INPROJECT,KIND)
-select T_TMS_XSMD_ID_SEQ.nextval,t.ID,t.NAME,${securityService.userId},sysdate,1,${userForm.projectName} from T_TMS_XSMD_TEMP t
+insert into T_ZZ_XSMD (MDID,XH,XM,ADDAUTHOR,ADDDATE,INPROJECT,KIND)
+select T_ZZ_XSMD_ID_SEQ.nextval,t.ID,t.NAME,${securityService.userId},sysdate,1,${userForm.projectName} from T_TMS_XSMD_TEMP t
 """
+		}
+//		名单导入新系统
+//		sql.execute """
+//insert into Z_TM_XMSTUDENT (ID,XH,XM,ADDAUTHOR,INSERTTIME,TYPE,ENDTIME)
+//select get_uuid,t.ID,t.NAME,${securityService.userId},to_char(sysdate,'yyyyMMdd'),${userForm.projectName},'20990101' from T_TMS_XSMD_TEMP t
+//"""
 		return [duplicateList:duplicateList,unmatchList:unmatchList,prjUnMatchList:prjUnMatchList,notDualList:notDualList,successCount:succesList.size()]
 	}
 //	删除名单
 	def deleteStudent(def item){
-		Sql sql = new Sql(dataSource_es)
-		sql.execute """
-update T_TMS_XSMD set DELAUTHOR= ${securityService.userId},DELDATE=sysdate,INPROJECT=0 where MDID=:id 
-""",[id:item.id]
+		def students = TptRequest.executeQuery '''
+select t from TptStudent t, TptTeacherDept ttd 
+where t.id=:studetnid and t.department.id=ttd.department.id and ttd.teacher.id=:teacherid 
+''', [studetnid: item.xh,teacherid:securityService.userId]		
+		if(students){
+			TptStudent tptStudent=students[0]
+			Sql sql = new Sql(dataSource_es)
+//			sql.execute """
+//update T_ZZ_XSMD set DELAUTHOR= ${securityService.userId},DELDATE=sysdate,INPROJECT=0 where XH=:id 
+//""",[id:item.xh] //在新系统中不起作用了
+			sql.execute """
+delete from T_ZZ_XSMD where XH=:id 
+""",[id:item.xh]
+		tptStudent.delete(flush:true)
 //		插入日志
-		tptLogService.saveLog(item, TptLog.ACTION_DELETE, item.xh)
+		item
+		tptLogService.saveLog(tptStudent, TptLog.ACTION_DELETE, "${tptStudent.id}-${tptStudent.name}-${tptStudent.tptCoCountry?.name}")
+		}
 	}
 //	更新项目
-	def editStudent(def item){
-		Sql sql = new Sql(dataSource_es)
-		sql.execute """
-update T_TMS_XSMD set KIND=:kind where MDID=:id 
-""",[id:item.id,kind:item.kind]
+	def editStudent(def item){		
+		def students = TptRequest.executeQuery '''
+		select t from TptStudent t, TptTeacherDept ttd 
+		where t.id=:studetnid and t.department.id=ttd.department.id and ttd.teacher.id=:teacherid 
+		''', [studetnid: item.xh,teacherid:securityService.userId]	
+		if(students){
+			TptStudent tptStudent=students[0]
+//			更新oracle名单表
+			Sql sql = new Sql(dataSource_es)
+			sql.execute """
+update T_ZZ_XSMD set KIND=:kind where xh=:xh 
+""",[xh:item.xh,kind:item.kind]
+			tptStudent.setTptCoCountry(TptCoCountry.findByName(item.kind))
+			tptStudent.save(flush:true)
 //		插入日志
-		tptLogService.saveLog(item, TptLog.ACTION_UPDATE, "XH:${item.xh},XM:${item.xm},KIND:${item.oldKind}")
+			tptLogService.saveLog(tptStudent, TptLog.ACTION_UPDATE, "XH:${item.xh},XM:${item.xm},KIND:${item.oldKind}")
+		}
+
 	}
 //	查询学生所在年级专业可申请的项目
 	def getProjects(def studentId){
@@ -305,5 +361,24 @@ select prj.name from zfxfzb.xsjbxxb xsb
  LEFT JOIN T_TMS_PROJECT prj on prj.id=concat(xsb.DQSZJ,xsb.ZYDM) 
  where xsb.xh=:id
 """,[id:studentId]
+//		def result = TptCoProject.executeQuery'''
+//select new map(		
+//		c.name	as name,
+//		item.beginYear as beginYear,
+//		item.effeYears as effeYears,
+//		s.grade as grade
+//)
+//from TptCoProject p join p.tptCoCountry c join p.tptCoPrjItem item join item.major pm ,Student s join s.major sm 
+//where pm.id=sm.id and s.id=:id
+//''', [id: studentId]
+//		
+//		def prjNames=[]
+//		result?.each{item->
+//			if(item.grade>=item.beginYear && ((item.effeYears>>(item.grade-item.beginYear))|1)){
+//				prjNames+=[item.name]
+//			}
+//		}
+//	
+//		return prjNames
 	}
 }

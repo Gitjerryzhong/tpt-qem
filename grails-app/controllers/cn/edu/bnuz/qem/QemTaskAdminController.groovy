@@ -111,6 +111,7 @@ class QemTaskAdminController {
 				userName:task.teacher.name,
 				pager: [nextId:nextId,prevId:prevId],
 				audit:audit,
+				stages:task.stage,
 				auditContent:auditContent,
 				fileList:getFileNames(task)] as JSON)
 		}else{
@@ -305,6 +306,19 @@ class QemTaskAdminController {
 	def teacherName(){
 		def teacher = Teacher.get(params.id)
 		render ([name:teacher?.name] as JSON)
+		
+	}
+	/**
+	 * 返回教师姓名相似列表
+	 * @return
+	 */
+	def getTeachers(){
+		def teachers
+		def teacherName = params.teacherName
+		if(teacherName){
+			teachers=Teacher.findAllByNameLike("${teacherName}%")
+		}
+		render ([teachers:teachers] as JSON)
 		
 	}
 	/**

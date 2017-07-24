@@ -118,3 +118,21 @@ word-wrap: break-word;
 .hand{
 	cursor:pointer
 }
+
+#history-view{
+	margin-left:0;
+	margin-right:0;
+}
+.myselect{
+	overflow:auto;
+background-attachment:fixed;
+background-repeat:no-repeat;
+border-style:solid; 
+border-color:#FFFFFF
+}
+.kind{
+	display: inline-block;
+	border-bottom: dashed 1px #0088cc;
+	color: #0088cc;
+	cursor: pointer;
+}

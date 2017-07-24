@@ -7,6 +7,7 @@ import cn.edu.bnuz.qem.project.QemTask
 import cn.edu.bnuz.qem.project.QemStage
 import cn.edu.bnuz.qem.project.QemTaskAudit
 import cn.edu.bnuz.qem.review.Review
+import cn.edu.bnuz.qem.project.Notice
 import cn.edu.bnuz.tms.organization.Teacher;
 import cn.edu.bnuz.tms.security.SecurityService
 
@@ -42,6 +43,7 @@ select new map(
 	qp.delay		as delay,
 	qp.memo			as memo,
 	qp.hasMid		as hasMid,
+	qp.delay		as delay,
 	qp.expectedGain	as expectedGain	
 )
 from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt join qt.parentType pt
@@ -124,7 +126,7 @@ where qt.runStatus=:fromStatus and qt.id in(:ids)
 ''',[confirmStatus:confirmStatus,status:status,fromStatus:fromStatus,ids:ids]
 	}
 	def annualList(){
-		def currentYear=new Date().format("yyyy")
+//		def currentYear=new Date().format("yyyy")
 		def results = QemTask.executeQuery '''
 select new map(
 	qp.id as id,
@@ -147,11 +149,11 @@ select new map(
 from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt
 where qp.beginYear<:currentYear and qp.expectedMid > :currentYear
 order by qp.id
-''',[currentYear:currentYear]			
+''',[currentYear:getCurrentYear()]			
 				return results
 	}
 	def annualCounts(){
-		def currentYear=new Date().format("yyyy")
+//		def currentYear=new Date().format("yyyy")
 		def results = QemTask.executeQuery '''
 select new map(
 		SUM(CASE WHEN qp.runStatus<10 THEN 1 ELSE 0 END) as t0,
@@ -160,7 +162,7 @@ select new map(
 )
 from QemTask qp
 where qp.beginYear<:currentYear and qp.expectedMid > :currentYear
-''',[currentYear:currentYear]
+''',[currentYear:getCurrentYear()]
 		if(results) {
 			return results[0]
 		} else {
@@ -168,7 +170,7 @@ where qp.beginYear<:currentYear and qp.expectedMid > :currentYear
 		}
 	}
 	def midList(){
-		def currentYear=new Date().format("yyyy")
+//		def currentYear=new Date().format("yyyy")
 		def results = QemTask.executeQuery '''
 select new map(
 	qp.id as id,
@@ -191,11 +193,11 @@ select new map(
 from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt
 where qp.expectedMid = :currentYear
 order by qp.id
-''',[currentYear:currentYear]			
+''',[currentYear:getCurrentYear()]			
 				return results
 	}
 	def midCounts(){
-		def currentYear=new Date().format("yyyy")
+//		def currentYear=new Date().format("yyyy")
 		def results = QemTask.executeQuery '''
 select new map(
 		SUM(CASE WHEN qp.runStatus<20 THEN 1 ELSE 0 END) as t0,
@@ -204,7 +206,7 @@ select new map(
 )
 from QemTask qp
 where  qp.expectedMid = :currentYear
-''',[currentYear:currentYear]
+''',[currentYear:getCurrentYear()]
 		if(results) {
 			return results[0]
 		} else {
@@ -212,7 +214,7 @@ where  qp.expectedMid = :currentYear
 		}
 	}
 	def endList(){
-		def currentYear=new Date().format("yyyy")
+//		def currentYear=new Date().format("yyyy")
 		def results = QemTask.executeQuery '''
 select new map(
 	qp.id as id,
@@ -235,11 +237,11 @@ select new map(
 from QemTask qp join qp.teacher t join qp.department m join qp.qemType qt
 where  qp.expectedEnd = :currentYear
 order by qp.id
-''',[currentYear:currentYear]			
+''',[currentYear:getCurrentYear()]			
 				return results
 	}
 	def endCounts(){
-		def currentYear=new Date().format("yyyy")
+//		def currentYear=new Date().format("yyyy")
 		def results = QemTask.executeQuery '''
 select new map(
 		SUM(CASE WHEN qp.runStatus<30 THEN 1 ELSE 0 END) as t0,
@@ -248,7 +250,7 @@ select new map(
 )
 from QemTask qp
 where qp.expectedEnd = :currentYear
-''',[currentYear:currentYear]
+''',[currentYear:getCurrentYear()]
 		if(results) {
 			return results[0]
 		} else {
@@ -472,5 +474,18 @@ select new map(
 )
 from QemTask qp
 '''
+	}
+	private String getCurrentYear(){
+		def result=Notice.executeQuery '''
+select new map(
+	date_format(n.publishDate,'%Y')	as publishYear
+)
+from Notice n
+where  n.workType=:type
+order by n.id desc
+''',[type:Notice.PROJECT_CHECK],[max:1]
+		if(result?.size())
+			return result[0].publishYear
+		else return new Date().format("yyyy")
 	}
 }

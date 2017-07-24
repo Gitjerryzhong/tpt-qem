@@ -94,7 +94,7 @@ tptApp.config(['$stateProvider','$urlRouterProvider','$httpProvider', function($
         templateUrl: 'tpt-message.html'
     });
 }]);
-tptApp.controller('ReqCtrl',['$rootScope','$scope','$http','$location','$modal','FileUploader','$state',function($rootScope,$scope,$http,$location,$modal,FileUploader,$state){ //申请
+tptApp.controller('ReqCtrl',['$rootScope','$scope','$http','$location','$modal','FileUploader','$state','$filter',function($rootScope,$scope,$http,$location,$modal,FileUploader,$state,$filter){ //申请
 	$scope.contact={}
 	$scope.colleges={}
 	$rootScope.imgs={}
@@ -106,6 +106,9 @@ tptApp.controller('ReqCtrl',['$rootScope','$scope','$http','$location','$modal',
 	$scope.bn4=
 	$scope.bn5="btn btn-default";
 	$scope.saved=false;
+	$scope.end = null;
+	$scope.paperEnd = null;
+	$scope.modifyEnding = null;
 //	改变了显示流程，统一先显示历史通知清单2016-09-05
 	$state.go('declareInfo');
 	$scope.showStatus=function(status){
@@ -147,13 +150,15 @@ tptApp.controller('ReqCtrl',['$rootScope','$scope','$http','$location','$modal',
 					 $scope.saved=true;
 				 }
 				 $scope.colleges=data.colleges;
-				 console.log($scope.colleges);
+				 console.log(data);
 				 $scope.username=data.username;
 				 $rootScope.imgs=data.imgSrc;
 				 $scope.audits=data.audits;
 				 $scope.paperFile=data.paperFile;
 				 $scope.paperExchFile=data.paperExchFile;
-				 if(data.end!=null) $scope.ending=new Date(data.end);	
+				 if(data.end!=null) $scope.end=new Date(data.end);
+				 if(data.paperEnd!=null) $scope.paperEnd=new Date(data.paperEnd);
+				 if(data.paperModifyEnd!=null) $scope.modifyEnding=new Date(data.paperModifyEnd);
 				 /*因为这是异步，程序不等待返回结果就会往下执行
 				  * 因此必须页面调整必须放在这里才能保证*/
 				 $scope.showStatus(status);
@@ -192,6 +197,7 @@ tptApp.controller('ReqCtrl',['$rootScope','$scope','$http','$location','$modal',
     			"21": "审核不通过",
     			"30": "论文审批通过",
     			"31": "论文审批不通过",
+    			"32": "审核撤销",
     			"40": "关闭申请",
     			"41": "回收申请",
     			"51": "论文上传",
@@ -200,6 +206,15 @@ tptApp.controller('ReqCtrl',['$rootScope','$scope','$http','$location','$modal',
     	return ACTIONS[action];
     }
     $scope.statusTitle = function(status){
+    	var endText ="审核结束，系统关闭！";
+    	var title =null;
+    	switch(status){
+    	case 1:
+    	case 2:
+    	case 3: if ($scope.paperEnd < new Date()) title =endText; break;
+    	case 6:
+    	case 7: if ($scope.modifyEnding < new Date()) {title =endText; ;break;} 
+    	}
     	var TITLE = {    			
     			"1": "申请单详情",
     			"2": "初审通过",
@@ -209,7 +224,9 @@ tptApp.controller('ReqCtrl',['$rootScope','$scope','$http','$location','$modal',
     			"6": "终审不通过", 
     			"7": "论文审核不通过——请更正相关信息和重新上传论文", 
     		};
-    	return TITLE[status];
+    	var commonText = TITLE[status];
+    	if(status == "2") commonText = commonText + ",请在"+$filter('date')($scope.paperEnd,'yyyy-MM-dd')+"前上传论文！预期不收！";
+    	return !title? commonText:title;
     }
     $scope.statusText = function(status){
     	var STATUS = {
@@ -308,16 +325,17 @@ tptApp.controller('ReqCtrl',['$rootScope','$scope','$http','$location','$modal',
                 }
 	        }) 
 	 }
+    
     $scope.allowUpdate= function(){
-    	if($scope.contact.status==3) return true;
+    	if($scope.contact.status==3 && $scope.end > new Date()) return true;
     	else return false;
     }
     $scope.allowPaper= function(){
-    	if($scope.contact.status==2) return true;
+    	if($scope.contact.status==2 && $scope.paperEnd > new Date()) return true;
     	else return false;
     }
     $scope.allowPaperUpdate= function(){
-    	if($scope.contact.status==7) return true;
+    	if($scope.contact.status==7 && $scope.modifyEnding > new Date()) return true;
     	else return false;
     }
     $scope.goUpdate = function (){

@@ -53,7 +53,7 @@ adminApp.controller('modal',['$rootScope','$scope','$http','$modal','$log','$fil
 //		 }
 //	 }
 	 $scope.majorChange = function(){
-		 $scope.userList;
+//		 $scope.userList;
 		 $scope.trial.adminClassName =null;
 		 $scope.trial.projectName=null;
 		 $scope.trial.studentId = null;
@@ -74,4 +74,59 @@ adminApp.controller('modal',['$rootScope','$scope','$http','$modal','$log','$fil
 			 $scope.studentList=$filter('filter2_0')($scope.userList,'id',$scope.trial.studentId);
 	 }
 	 $scope.list();
+//	 增加项目变更功能2017-03-02
+	 $scope.span_click=function(item){
+			item.clicked=true;
+			$http({
+				 method:'GET',
+					url:"/tms/tptAdmin/getProjects",
+					params:{
+						studentId:item.id,
+					}
+			 }).success(function(data) {
+				 if(data!=null){
+					 $scope.proList = data.proList;
+					 console.log(data.proList);
+				 }
+			 });
+		}
+		$scope.kindChange = function(item,kind){			
+			item.clicked=false;
+			$http({
+				 method:'POST',
+					url:"/tms/tptAdmin/editStudent",
+					data:JSON.stringify({
+						xh:			item.id,
+						xm:			item.name,
+						kind:		kind,
+						oldKind:	item.projectName
+					}),
+					headers:{ 'Content-Type': 'application/json' }
+			 }).success(function(data) {
+				 item.projectName=kind;
+			 });
+		}
+		$scope.delItem = function(item){			
+			var r=confirm("确定要删除“"+item.name+"("+item.id+")”吗？");
+			if (r==true)
+			 {
+				$http({
+					 method:'GET',
+						url:"/tms/tptAdmin/deleteStudent",
+						params:{							
+							xh: item.id
+			 			}
+				 }).success(function(data) {
+					 if(data!=null){						 
+						 $scope.userList = data.userList;
+						 if($scope.trial.majorName)
+							 $scope.marjorStudent=$filter('filter2_0')($scope.userList,'majorName',$scope.trial.majorName);
+						 else $scope.marjorStudent=$scope.userList;
+						 $scope.classChange();
+						 $scope.projectChange();
+						 $scope.stdChange();
+					 }			
+				 });
+			 }	
+		}
 }]) ;

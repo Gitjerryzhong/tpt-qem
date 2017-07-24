@@ -6,6 +6,7 @@ class Attention {
 	String title
 	
 	String content
+	String experList
 	
 	Date publishDate
 	
@@ -14,6 +15,7 @@ class Attention {
 		table	'qem_attention'
 	}
     static constraints = {
+		experList nullable:true
 		content(maxSize:1500,nullable: true)
     }
 }
